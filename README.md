@@ -1,9 +1,9 @@
 # Project: TaskHub
 
 # Members:
-    * Amin
-    * Adrian
-    * Etan
-    * Sunny
-    * Terence
+* Amin
+* Adrian
+* Etan
+* Sunny
+* Terence
 
