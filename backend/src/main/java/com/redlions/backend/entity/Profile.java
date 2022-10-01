@@ -68,6 +68,10 @@ public class Profile {
     @ManyToMany(mappedBy="connectedTo1")
     private Set<Profile> connectedTo2 = new HashSet<>();
 
+    public Profile () {
+        
+    }
+
     public Profile(Long id, String name, String email, String password, Long points, Long happiness, byte[] profilePicture) {
         this.id = id;
         this.name = name;
