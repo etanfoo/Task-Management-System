@@ -50,25 +50,26 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Algorithm algorithm = Algorithm.HMAC256("mySuperSecret".getBytes());
         String accessToken = JWT.create()
                                 .withSubject(user.getUsername())
-                                // currently set timeout to 1 hour
+                                // currently set timeout to 24 hour
                                 .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
                                 .withIssuer(request.getRequestURL().toString())
                                 // can change if want to add roles later
                                 // .withClaim("temp", user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
                                 .sign(algorithm);
-
-        String refreshToken = JWT.create()
-                                .withSubject(user.getUsername())
-                                // currently set refresh timeout to 24 hours
-                                .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
-                                .withIssuer(request.getRequestURL().toString())
-                                // can change if want to add roles later
-                                // .withClaim("temp", user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
-                                .sign(algorithm);
+        
+        // add in later if we want to use refresh token, have to add endpoint in as well
+        // String refreshToken = JWT.create()
+        //                         .withSubject(user.getUsername())
+        //                         // currently set refresh timeout to 24 hours
+        //                         .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
+        //                         .withIssuer(request.getRequestURL().toString())
+        //                         // can change if want to add roles later
+        //                         // .withClaim("temp", user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
+        //                         .sign(algorithm);
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
-        tokens.put("refresh_token", refreshToken);
+        // tokens.put("refresh_token", refreshToken);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
