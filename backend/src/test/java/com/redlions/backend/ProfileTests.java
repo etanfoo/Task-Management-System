@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -20,8 +19,8 @@ public class ProfileTests {
     String URL = String.format("http://localhost:%d/api/v1/profile", PORT);
 
     @Test
-    public void UserNotFound_Throws404() throws IOException {
-        long id = 9929;
+    public void GetUserWithInvalidId_Throws400() throws IOException {
+        String id = "9929";
         HttpUriRequest request = new HttpGet(URL + "/" + id);
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute( request );
         assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.BAD_REQUEST.value());
@@ -31,4 +30,26 @@ public class ProfileTests {
         httpResponse = HttpClientBuilder.create().build().execute( request );
         assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.BAD_REQUEST.value());
     }
+
+    @Test
+    public void GetUserWithValidId_Throws200() throws IOException {
+        String id = "1";
+        HttpUriRequest request = new HttpGet(URL + "/" + id);
+        HttpResponse httpResponse = HttpClientBuilder.create().build().execute( request );
+        assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.OK.value());
+    }
+
+    //@Test
+    //public void UpdateUserWithAboutMeAbove300Characters_Throws400() throws IOException, URISyntaxException {
+    //    String aboutMe = "...";
+    //
+    //    URIBuilder builder = new URIBuilder(URL + "/1" + "1");
+    //    builder.setParameter("aboutMe", aboutMe);
+    //    URI uri = builder.build();
+    //    HttpUriRequest request = new HttpPut(uri);
+    //    String bob = request.getURI().toString();
+    //    HttpResponse httpResponse = HttpClientBuilder.create().build().execute( request );
+    //    assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.BAD_REQUEST.value());
+    //}
+
 }

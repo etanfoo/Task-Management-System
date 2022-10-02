@@ -49,6 +49,12 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         /**
          * Used to create and update profiles.
          */
+        String aboutMe = profile.getAboutMe();
+        if (aboutMe.length() > 300) {
+            String errorMessage = "\"About me\" section must be below 300 characters long.";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
         log.info("Saving new profile {} to database", profile.getEmail());
         // encrypting password to not save plain text in db
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
