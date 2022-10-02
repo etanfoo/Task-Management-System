@@ -2,11 +2,32 @@
 
 ## Dependencies
 * java 11
-* postgreSQL
+* docker
+* postgres
 
 ## Configuration
-* set up a database with name task_hub, if you already have a db with this name, use a new one and change the `spring.datasource.url` in file application.properties in `src/main/resources` to point to your db
-* NOTE: current application.properties is setup to connect where your pg_hba.conf is configured with `trust` instead of `md5`, if you want to use `md5`, you will have to enter the username and password for your postgres user in application.properties
+Run the following to setup the database:
+```
+sudo docker run -p 5432:5432 -d \
+-e POSTGRES_USER=postgres \
+-e POSTGRES_PASSWORD=postgres \
+-e POSTGRES_DB=task_hub \
+postgres
+```
+Or the following if you want persistent data:
+```
+sudo docker run -p 5432:5432 -d \
+-e POSTGRES_USER=postgres \
+-e POSTGRES_PASSWORD=postgres \
+-e POSTGRES_DB=task_hub \
+-v pgdata:/var/lib/postgresql/data \
+postgres
+```
+
+How to connect to database:
+```
+psql task_hub -h localhost -U postgres
+```
 
 ## Running application
 * spin up postgres server with above configuration
