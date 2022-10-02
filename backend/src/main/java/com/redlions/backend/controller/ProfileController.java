@@ -2,11 +2,15 @@ package com.redlions.backend.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redlions.backend.entity.Profile;
@@ -19,13 +23,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileController {
     private final ProfileService profileService;
+
     @GetMapping
-    public ResponseEntity<List<Profile>> getProfiles() {
-        return ResponseEntity.ok().body(profileService.getProfiles());
+    @ResponseStatus(HttpStatus.OK)
+    public List<Profile> findAll() {
+        return profileService.getProfiles();
+    }
+
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Profile findById(@PathVariable("id") Long id) {
+        return profileService.getProfile(id);
+    }
+
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void update(@PathVariable("profile") Profile profile) {
+        profileService.saveProfile(profile);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Profile> saveProfile(@RequestBody Profile profile) {
-        return ResponseEntity.ok().body(profileService.saveProfile(profile));
+    @ResponseStatus(HttpStatus.OK)
+    public Profile saveProfile(@RequestBody Profile profile) {
+        return profileService.saveProfile(profile);
     }
 }

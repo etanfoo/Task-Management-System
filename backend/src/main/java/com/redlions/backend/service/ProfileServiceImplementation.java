@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +19,7 @@ import com.redlions.backend.repository.ProfileRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,9 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
     @Override
     public Profile saveProfile(Profile profile) {
+        /**
+         * Used to create and update profiles.
+         */
         log.info("Saving new profile {} to database", profile.getEmail());
         // encrypting password to not save plain text in db
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
@@ -54,6 +59,17 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     public Profile getProfile(String email) {
         log.info("Fetching user {}", email);
         return profileRepo.findByEmail(email);
+    }
+
+    @Override
+    public Profile getProfile(Long id) {
+        log.info("Fetching user id={}", id);
+        Profile profile = profileRepo.findById(id).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
+        if (profile == null) {
+            String errorMessage = String.format("User with id {} does not exist.", id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        return profile;
     }
 
     @Override

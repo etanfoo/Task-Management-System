@@ -25,7 +25,7 @@ public class BackendApplication {
 	@Bean
 	CommandLineRunner run(ProfileService profileService) {
 		return args -> {
-			profileService.saveProfile(new Profile(1L, "profile1", "profile1@email.com", "password", 1L, 1L, "temp".getBytes()));
+			profileService.saveProfile(new Profile(1L, "batman", "profile1@email.com", "password", 1L, 1L, "temp".getBytes()));
 			profileService.saveProfile(new Profile(2L, "profile2", "profile2@email.com", "password", 1L, 1L, "temp".getBytes()));
 			profileService.saveProfile(new Profile(3L, "profile3", "profile3@email.com", "password", 1L, 1L, "temp".getBytes()));
 		};
