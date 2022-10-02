@@ -3,9 +3,10 @@
 ## Dependencies
 * java 11
 * docker
+* postgres
 
 ## Configuration
-Run the following to setup the DB:
+Run the following to setup the database:
 ```
 sudo docker run -p 5432:5432 -d \
 -e POSTGRES_USER=postgres \
@@ -21,6 +22,11 @@ sudo docker run -p 5432:5432 -d \
 -e POSTGRES_DB=task_hub \
 -v pgdata:/var/lib/postgresql/data \
 postgres
+```
+
+How to connect to database:
+```
+psql task_hub -h localhost -U postgres
 ```
 
 ## Running application
