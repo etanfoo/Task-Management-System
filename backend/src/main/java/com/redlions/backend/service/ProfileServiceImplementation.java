@@ -37,7 +37,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         } else {
             log.info("Profile found in the database: {}", email);
         }
-        // double check as this might have to change when we do connections
+        // double check as this might have to change if we want different authorities
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         return new org.springframework.security.core.userdetails.User(profile.getEmail(), profile.getPassword(), authorities);
     }

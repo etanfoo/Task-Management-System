@@ -53,7 +53,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                 // currently set timeout to 1 hour
                                 .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
                                 .withIssuer(request.getRequestURL().toString())
-                                // might have to change when doing connections
+                                // can change if want to add roles later
                                 // .withClaim("temp", user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
                                 .sign(algorithm);
 
@@ -62,12 +62,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                 // currently set refresh timeout to 24 hours
                                 .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
                                 .withIssuer(request.getRequestURL().toString())
-                                // might have to change when doing connections
+                                // can change if want to add roles later
                                 // .withClaim("temp", user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
                                 .sign(algorithm);
 
-        // response.setHeader("access_token", accessToken);
-        // response.setHeader("refresh_token", refreshToken);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
         tokens.put("refresh_token", refreshToken);

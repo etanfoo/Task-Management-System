@@ -11,8 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.redlions.backend.filter.CustomAuthenticationFilter;
+import com.redlions.backend.filter.CustomAuthorizationFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,11 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // allow these api's without authentication
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/profile/login").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/profile/login", "/api/v1/profile/signup").permitAll();
         // these api's need authentication
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/profile/**").hasAnyAuthority("ROLE_USER");
-        // http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/profile").hasAnyAuthority("PERMITTED");
+        // http.authorizeRequests().antMatchers("/api/v1/**").authenticated();
         http.addFilter(customAuthenticationFilter);
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

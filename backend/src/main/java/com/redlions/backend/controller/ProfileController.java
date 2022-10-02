@@ -19,13 +19,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileController {
     private final ProfileService profileService;
-
     @GetMapping
     public ResponseEntity<List<Profile>> getProfiles() {
         return ResponseEntity.ok().body(profileService.getProfiles());
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Profile> saveProfile(@RequestBody Profile profile) {
         return ResponseEntity.ok().body(profileService.saveProfile(profile));
     }
