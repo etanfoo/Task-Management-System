@@ -66,7 +66,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         log.info("Fetching user id={}", id);
         Profile profile = profileRepo.findById(id).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
         if (profile == null) {
-            String errorMessage = String.format("User with id {} does not exist.", id);
+            String errorMessage = String.format("User with id %d does not exist.", id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
         return profile;
