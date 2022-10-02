@@ -7,11 +7,11 @@
 ## Configuration
 Run the following to setup the DB:
 ```
-  sudo docker run -p 5432:5432 -d \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=task_hub \
-  postgres
+sudo docker run -p 5432:5432 -d \
+-e POSTGRES_USER=postgres \
+-e POSTGRES_PASSWORD=postgres \
+-e POSTGRES_DB=task_hub \
+postgres
 ```
 Or the following if you want persistent data:
 ```
