@@ -24,7 +24,7 @@ public class Profile {
     @Column(name="name")
     private String name;
 
-    @Column(name="email")
+    @Column(unique=true, name="email")
     private String email;
 
     @Column(name="password")
@@ -67,6 +67,10 @@ public class Profile {
 
     @ManyToMany(mappedBy="connectedTo1")
     private Set<Profile> connectedTo2 = new HashSet<>();
+
+    public Profile () {
+
+    }
 
     public Profile(Long id, String name, String email, String password, Long points, Long happiness, byte[] profilePicture) {
         this.id = id;
