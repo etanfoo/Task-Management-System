@@ -10,7 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.redlions.backend.entity.Profile;
 import com.redlions.backend.service.ProfileService;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @SpringBootApplication
+@EnableSwagger2
 public class BackendApplication {
 
 	@Bean
