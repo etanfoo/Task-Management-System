@@ -2,7 +2,8 @@ import axios from "axios";
 
 export const postLogin = async (email: string, password: string): Promise<string> => {
   try {
-    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/v1/user/login`, {
+    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/profile/login`, {
+    // const { data } = await axios.post(`http://localhost:7777/api/v1/profile/login`, {
       email,
       password
     });
