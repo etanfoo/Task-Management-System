@@ -42,6 +42,9 @@ public class Profile {
     @Column(name="about_me")
     private String aboutMe;
 
+    @Column(name="busyness")
+    private Float busyness;
+
 
     @ManyToMany
     @JoinTable(
@@ -76,7 +79,7 @@ public class Profile {
 
     }
 
-    public Profile(Long id, String name, String email, String password, Long points, Long happiness, String aboutMe, byte[] profilePicture) {
+    public Profile(Long id, String name, String email, String password, Long points, Long happiness, String aboutMe, byte[] profilePicture, Float busyness) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -85,6 +88,7 @@ public class Profile {
         this.happiness = happiness;
         this.profilePicture = profilePicture;
         this.aboutMe = aboutMe;
+        this.busyness = busyness;
     }
 
     public Long getId() {
@@ -167,6 +171,14 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
+    public Float getBusyness() {
+        return busyness;
+    }
+
+    public void setBusyness(Float busyness) {
+        this.busyness = busyness;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -178,6 +190,7 @@ public class Profile {
             ", happiness='" + getHappiness() + "'" +
             ", aboutMe='" + getAboutMe() + "'" +
             ", profilePicture='" + getProfilePicture() + "'" +
+            ", busyness='" + getBusyness() + "'" +
             "}";
     }
 
