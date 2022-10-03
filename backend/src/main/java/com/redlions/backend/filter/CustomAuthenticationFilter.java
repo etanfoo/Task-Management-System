@@ -1,5 +1,6 @@
 package com.redlions.backend.filter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -22,6 +24,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,12 +37,42 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        log.info("Email is : {}", email);
-        log.info("Password is : {}", password);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-        return authenticationManager.authenticate(authenticationToken);
+        // This is to parse JSON in body
+        try {
+            BufferedReader reader = request.getReader();
+            StringBuffer sb = new StringBuffer();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            String parsedReq = sb.toString();
+            System.out.println((parsedReq));
+            if (parsedReq != null) {
+                ObjectMapper mapper = new ObjectMapper();
+                AuthReq authReq = mapper.readValue(parsedReq, AuthReq.class);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authReq.getEmail(), authReq.getPassword());
+            return authenticationManager.authenticate(authenticationToken);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new InternalAuthenticationServiceException("Failed to parse authentication request body");
+        }
+        return null;
+        // This only works for postman x-www-form-urlencoded 
+
+        // String email = request.getParameter("email");
+        // String password = request.getParameter("password");
+        
+        // log.info("Email is : {}", email);
+        // log.info("Password is : {}", password);
+        // UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        // return authenticationManager.authenticate(authenticationToken);
+    }
+
+    @Data
+    public static class AuthReq {
+        String email;
+        String password;
     }
 
     @Override
