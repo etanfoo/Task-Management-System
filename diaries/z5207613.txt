@@ -3,3 +3,6 @@ Group was formed. Jira accounts were created. As a group we started on the propo
 
 Week 2
 Continued to work on the proposal, and created tickets on Jira for the user stories that we have. The group decided a name for the project, and decided on the novel ideas for the project. GitHub classroom was created.
+
+Week 3
+Wrote user stories and acceptance criteria. Finished and submitted the proposal and assigned tasks for sprint 1. Started coding the backend.
