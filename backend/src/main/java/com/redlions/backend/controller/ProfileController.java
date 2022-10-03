@@ -38,18 +38,12 @@ public class ProfileController {
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@RequestBody Profile profile) {
-        profileService.saveProfile(profile);
-    }
-
-    @PostMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public void create(@RequestBody Profile profile) {
-        profileService.saveProfile(profile);
+        profileService.update(profile);
     }
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.OK)
     public Profile saveProfile(@RequestBody Profile profile) {
-        return profileService.saveProfile(profile);
+        return profileService.create(profile);
     }
 }
