@@ -1,20 +1,18 @@
 package com.redlions.backend;
 
-import com.redlions.backend.entity.Profile;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -46,15 +44,19 @@ public class ProfileTests {
         assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.OK.value());
     }
 
-    //@Test
-    //public void CreateUser() throws IOException, URISyntaxException {
-    //    Profile profile = new Profile(10L, "batman", "profile1@email.com", "password", 1L, 1L, "aboutme", "temp".getBytes());
-    //    URIBuilder builder = new URIBuilder(URL);
-    //    builder.setParameter("profile", profile);
-    //    URI uri = builder.build();
-    //    HttpUriRequest request = new HttpPost(uri);
-    //    HttpResponse httpResponse = HttpClientBuilder.create().build().execute( request );
-    //    assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.BAD_REQUEST.value());
-    //}
+    @Test
+    public void CreateUser() throws IOException {
+        String payload = "{" +
+                    "\"email\": \"bob221@gmail.com\"," +
+                    "\"password\": \"password1234\"" +
+                "}";
+        StringEntity entity = new StringEntity(payload,
+                ContentType.APPLICATION_JSON);
 
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        HttpPost request = new HttpPost(URL + "/signup");
+        request.setEntity(entity);
+        HttpResponse response = httpClient.execute(request);
+        assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.OK.value());
+    }
 }
