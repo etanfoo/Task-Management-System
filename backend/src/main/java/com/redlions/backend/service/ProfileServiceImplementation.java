@@ -29,6 +29,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
     private final ProfileRepository profileRepo;
     private final PasswordEncoder passwordEncoder;
+    private final int ABOUT_ME_SECTION_CHARACTER_LIMIT = 300;
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -45,17 +46,36 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     }
 
     @Override
-    public Profile saveProfile(Profile profile) {
+    public Profile create(Profile profile) {
         /**
-         * Used to create and update profiles.
+         * Create a profile and save it to database.
+         * To create a profile, username and password is required.
          */
-        String aboutMe = profile.getAboutMe();
-        if (aboutMe.length() > 300) {
-            String errorMessage = "\"About me\" section must be below 300 characters long.";
+        String email = profile.getEmail();
+        String password = profile.getPassword();
+        if (!isValidEmail(email) || !isValidPassword(password)) {
+            String errorMessage = "A valid email and password is required for creating a profile.";
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
-        log.info("Saving new profile {} to database", profile.getEmail());
+        log.info("Saving new profile {} to database", email);
+        // encrypting password to not save plain text in db
+        profile.setPassword(passwordEncoder.encode(password));
+        return profileRepo.save(profile);
+    }
+
+    @Override
+    public Profile update(Profile profile) {
+        /**
+         * Update an existing profile.
+         */
+        String aboutMe = profile.getAboutMe();
+        if (aboutMe != null && aboutMe.length() > ABOUT_ME_SECTION_CHARACTER_LIMIT) {
+            String errorMessage = String.format("\"About me\" section must be below %d characters long.", ABOUT_ME_SECTION_CHARACTER_LIMIT);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        log.info("Updating profile {}", profile.getEmail());
         // encrypting password to not save plain text in db
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
         return profileRepo.save(profile);
@@ -82,5 +102,15 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     public List<Profile> getProfiles() {
         log.info("Fetching all users");
         return profileRepo.findAll();
+    }
+
+    private boolean isValidPassword(String password) {
+        // TODO
+        return password != null && !password.isEmpty();
+    }
+
+    private boolean isValidEmail(String email) {
+        // TODO
+        return email != null && !email.isEmpty();
     }
 }
