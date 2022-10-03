@@ -1,5 +1,6 @@
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { styled } from "@mui/system";
+import { Palette } from "../../components/Palette";
 
 export const SignUpPageContainer = styled('div')`
   display: flex;
@@ -19,12 +20,20 @@ export const InputField = styled(TextField)`
 `;
 
 export const RedirectLink = styled('a')`
-
+  color: ${Palette.mainTeal};
   text-decoration: none;
-  transition: all 0.3s ease 0s;
+  transition: all 0.1s ease 0s;
   &:hover {
+    font-weight: bold;
   }
 `;
 
+export const StyledButton = styled(Button)`
+  background-color: ${Palette.mainTeal};
+  margin-top: 1rem;
 
+  &:hover {
+    background-color: ${Palette.darkTeal};
+  }
+`;
 

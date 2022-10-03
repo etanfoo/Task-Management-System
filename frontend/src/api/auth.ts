@@ -13,10 +13,10 @@ export const postLogin = async (email: string, password: string): Promise<string
   }
 };
 
-// todo: check api route
+// todo: check fields
 export const postSignUp = async (name: string, email: string, password: string): Promise<string> => {
   try {
-    const { data } = await axios.post<string>(`${process.env.REACT_APP_API_URL}/v1/user/signup`, {
+    const { data } = await axios.post<string>(`${process.env.REACT_APP_API_URL}/api/v1/profile/signup`, {
       name,
       email,
       password
