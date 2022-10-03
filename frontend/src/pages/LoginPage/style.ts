@@ -23,6 +23,9 @@ export const NewUser = styled('span')`
   float: right;
   margin-top: 2%;
 `;
+export const SignupButton = styled('span')`
+  font-weight: bold;
+`;
 
 export const LoginPageButton = styled('div')`
   position: relative;

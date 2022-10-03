@@ -1,4 +1,4 @@
-import { LoginPageContainer, LoginPageIcon, LoginPageTitle, NewUser, LoginPageButton } from "./style";
+import { LoginPageContainer, LoginPageIcon, LoginPageTitle, NewUser, LoginPageButton, SignupButton } from "./style";
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -27,19 +27,22 @@ const LoginPage = () => {
         <LoginPageTitle>Login to TaskHub</LoginPageTitle>
         <TextField
           id="login-email"
-          placeholder="Email"
+          label="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
         <TextField
           id="login-password"
-          placeholder="Password"
+          label="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        
       </Stack>
       <NewUser>
-        New to TaskHub? &nbsp;
-        <Link to="/signup">Sign up</Link>
+        New to TaskHub?&nbsp;
+        <Link to="/signup" className={"link-styles"}>
+          <SignupButton>
+            Sign up
+          </SignupButton>
+        </Link>        
       </NewUser>
       <LoginPageButton>
         <Button variant="contained" onClick={login}>Login</Button>
