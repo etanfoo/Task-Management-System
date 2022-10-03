@@ -52,3 +52,4 @@ psql task_hub -h localhost -U postgres
 * spin up postgres server with above configuration
 * run java file BackendApplication in `src/main/java/com/redlions/backend`
 * application will now run on localhost port 7777 (can be changed in application.properties file to custom port)
+* once started, can view the swagger at `http://localhost:7777/swagger-ui/`
