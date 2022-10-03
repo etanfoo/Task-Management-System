@@ -17,6 +17,7 @@ const Router = () => (
       <Route path='/signup' element={ <SignUpPage /> } />
       <Route element={<AuthenticatedRoutes />}>
         <Route path='/profile/:profileId' element={ <div>this is a profile page</div> } />
+        <Route path='/dashboard' element={ <div>this is the dashboard</div> } />
       </Route>
       <Route path="*" element={ <div>this is the 404 page</div> } />
     </Routes>
