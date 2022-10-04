@@ -1,19 +1,20 @@
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { Palette } from "../../components/Palette";
-import { GetStartedButton, LandingPageContainer } from "./style";
+import { LandingPageFeatures } from "../../constants/LandingPageFeatures";
+import FeatureCard from "./FeatureCard/FeatureCard";
+import { FeaturesContainer, GetStartedButton, GridContainer, LandingPageContainer } from "./style";
 
 const LandingPage = () => {
   return (
     <LandingPageContainer>
       <Header />
-      <h1 style={{ fontSize: '3.5rem', width: '65%', marginBottom: '0', fontWeight: 'normal' }}>
+      <h1>
         Manage your project and tasks with&nbsp;
-        <span style={{ color: Palette.mainTeal }}>
+        <span>
           TaskHub
         </span>
       </h1>
-      <h3 style={{ fontWeight: 'normal', color: 'gray', fontSize: '1.5rem' }}>
+      <h3>
         Everything you need to get the job done.
       </h3>
       <GetStartedButton variant="contained">
@@ -22,12 +23,18 @@ const LandingPage = () => {
           →
         </span>
       </GetStartedButton>
-      <h2 style={{ fontSize: '3rem', width: '65%', marginBottom: '0', marginTop: '3rem', fontWeight: 'normal' }}>
-        Why&nbsp;
-        <span style={{ color: Palette.mainTeal }}>
-          TaskHub?
-        </span>
-      </h2>
+      <FeaturesContainer>
+        <h2>Why&nbsp;<span>TaskHub?</span></h2>
+        <GridContainer>
+          {LandingPageFeatures.map((feature) => (
+            <FeatureCard
+              imageUrl={feature.imageUrl}
+              title={feature.title}
+              description={feature.description}
+            />
+          ))}
+        </GridContainer>
+      </FeaturesContainer>
       <Footer />
     </LandingPageContainer>
   );
