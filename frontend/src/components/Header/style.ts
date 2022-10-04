@@ -19,6 +19,7 @@ export const Logo = styled('img')`
 `;
 
 export const SignUpButton = styled(Button)`
+  text-transform: capitalize;
   background-color: ${Palette.mainTeal};
   &:hover {
     background-color: ${Palette.darkTeal};
