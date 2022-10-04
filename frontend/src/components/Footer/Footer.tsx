@@ -1,9 +1,11 @@
 import { FooterContainer } from "./style";
 
-const Footer = () => (
-  <FooterContainer>
-    {/* todo: do some stuff here */}
-  </FooterContainer>
-);
+const Footer = () => {
+  return (
+    <FooterContainer>
+      © TaskHub {new Date().getFullYear()}
+    </FooterContainer>
+  )
+};
 
 export default Footer;
