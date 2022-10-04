@@ -16,9 +16,9 @@ export const LandingPageContainer = styled('div')`
 
 export const GetStartedButton = styled(Button)`
   background-color: ${Palette.mainTeal};
-  font-weight: bold;
+  // font-weight: bold;
   font-size: 1.25rem;
-  padding: 0.5rem 1.5rem;
+  padding: 0.25rem 1.5rem;
   text-transform: capitalize;
   margin-top: 0.5rem;
 
