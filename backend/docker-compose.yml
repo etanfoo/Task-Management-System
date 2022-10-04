@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=taskhub
+    # uncomment below for persistent data
+    #volumes:
+    #  - ./pgdata:/var/lib/postgresql/data
+
+  api:
+    image: 'taskhub-api-docker.jar'
+    ports:
+      - "7777:7777"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/taskhub
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+

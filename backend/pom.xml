@@ -89,6 +89,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>taskhub-api-docker</finalName>
 	</build>
 
 </project>
