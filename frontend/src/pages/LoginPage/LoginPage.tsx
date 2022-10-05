@@ -13,9 +13,19 @@ const LoginPage = () => {
   const [password, setPassword] = useState<string>("");
 
   const login = async () => {
-    const data = await postLogin(email, password);
-    console.log(data);
-    navigate('/home');
+    if (email === "" || password === "") {
+
+    }
+
+    try{
+      const resp = await postLogin(email, password);
+      console.log(resp);
+      sessionStorage.setItem(process.env.REACT_APP_TOKEN!, resp);
+      navigate('/home');
+    } catch (err) {
+      
+      console.log(err);
+    }
   }
 
   return (
