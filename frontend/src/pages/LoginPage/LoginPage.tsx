@@ -20,9 +20,6 @@ const LoginPage = () => {
       const resp = await postLogin(email, password);
       console.log(resp);
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, resp.access_token);
-
-      var obj = sessionStorage.getItem(process.env.REACT_APP_TOKEN!);  
-      console.log(obj)
       navigate('/dashboard');
     } catch (err: any) {
       console.log(err);
