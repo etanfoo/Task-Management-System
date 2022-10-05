@@ -1,7 +1,9 @@
 import { styled } from "@mui/system";
+import { Palette } from "../../components/Palette";
+import Button from '@mui/material/Button';
 
 export const LoginPageContainer = styled('div')`
-  width: 35%;  
+  width: 30%;  
   position: absolute;
   left: 50%;
   top: 5%;
@@ -24,11 +26,21 @@ export const NewUser = styled('span')`
   margin-top: 2%;
 `;
 export const SignupButton = styled('span')`
-  font-weight: bold;
+  color: ${Palette.mainTeal};
+  text-decoration: none;
+  transition: all 0.1s ease 0s;
+  &:hover {
+    font-weight: bold;
+  }
 `;
 
-export const LoginPageButton = styled('div')`
+export const LoginPageButton = styled(Button)`
   position: relative;
   left: 40%;
-  margin-top: 10%;
+  margin-top: 11%;
+  background-color: ${Palette.mainTeal};
+  &:hover {
+    background-color: ${Palette.darkTeal};
+  }
 `;
+
