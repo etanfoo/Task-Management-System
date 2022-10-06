@@ -1,6 +1,7 @@
 import { styled } from "@mui/system";
 import { Palette } from "../../components/Palette";
 import Button from '@mui/material/Button';
+import { Link } from "react-router-dom";
 
 export const LoginPageContainer = styled('div')`
   width: 30%;  
@@ -16,16 +17,16 @@ export const LoginPageIcon = styled('div')`
   margin-top: 20%;
 `;
 
-export const LoginPageTitle = styled('b')`
+export const LoginPageTitle = styled('h1')`
   text-align: center;
-  font-size: 1.4em;
+  font-weight: normal;
 `;
 
 export const NewUser = styled('span')`
   float: right;
   margin-top: 2%;
 `;
-export const SignupButton = styled('span')`
+export const SignupButton = styled(Link)`
   color: ${Palette.mainTeal};
   text-decoration: none;
   transition: all 0.1s ease 0s;
@@ -43,4 +44,3 @@ export const LoginPageButton = styled(Button)`
     background-color: ${Palette.darkTeal};
   }
 `;
-

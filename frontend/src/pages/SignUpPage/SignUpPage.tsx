@@ -26,8 +26,6 @@ const SignUpPage = () => {
     try {
       const token = await postSignUp(name, email, password);
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, token);
-      var obj = sessionStorage.getItem(process.env.REACT_APP_TOKEN!);  
-      console.log(obj)
       navigate('/dashboard');
     } catch (err: any) {
       // TODO: check if error messages are being sent back as well
