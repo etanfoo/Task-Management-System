@@ -57,7 +57,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             String errorMessage = "A valid email and password is required for creating a profile.";
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-        Profile existingProfile = profileRepo.findByEmail(profile.getEmail());
+        Profile existingProfile = profileRepo.findByEmail(email);
         if (existingProfile != null) {
             String errorMessage = "A profile with that email is already in use.";
             throw new ResponseStatusException(HttpStatus.CONFLICT, errorMessage);
