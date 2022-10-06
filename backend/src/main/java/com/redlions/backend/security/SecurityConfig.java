@@ -20,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.redlions.backend.filter.CustomAuthenticationFilter;
 import com.redlions.backend.filter.CustomAuthorizationFilter;
+import com.redlions.backend.repository.ProfileRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ProfileRepository profileRepository;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -37,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), profileRepository);
         customAuthenticationFilter.setFilterProcessesUrl("/api/v1/profile/login");
         http.cors();
         // disables cross site request forgery
