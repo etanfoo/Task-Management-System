@@ -6,9 +6,11 @@ import InstructionCard from "./InstructionCard/InstructionCard";
 import { FeaturesContainer, GetStartedButton, GridContainer, InstructionsContainer, LandingPageContainer, StatsContainer, StatsGridContainer } from "./style";
 import { useInView } from "react-intersection-observer";
 import Counter from "../../components/Counter/Counter";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const { ref, inView } = useInView({ triggerOnce: true });
+  const navigate = useNavigate();
 
   return (
     <LandingPageContainer>
@@ -22,7 +24,7 @@ const LandingPage = () => {
       <h3>
         Everything you need to get the job done.
       </h3>
-      <GetStartedButton variant="contained">
+      <GetStartedButton variant="contained" onClick={() => navigate('/signup')}>
         Get Started&nbsp;
         <span>
           →
