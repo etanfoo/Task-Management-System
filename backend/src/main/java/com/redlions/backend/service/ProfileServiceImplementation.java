@@ -13,13 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.redlions.backend.entity.Profile;
 import com.redlions.backend.repository.ProfileRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +57,11 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             String errorMessage = "A valid email and password is required for creating a profile.";
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-
+        Profile existingProfile = profileRepo.findByEmail(email);
+        if (existingProfile != null) {
+            String errorMessage = "A profile with that email is already in use.";
+            throw new ResponseStatusException(HttpStatus.CONFLICT, errorMessage);
+        }
         log.info("Saving new profile {} to database", email);
         // encrypting password to not save plain text in db
         profile.setPassword(passwordEncoder.encode(password));
