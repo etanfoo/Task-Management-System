@@ -13,6 +13,11 @@ export const FeatureCardContainer = styled('div')`
   > p {
     color: ${Palette.thGray};
   }
+
+  transition: transform .2s;
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 export const ImageTitleContainer = styled('div')`
@@ -21,7 +26,7 @@ export const ImageTitleContainer = styled('div')`
   align-items: center;
 
   > img {
-    height: 50px;
+    height: 3.125rem;
     margin-right: 0.5rem;
   };
 

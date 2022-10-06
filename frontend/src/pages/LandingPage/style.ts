@@ -21,8 +21,12 @@ export const LandingPageContainer = styled('div')`
 
     > span {
       color: ${Palette.mainTeal};
-    }
+    };
+  };
 
+  > h2 {
+    font-weight: normal;
+    font-size: 3rem;
   };
 
   > h3 {
@@ -49,7 +53,7 @@ export const GetStartedButton = styled(Button)`
 `;
 
 export const FeaturesContainer = styled('div')`
-  margin: 3rem 0;
+  margin-top: 2rem;
   background-color: ${Palette.lightGray};
   width: 100%;
   padding: 0 2rem 3rem 2rem;
