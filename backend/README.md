@@ -43,7 +43,7 @@ postgres
 ```
 
 How to connect to database:  
-`psql task_hub -h localhost -U postgres`
+`psql taskhub -h localhost -U postgres`
 
 ## File Structure
 * The structure of the backend has:
