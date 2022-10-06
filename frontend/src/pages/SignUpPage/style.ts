@@ -1,5 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { styled } from "@mui/system";
+import { Link } from "react-router-dom";
 import { Palette } from "../../components/Palette";
 
 export const SignUpPageContainer = styled('div')`
@@ -19,7 +20,7 @@ export const InputField = styled(TextField)`
   align-self: center;
 `;
 
-export const RedirectLink = styled('a')`
+export const RedirectLink = styled(Link)`
   color: ${Palette.mainTeal};
   text-decoration: none;
   transition: all 0.1s ease 0s;

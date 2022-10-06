@@ -69,7 +69,7 @@ const SignUpPage = () => {
         />
         <span>
           Already have an account? &nbsp;
-          <RedirectLink href='/login'>
+          <RedirectLink to='/login'>
             Sign in
           </RedirectLink>
         </span>

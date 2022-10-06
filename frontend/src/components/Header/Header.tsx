@@ -68,7 +68,7 @@ const Header = () => {
           )
         : (
           <>
-            <LoginLink href='/login'>
+            <LoginLink to='/login'>
               Login
             </LoginLink>
             <SignUpButton variant='contained' onClick={() => navigate('/signup')}>

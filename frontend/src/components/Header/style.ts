@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
+import { Link } from "react-router-dom";
 import { Palette } from "../Palette";
 
 export const HeaderContainer = styled('div')`
@@ -26,7 +27,7 @@ export const SignUpButton = styled(Button)`
   }
 `;
 
-export const LoginLink = styled('a')`
+export const LoginLink = styled(Link)`
   margin: 0 1.5rem 0 auto;
   text-decoration: none;
   color: black;
