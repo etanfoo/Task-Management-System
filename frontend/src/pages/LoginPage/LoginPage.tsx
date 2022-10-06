@@ -49,6 +49,7 @@ const LoginPage = () => {
         />
         <TextField
           id="login-password"
+          type='password'
           label="Password"
           error={error !== ""}
           onChange={(e) => setPassword(e.target.value)}
