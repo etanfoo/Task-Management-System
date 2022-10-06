@@ -73,3 +73,32 @@ export const GridContainer = styled('div')`
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
 `;
+
+export const StatsContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${Palette.mainTeal};
+  color: white;
+  padding: 1rem;
+  width: 100%;
+
+  > h2 {
+    font-weight: normal;
+    font-size: 2.5rem;
+    margin-bottom: 0;
+  }
+`;
+
+export const StatsGridContainer = styled('div')`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+`;
+
+export const InstructionsContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 10rem;
+`;
