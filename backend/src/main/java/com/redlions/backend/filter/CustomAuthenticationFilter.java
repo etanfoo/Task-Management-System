@@ -23,6 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.redlions.backend.entity.Profile;
+import com.redlions.backend.repository.ProfileRepository;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +32,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+    private final ProfileRepository profileRepository;
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, ProfileRepository profileRepository) {
         this.authenticationManager = authenticationManager;
+        this.profileRepository = profileRepository;
     }
 
     @Override
@@ -99,11 +103,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         //                         // can change if want to add roles later
         //                         // .withClaim("temp", user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
         //                         .sign(algorithm);
-
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", accessToken);
+        Profile profile = profileRepository.findByEmail(user.getUsername());
+        Map<String, Object> returnedJson = new HashMap<>();
+        returnedJson.put("access_token", accessToken);
+        returnedJson.put("profile_id", profile.getId());
         // tokens.put("refresh_token", refreshToken);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), returnedJson);
     }
 }
