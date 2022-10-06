@@ -1,7 +1,49 @@
 # Backend
 
-## Dependencies
+
+## Running application with docker-compose
+
+### Dependencies
 * docker-compose
+* Java 11
+* mvn
+
+### Dockerize the Spring Boot project
+Run following commands in `/backend`.
+
+Generate the JAR file:  
+`mvn install -DskipTests`
+
+Build Docker image:  
+`sudo docker build -t taskhub-api-docker.jar .`
+
+### Run Docker containers
+Start:  
+`sudo docker-compose up -d`  
+Stop:  
+`sudo docker-compose down`
+
+## Running database with Docker run
+Run the following to setup the database:
+```
+sudo docker run -p 5432:5432 -d \
+-e POSTGRES_USER=postgres \
+-e POSTGRES_PASSWORD=postgres \
+-e POSTGRES_DB=taskhub \
+postgres
+```
+Or the following if you want persistent data:
+```
+sudo docker run -p 5432:5432 -d \
+-e POSTGRES_USER=postgres \
+-e POSTGRES_PASSWORD=postgres \
+-e POSTGRES_DB=taskhub \
+-v pgdata:/var/lib/postgresql/data \
+postgres
+```
+
+How to connect to database:  
+`psql taskhub -h localhost -U postgres`
 
 ## File Structure
 * The structure of the backend has:
@@ -16,22 +58,7 @@
     * Security
         * configuration for security
     * Service
-        * business logic 
-
-## Running application
-Run following commands in `/backend`.
-### Dockerize the Spring Boot project
-Generate the JAR file:  
-`mvn install -DskipTests`
-
-Build Docker image:  
-`sudo docker build -t taskhub-api-docker.jar .`
-
-### Run Docker containers
-Start:  
-`sudo docker-compose up -d`  
-Stop:  
-`sudo docker-compose down`
+        * business logic
 
 ## Some things to note 
 * Currently, if using postman, have to send the body as raw JSON and not x-www.form-urlencoded, as Spring Boot needs this configuration. Currently looking into how to fix
