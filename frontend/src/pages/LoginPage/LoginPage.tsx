@@ -20,6 +20,7 @@ const LoginPage = () => {
     try{
       const resp = await postLogin(email, password);
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, resp.access_token);
+      sessionStorage.setItem(process.env.REACT_APP_PROFILE_ID!, resp.profile_id.toString());
       navigate('/dashboard');
     } catch (err: any) {
       if (err.response.status === 401) setError("Incorrect email or password");
