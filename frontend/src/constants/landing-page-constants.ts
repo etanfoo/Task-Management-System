@@ -47,3 +47,22 @@ export const LandingPageInstructions = [
     description: "Completing your tasks will reward you with a certain number of points. Earn enought points and you'll be promoted to the next tier with additional rewards."
   }
 ];
+
+export const LandingPageStats = [
+  {
+    description: "Downloads this month",
+    number: 50
+  },
+  {
+    description: "Current users",
+    number: 123
+  },
+  {
+    description: "Total projects created this month",
+    number: 55
+  },
+  {
+    description: "Total tasks completed this month",
+    number: 70
+  },
+];

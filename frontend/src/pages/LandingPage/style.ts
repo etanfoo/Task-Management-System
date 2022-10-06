@@ -24,11 +24,6 @@ export const LandingPageContainer = styled('div')`
     };
   };
 
-  > h2 {
-    font-weight: normal;
-    font-size: 3rem;
-  };
-
   > h3 {
     font-weight: normal;
     color: ${Palette.thGray};
@@ -80,14 +75,18 @@ export const StatsContainer = styled('div')`
   align-items: center;
   background-color: ${Palette.mainTeal};
   color: white;
-  padding: 1rem;
+  padding: 5rem 2rem;
   width: 100%;
 
   > h2 {
     font-weight: normal;
-    font-size: 2.5rem;
-    margin-bottom: 0;
-  }
+    font-size: 3rem;
+    margin: 0;
+  };
+
+  > p {
+    font-size: 1.25rem;
+  };
 `;
 
 export const StatsGridContainer = styled('div')`
@@ -99,6 +98,12 @@ export const StatsGridContainer = styled('div')`
 export const InstructionsContainer = styled('div')`
   display: flex;
   flex-direction: column;
+  background-color: ${Palette.lightGray};
   width: 100%;
   padding: 0 10rem;
+
+  > h2 {
+    font-weight: normal;
+    font-size: 3rem;
+  };
 `;

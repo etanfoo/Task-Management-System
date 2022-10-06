@@ -1,6 +1,6 @@
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { LandingPageFeatures, LandingPageInstructions } from "../../constants/landing-page-constants";
+import { LandingPageFeatures, LandingPageInstructions, LandingPageStats } from "../../constants/landing-page-constants";
 import FeatureCard from "./FeatureCard/FeatureCard";
 import InstructionCard from "./InstructionCard/InstructionCard";
 import { FeaturesContainer, GetStartedButton, GridContainer, InstructionsContainer, LandingPageContainer, StatsContainer, StatsGridContainer } from "./style";
@@ -8,7 +8,7 @@ import { useInView } from "react-intersection-observer";
 import Counter from "../../components/Counter/Counter";
 
 const LandingPage = () => {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ triggerOnce: true });
 
   return (
     <LandingPageContainer>
@@ -43,32 +43,21 @@ const LandingPage = () => {
       </FeaturesContainer>
       <StatsContainer>
         <h2>TaskHub is growing quickly</h2>
-        <p>We're dedicated to improving the experience and performance of Chakra UI.</p>
+        <p>Our results speak for themselves.</p>
         <StatsGridContainer>
+          {LandingPageStats.map((stat) => (
             <Counter
+              key={stat.description}
+              stat={stat.description}
+              finalValue={stat.number}
               innerRef={ref}
-              finalValue={200}
-              trigger={inView}
+              inView={inView}
             />
-            <Counter
-              innerRef={ref}
-              finalValue={200}
-              trigger={inView}
-            />
-            <Counter
-              innerRef={ref}
-              finalValue={200}
-              trigger={inView}
-            />
-            <Counter
-              innerRef={ref}
-              finalValue={200}
-              trigger={inView}
-            />
+          ))}
         </StatsGridContainer>
       </StatsContainer>
-      <h2>How it works</h2>
       <InstructionsContainer>
+      <h2>How it works</h2>
         {LandingPageInstructions.map((instruction, index) => (
           <InstructionCard
             key={index}
