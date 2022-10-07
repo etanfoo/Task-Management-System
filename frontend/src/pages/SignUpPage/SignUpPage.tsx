@@ -28,6 +28,7 @@ const SignUpPage = () => {
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, token);
       navigate('/dashboard');
     } catch (err: any) {
+      console.log(err);
       // TODO: check if error messages are being sent back as well
       setError("A network error has occurred. Please try again.");
     }
@@ -43,8 +44,8 @@ const SignUpPage = () => {
       />
       {/* todo: loading overlay? */}
       <SignUpPageContainer>
-        <img src={Logo} alt='logo' style={{ height: '200px', width: '200px' }} />
-        <h1 style={{ fontWeight: 'normal', width: '100%' }}>Sign up now</h1>
+        <img src={Logo} alt='logo' onClick={() => navigate('/')} />
+        <h1>Sign up now</h1>
         <InputField 
           label='Full name'
           error={error !== ""}

@@ -12,6 +12,17 @@ export const SignUpPageContainer = styled('div')`
   transform: translate(-50%, -50%);
   text-align: center;
   align-items: center;
+
+  > img {
+    height: 200px;
+    width: 200px;
+    cursor: pointer;
+  };
+
+  > h1 {
+    font-weight: normal;
+    width: 100%;
+  };
 `;
 
 export const InputField = styled(TextField)`

@@ -15,6 +15,7 @@ export const LoginPageContainer = styled('div')`
 export const LoginPageIcon = styled('div')`
   margin: auto;
   margin-top: 20%;
+  cursor: pointer;
 `;
 
 export const LoginPageTitle = styled('h1')`
