@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
@@ -14,7 +15,7 @@ const AuthenticatedRoutes = () => {
 const Router = () => (
   <BrowserRouter>
     <Routes>
-      <Route path='/' element={ <div>this is the landing page</div> } />
+      <Route path='/' element={ <LandingPage /> } />
       <Route path='/login' element={ <LoginPage /> } />
       <Route path='/signup' element={ <SignUpPage /> } />
       <Route element={ <AuthenticatedRoutes /> }>

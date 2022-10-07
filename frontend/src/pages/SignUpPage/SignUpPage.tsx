@@ -1,7 +1,7 @@
 import { InputField, RedirectLink, SignUpPageContainer, StyledButton } from "./style";
 import Logo from "../../assets/COMP3900-Logo.png";
 import { useState } from "react";
-import { postSignUp } from "../../api/auth";
+import { postLogin, postSignUp } from "../../api/auth";
 import Popup from "../../components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
 
@@ -24,12 +24,20 @@ const SignUpPage = () => {
     }
 
     try {
-      const token = await postSignUp(name, email, password);
-      sessionStorage.setItem(process.env.REACT_APP_TOKEN!, token);
+      // ideally we would want the sign up route to pass in the access token
+      // but currently unavailable - instead login api route is called soon after
+      await postSignUp(name, email, password);
+      const data = await postLogin(email, password);
+      // todo: may want to extract this out to redux?
+      sessionStorage.setItem(process.env.REACT_APP_PROFILE_ID!, data.profile_id.toString());
+      sessionStorage.setItem(process.env.REACT_APP_TOKEN!, data.access_token);
       navigate('/dashboard');
     } catch (err: any) {
-      // TODO: check if error messages are being sent back as well
-      setError("A network error has occurred. Please try again.");
+      setError(
+        err.response.data
+          ? err.response.data.message
+          : "A network error has occurred. Please try again."
+      );
     }
   };
 
@@ -43,8 +51,8 @@ const SignUpPage = () => {
       />
       {/* todo: loading overlay? */}
       <SignUpPageContainer>
-        <img src={Logo} alt='logo' style={{ height: '200px', width: '200px' }} />
-        <h1 style={{ fontWeight: 'normal', width: '100%' }}>Sign up now</h1>
+        <img src={Logo} alt='logo' onClick={() => navigate('/')} />
+        <h1>Sign up now</h1>
         <InputField 
           label='Full name'
           error={error !== ""}
@@ -69,7 +77,7 @@ const SignUpPage = () => {
         />
         <span>
           Already have an account? &nbsp;
-          <RedirectLink href='/login'>
+          <RedirectLink to='/login'>
             Sign in
           </RedirectLink>
         </span>

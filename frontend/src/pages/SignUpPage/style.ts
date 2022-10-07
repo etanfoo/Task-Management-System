@@ -1,5 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { styled } from "@mui/system";
+import { Link } from "react-router-dom";
 import { Palette } from "../../components/Palette";
 
 export const SignUpPageContainer = styled('div')`
@@ -11,6 +12,17 @@ export const SignUpPageContainer = styled('div')`
   transform: translate(-50%, -50%);
   text-align: center;
   align-items: center;
+
+  > img {
+    height: 200px;
+    width: 200px;
+    cursor: pointer;
+  };
+
+  > h1 {
+    font-weight: normal;
+    width: 100%;
+  };
 `;
 
 export const InputField = styled(TextField)`
@@ -19,7 +31,7 @@ export const InputField = styled(TextField)`
   align-self: center;
 `;
 
-export const RedirectLink = styled('a')`
+export const RedirectLink = styled(Link)`
   color: ${Palette.mainTeal};
   text-decoration: none;
   transition: all 0.1s ease 0s;

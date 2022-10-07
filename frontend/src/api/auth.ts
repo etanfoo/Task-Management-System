@@ -14,10 +14,9 @@ export const postLogin = async (email: string, password: string): Promise<IAuthR
   }
 };
 
-// todo: check fields
-export const postSignUp = async (name: string, email: string, password: string): Promise<string> => {
+export const postSignUp = async (name: string, email: string, password: string): Promise<IAuthResponse> => {
   try {
-    const { data } = await axios.post<string>(`${process.env.REACT_APP_API_URL}/api/v1/profile/signup`, {
+    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/profile/signup`, {
       name,
       email,
       password

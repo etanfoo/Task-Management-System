@@ -37,7 +37,7 @@ const LoginPage = () => {
       />
       <LoginPageContainer>
         <Stack spacing={2} direction="column">
-          <LoginPageIcon>
+          <LoginPageIcon onClick={() => navigate('/')}>
             <img src={TaskHubIcon} alt="TaskHub logo" width="250" height="250"/>
           </LoginPageIcon>
           <LoginPageTitle>Login to TaskHub</LoginPageTitle>
