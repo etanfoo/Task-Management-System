@@ -8,7 +8,6 @@ export const DashboardPageContainer = styled('div')`
 `;
 
 export const ProfileButton = styled(Button)`
-  variant: contained;
   background-color: ${Palette.mainTeal};
   &:hover {
     background-color: ${Palette.darkTeal};
@@ -17,5 +16,5 @@ export const ProfileButton = styled(Button)`
 
 export const ProfileLink = styled(Link)`
   text-decoration: none;
-  font-color: white;
+  // font-color: white;
 `;
