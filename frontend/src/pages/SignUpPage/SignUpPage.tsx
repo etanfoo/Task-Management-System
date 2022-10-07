@@ -1,7 +1,7 @@
 import { InputField, RedirectLink, SignUpPageContainer, StyledButton } from "./style";
 import Logo from "../../assets/COMP3900-Logo.png";
 import { useState } from "react";
-import { postSignUp } from "../../api/auth";
+import { postLogin, postSignUp } from "../../api/auth";
 import Popup from "../../components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
 
@@ -24,13 +24,18 @@ const SignUpPage = () => {
     }
 
     try {
-      const token = await postSignUp(name, email, password);
-      sessionStorage.setItem(process.env.REACT_APP_TOKEN!, token);
+      // ideally we would want the sign up route to pass in the access token
+      // but currently unavailable - instead login api route is called soon after
+      await postSignUp(name, email, password);
+      const data = await postLogin(email, password);
+      sessionStorage.setItem(process.env.REACT_APP_TOKEN!, data.access_token);
       navigate('/dashboard');
     } catch (err: any) {
-      console.log(err);
-      // TODO: check if error messages are being sent back as well
-      setError("A network error has occurred. Please try again.");
+      setError(
+        err.response.data
+          ? err.response.data.message
+          : "A network error has occurred. Please try again."
+      );
     }
   };
 
