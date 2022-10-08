@@ -3,7 +3,7 @@ export interface IAuthResponse {
   profile_id: number;
 };
 
-export interface ProfileDetails {
+export interface IProfile {
   name: string;
   email: string;
   aboutMe: string;

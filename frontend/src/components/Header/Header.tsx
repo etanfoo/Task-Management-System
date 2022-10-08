@@ -53,7 +53,7 @@ const Header = () => {
                 onClose={handleMenuClose}
               >
                 {/* todo: update with logos */}
-                <MenuItem onClick={() => navigate('/profile')}>
+                <MenuItem onClick={() => navigate(`/profile/${sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)}`)}>
                   Profile 
                 </MenuItem>
                 {/* todo: update with friends  */}

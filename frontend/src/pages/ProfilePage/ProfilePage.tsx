@@ -1,13 +1,13 @@
 import { ProfilePageContainer } from "./style";
 import { useParams } from "react-router-dom";
-import { getProfile } from "../../api/dashboard";
+import { getProfile } from "../../api/profile";
 import { useEffect, useState } from "react";
-import { ProfileDetails } from "../../interfaces/api-response";
+import { IProfile } from "../../interfaces/api-response";
 
 const ProfilePage = () => {
   const { profileId } = useParams();
 
-  const [profileDetails, setProfileDetails] = useState<ProfileDetails>({
+  const [profileDetails, setProfileDetails] = useState<IProfile>({
     name: "",
     email: "",
     aboutMe: "",
