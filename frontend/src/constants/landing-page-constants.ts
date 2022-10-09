@@ -1,7 +1,6 @@
 import RewardIcon from "../assets/reward.png";
 import PaintIcon from "../assets/paint.png";
 import GearIcon from "../assets/gear.png";
-
 import FolderIcon from "../assets/folder.png";
 import TaskIcon from "../assets/tasks.png";
 import TaskListIcon from "../assets/taskList.png";
@@ -44,7 +43,7 @@ export const LandingPageInstructions = [
   {
     imageUrl: PointsIcon,
     title: "4. Earn points",
-    description: "Completing your tasks will reward you with a certain number of points. Earn enought points and you'll be promoted to the next tier with additional rewards."
+    description: "Completing your tasks will reward you with a certain number of points. Earn enough points and you'll be promoted to the next tier with additional rewards."
   }
 ];
 
