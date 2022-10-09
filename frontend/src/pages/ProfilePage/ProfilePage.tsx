@@ -7,6 +7,7 @@ import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useEffect, useState } from "react";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
+import TaskCard from "../../components/TaskCard/TaskCard";
 
 const ProfilePage = () => {
   const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
@@ -72,6 +73,45 @@ const ProfilePage = () => {
           </AboutMeContainer>
           <TasksContainer>
             <h2 style={{ marginTop: '0', fontWeight: 'normal' }}>Assigned tasks</h2>
+            <div style={{ display: 'flex', flexDirection: 'row', padding: '0 2rem' }}>
+              <p style={{ width: '10%' }}>ID</p>
+              <p style={{ width: '50%',}}>Title</p>
+              <p style={{ width: '20%' }}>Deadline</p>
+              <p style={{ width: '20%' }}>Status</p>
+            </div>
+            <div style={{ overflowY: 'auto', padding: '0 1rem' }}>
+            <TaskCard
+                taskId="1"
+                title="Finish report"
+                deadline="12/12/2022"
+                status="In progress"
+              />
+              <TaskCard
+                taskId="1"
+                title="Finish report"
+                deadline="12/12/2022"
+                status="In progress"
+              />
+              <TaskCard
+                taskId="1"
+                title="Finish report"
+                deadline="12/12/2022"
+                status="In progress"
+              />
+              <TaskCard
+                taskId="1"
+                title="Finish report"
+                deadline="12/12/2022"
+                status="In progress"
+              />
+              <TaskCard
+                taskId="1"
+                title="Finish report"
+                deadline="12/12/2022"
+                status="In progress"
+              />
+
+            </div>
           </TasksContainer>
         </LeftContainer>
         <FriendsContainer>

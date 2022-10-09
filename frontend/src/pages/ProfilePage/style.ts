@@ -62,7 +62,6 @@ export const TasksContainer = styled('div')`
   height: 300px;
   padding: 1.5rem;
   margin-bottom: 3rem;
-  overflow-y: auto;
   text-align: left;
 `;
 
