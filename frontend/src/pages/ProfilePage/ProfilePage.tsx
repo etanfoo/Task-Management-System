@@ -71,7 +71,7 @@ const ProfilePage = () => {
     };
     loadProfile();
     // eslint-disable-next-line
-  }, []);
+  }, [profileId]);
 
   return(
     <ProfilePageContainer>
