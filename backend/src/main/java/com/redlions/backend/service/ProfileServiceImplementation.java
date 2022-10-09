@@ -98,7 +98,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             profileInDb.setPassword(passwordEncoder.encode(password));
         }
 
-        byte[] profilePicture = profile.getProfilePicture();
+        String profilePicture = profile.getProfilePicture();
         if (profilePicture != null) {
             // setting profile picture
             profileInDb.setProfilePicture(profilePicture);
