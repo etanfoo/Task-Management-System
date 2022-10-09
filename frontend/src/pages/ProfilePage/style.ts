@@ -57,6 +57,7 @@ export const StyledLabel = styled('label')`
     width: 6.25rem;
     margin-right: 1rem;
     cursor: pointer;
+    border-radius: 5rem;
   };
 
   > input {

@@ -38,16 +38,23 @@ const ProfilePage = () => {
   };
 
   const updateProfile = async () => {
-    // console.log(updatedProfileDetails);
-    // return;
+    if (
+      updatedProfileDetails.name === ""
+      && updatedProfileDetails.aboutMe === ""
+      && updatedProfileDetails.profilePicture === ""
+    ) {
+      setPageState('view');
+      return;
+    }
+    console.log(updatedProfileDetails.profilePicture);
     try {
       await putProfile(
         parseInt(profileId!),
-        updatedProfileDetails.name,
-        updatedProfileDetails.profilePicture,
-        updatedProfileDetails.aboutMe
+        !!updatedProfileDetails.name ? updatedProfileDetails.name : profileDetails.name,
+        !!updatedProfileDetails.profilePicture ? updatedProfileDetails.profilePicture : profileDetails.profilePicture,
+        !!updatedProfileDetails.aboutMe ? updatedProfileDetails.aboutMe : profileDetails.aboutMe,
       );
-      setPageState('view');
+      window.location.reload();
     } catch (err: any) {
       console.log(err);
     }
