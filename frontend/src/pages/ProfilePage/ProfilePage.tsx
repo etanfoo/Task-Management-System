@@ -1,40 +1,33 @@
-import { AboutMeContainer, BodyContainer, FriendsContainer, IconContainer, LeftContainer, ProfilePageContainer, TasksContainer, TopContainer } from "./style";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, LeftContainer, OverflowContainer, ProfilePageContainer, TasksContainer, TopContainer } from "./style";
 import { useParams } from "react-router-dom";
-// import { getProfile } from "../../api/profile";
-// import { useEffect, useState } from "react";
-// import { IProfile } from "../../interfaces/api-response";
+import { getProfile } from "../../api/profile";
+import { useEffect, useState } from "react";
+import { IProfile } from "../../interfaces/api-response";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { useEffect, useState } from "react";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import TaskCard from "../../components/TaskCard/TaskCard";
 
 const ProfilePage = () => {
-  const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
   const { profileId } = useParams();
-  
-  // const [profileDetails, setProfileDetails] = useState<IProfile>({
-  //   name: "",
-  //   email: "",
-  //   aboutMe: "",
-  //   profilePicture: ""
-  // });
+  const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
+  const [profileDetails, setProfileDetails] = useState<IProfile | undefined>(undefined);
 
-  // const loadProfile = async () => {
-  //   try {
-  //     const resp = await getProfile(+profileId!);
-  //     console.log(resp);
-  //     setProfileDetails(resp);
-  //   } catch (err: any) {
-  //     console.log(err);
-  //   }
-  // }
+  const loadProfile = async () => {
+    try {
+      const data = await getProfile(parseInt(profileId!));
+      console.log(data);
+      setProfileDetails(data);
+    } catch (err: any) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     if (profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)) {
       setIsSelfProfile(true);
     };
-    // loadProfile();
+    loadProfile();
   }, [profileId]);
 
   return(
@@ -42,10 +35,10 @@ const ProfilePage = () => {
       <Header />
       <TopContainer>
         <div style={{ height: '100px', width: '100px', backgroundColor: 'gray', borderRadius: "5rem", marginRight: '1rem' }}></div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h1>John Smith</h1>
-          <p>johnSmith@gmail.com</p>
-        </div>
+        <DetailsContainer>
+          <h1>{profileDetails?.name}</h1>
+          <p>{profileDetails?.email}</p>
+        </DetailsContainer>
         {isSelfProfile ?
           (
             <IconContainer>
@@ -58,28 +51,24 @@ const ProfilePage = () => {
       <BodyContainer>
         <LeftContainer>
           <AboutMeContainer>
-            Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit.
-            Suspendisse faucibus mi ac bibendum malesuada.
-            Curabitur bibendum enim at finibus feugiat.
-            Aliquam erat volutpat.
-            Cras maximus velit sed eros feugiat dictum. asdasdasdasdasdasd
-            Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit.
-            Suspendisse faucibus mi ac bibendum malesuada.
-            Curabitur bibendum enim at finibus feugiat.
-            Aliquam erat volutpat.
-            Cras maximus velit sed eros feugiat dictum. asdasdasdasdasdasd
+            {profileDetails?.aboutMe ||
+              <p>
+                {isSelfProfile
+                  ? "Tell us a little about yourself..."
+                  : "This user has yet to provide a bio."
+                }
+              </p>
+            }
           </AboutMeContainer>
           <TasksContainer>
-            <h2 style={{ marginTop: '0', fontWeight: 'normal' }}>Assigned tasks</h2>
-            <div style={{ display: 'flex', flexDirection: 'row', padding: '0 2rem' }}>
-              <p style={{ width: '10%' }}>ID</p>
-              <p style={{ width: '50%',}}>Title</p>
-              <p style={{ width: '20%' }}>Deadline</p>
-              <p style={{ width: '20%' }}>Status</p>
-            </div>
-            <div style={{ overflowY: 'auto', padding: '0 1rem' }}>
+            <h2>Assigned tasks</h2>
+            <LabelContainer>
+              <p>ID</p>
+              <p>Title</p>
+              <p>Deadline</p>
+              <p>Status</p>
+            </LabelContainer>
+            <OverflowContainer>
             <TaskCard
                 taskId="1"
                 title="Finish report"
@@ -111,12 +100,12 @@ const ProfilePage = () => {
                 status="In progress"
               />
 
-            </div>
+            </OverflowContainer>
           </TasksContainer>
         </LeftContainer>
         <FriendsContainer>
           <h2>Friends</h2>
-          <div>
+          <OverflowContainer>
             <FriendsCard
               profileId={2}
               name="John Smith"
@@ -165,7 +154,7 @@ const ProfilePage = () => {
               email="asd@email.com"
               imageURL={null}
             />
-          </div>
+          </OverflowContainer>
         </FriendsContainer>
       </BodyContainer>
       <Footer />

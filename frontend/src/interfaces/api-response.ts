@@ -4,8 +4,23 @@ export interface IAuthResponse {
 };
 
 export interface IProfile {
+  id: number;
   name: string;
   email: string;
-  aboutMe: string;
+  points: number;
+  happiness: number;
   profilePicture: string;
+  busyness: number;
+  aboutMe: string;
+  projects: IProject[];
+  tasks: ITask[];
+  // todo: include connections
+};
+
+export interface IProject {
+  // todo
+};
+
+export interface ITask {
+  // todo
 };

@@ -23,6 +23,16 @@ export const TopContainer = styled('div')`
   margin-bottom: 2rem;
 `;
 
+export const DetailsContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  > h1 {
+    font-weight: normal;
+    margin-bottom: 0;
+  };
+`;
+
 export const IconContainer = styled('div')`
   display: flex;
   flex-direction: row;
@@ -63,6 +73,36 @@ export const TasksContainer = styled('div')`
   padding: 1.5rem;
   margin-bottom: 3rem;
   text-align: left;
+
+  > h2 {
+    margin-top: 0;
+    margin-left: 1rem;
+    font-weight: normal;
+  };
+`;
+
+export const LabelContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  padding: 0 2rem;
+
+  > :first-of-type {
+    width: 10%;
+  };
+  > :nth-of-type(2) {
+    width: 50%;
+  };
+  > :nth-of-type(3) {
+    width: 20%
+  };
+  > :nth-of-type(4) {
+    width: 20%;
+  };
+`;
+
+export const OverflowContainer = styled('div')`
+  overflow-y: auto;
+  padding: 0 1rem;
 `;
 
 export const FriendsContainer = styled('div')`
@@ -78,11 +118,7 @@ export const FriendsContainer = styled('div')`
 
   > h2 {
     margin-top: 0;
+    margin-left: 1rem;
     font-weight: normal;
-  };
-
-  > div {
-    overflow-y: auto;
-    padding: 0 0.75rem;
   };
 `;
