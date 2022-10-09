@@ -28,6 +28,7 @@ export const TopContainer = styled('div')`
     width: 6.25rem;
     height: 6.25rem;
     margin-right: 1rem;
+    border-radius: 5rem;
   };
 `;
 

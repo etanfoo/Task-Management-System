@@ -108,7 +108,7 @@ const ProfilePage = () => {
         <DetailsContainer>
           {pageState === 'view'
             ? (
-              <h1>{profileDetails?.name}</h1>
+              <h1>{`${profileDetails?.name} (Busyness - 20%)`}</h1>
             ) : (
                 <TextField
                   placeholder={profileDetails.name}
