@@ -1,4 +1,4 @@
-import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, LeftContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar } from "./style";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, LeftContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel } from "./style";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -71,18 +71,17 @@ const ProfilePage = () => {
                 </StyledAvatar>
               )
           ) : (
-            <label>
+            <StyledLabel>
               {profileDetails.profilePicture
-                ? <img src={profileDetails.profilePicture} style={{ height: '6.25rem', width: '6.25rem', marginRight: '1rem', cursor: 'pointer' }} alt='user avatar'/>
+                ? <img src={profileDetails.profilePicture} alt='user avatar'/>
                 : <EmptyAvatar />
               }
               <input
                 type='file'
                 accept='.jpg, .png'
-                style={{ display: 'none' }} 
                 onChange={updateLogo}
               />              
-            </label>
+            </StyledLabel>
           )
         }
         <DetailsContainer>

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Palette } from "../Palette";
 import { TaskCardContainer } from "./style";
 
 type TaskCardProps = {
@@ -15,11 +14,11 @@ const TaskCard = ({ taskId, title, deadline, status}: TaskCardProps) => {
 
   return (
     <TaskCardContainer  onClick={() => navigate(`/task/${taskId}`)}>
-      <p style={{ color: Palette.thGray, width: '10%' }}>{taskId}</p>
-      <p style={{ width: '50%' }}>{title}</p>
-      <p style={{ width: '20%' }}>{deadline}</p>
+      <p>{taskId}</p>
+      <p>{title}</p>
+      <p>{deadline}</p>
       {/* todo: do we want to have this editable? i.e. a <select> component */}
-      <p style={{ width: '20%' }}>{status}</p>
+      <p>{status}</p>
     </TaskCardContainer>
   );
 };

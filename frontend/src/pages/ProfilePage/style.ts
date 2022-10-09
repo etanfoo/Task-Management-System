@@ -51,6 +51,19 @@ export const StyledAvatar = styled(Avatar)`
   }
 `;
 
+export const StyledLabel = styled('label')`
+  > img {
+    height: 6.25rem;
+    width: 6.25rem;
+    margin-right: 1rem;
+    cursor: pointer;
+  };
+
+  > input {
+    display: none;
+  };
+`;
+
 export const DetailsContainer = styled('div')`
   display: flex;
   flex-direction: column;
