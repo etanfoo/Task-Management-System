@@ -1,49 +1,120 @@
-import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, LeftContainer, OverflowContainer, ProfilePageContainer, TasksContainer, TopContainer } from "./style";
-import { useParams } from "react-router-dom";
-import { getProfile } from "../../api/profile";
-import { useEffect, useState } from "react";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, LeftContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar } from "./style";
+import { useNavigate, useParams } from "react-router-dom";
+import { getProfile, putProfile } from "../../api/profile";
+import { ChangeEvent, useEffect, useState } from "react";
 import { IProfile } from "../../interfaces/api-response";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import TaskCard from "../../components/TaskCard/TaskCard";
+import EditIcon from "../../assets/edit.png";
+import InfoIcon from "../../assets/info.png";
+import { TextField } from "@mui/material";
+import { EmptyProfile, MockFriends, MockTasks } from "../../constants/profile-page-constants";
+import { toBase64 } from "../../helpers";
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const { profileId } = useParams();
   const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
-  const [profileDetails, setProfileDetails] = useState<IProfile | undefined>(undefined);
+  const [profileDetails, setProfileDetails] = useState<IProfile>(EmptyProfile);
+  const [pageState, setPageState] = useState<'edit' | 'view'>('view');
 
   const loadProfile = async () => {
     try {
       const data = await getProfile(parseInt(profileId!));
-      console.log(data);
       setProfileDetails(data);
     } catch (err: any) {
       console.log(err);
     }
-  }
+  };
+
+  const updateLogo = async (e: ChangeEvent) => {
+    const file = (e.target as HTMLInputElement).files![0];
+    const convertedFile = await toBase64(file);
+    setProfileDetails({ ...profileDetails, profilePicture: convertedFile as string });
+  };
+
+  const updateProfile = async () => {
+    try {
+      await putProfile(
+        parseInt(profileId!),
+        profileDetails.name,
+        profileDetails.profilePicture,
+        profileDetails.aboutMe
+      );
+      setPageState('view');
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     if (profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)) {
       setIsSelfProfile(true);
     };
     loadProfile();
-  }, [profileId]);
+    // eslint-disable-next-line
+  }, []);
 
   return(
     <ProfilePageContainer>
       <Header />
       <TopContainer>
-        <div style={{ height: '100px', width: '100px', backgroundColor: 'gray', borderRadius: "5rem", marginRight: '1rem' }}></div>
+        {pageState === 'view'
+          ? (
+            profileDetails.profilePicture
+              ? <img src={profileDetails.profilePicture} alt='user avatar'/>
+              : (
+                <StyledAvatar>
+                  {profileDetails.name.split(' ')[0][0] + profileDetails.name.split(' ')[1][0]}
+                </StyledAvatar>
+              )
+          ) : (
+            <label>
+              {profileDetails.profilePicture
+                ? <img src={profileDetails.profilePicture} style={{ height: '6.25rem', width: '6.25rem', marginRight: '1rem', cursor: 'pointer' }} alt='user avatar'/>
+                : <EmptyAvatar />
+              }
+              <input
+                type='file'
+                accept='.jpg, .png'
+                style={{ display: 'none' }} 
+                onChange={updateLogo}
+              />              
+            </label>
+          )
+        }
         <DetailsContainer>
-          <h1>{profileDetails?.name}</h1>
-          <p>{profileDetails?.email}</p>
+          {pageState === 'view'
+            ? (
+              <h1>{profileDetails?.name}</h1>
+            ) : (
+                <TextField
+                  defaultValue={profileDetails.name}
+                  onChange={(e) => setProfileDetails({ ...profileDetails, name: e.target.value })}
+                />
+              )
+            }
+          <p>{profileDetails.email}</p>
         </DetailsContainer>
         {isSelfProfile ?
           (
             <IconContainer>
-              <div style={{ height: '50px', width: '50px', backgroundColor: 'gray', borderRadius: "5rem" }}></div>
-              <div style={{ height: '50px', width: '50px', backgroundColor: 'gray', borderRadius: "5rem" }}></div>
+              {/* todo: update url of info page? */}
+              {pageState === 'view'
+                ? (
+                  <>
+                    <img src={InfoIcon} onClick={() => navigate('/info')} alt='info icon' />
+                    <img src={EditIcon} onClick={() => setPageState('edit')} alt='edit icon' />
+                  </>
+                ) : (
+                  <>
+                    <CancelButton variant='contained' onClick={() => setPageState('view')}>Cancel</CancelButton>
+                    <UpdateButton variant='contained' onClick={() => updateProfile()}>Update</UpdateButton>
+                  </>
+                )
+              }
             </IconContainer>
           ) : null
         }
@@ -51,13 +122,24 @@ const ProfilePage = () => {
       <BodyContainer>
         <LeftContainer>
           <AboutMeContainer>
-            {profileDetails?.aboutMe ||
-              <p>
-                {isSelfProfile
-                  ? "Tell us a little about yourself..."
-                  : "This user has yet to provide a bio."
-                }
-              </p>
+            {pageState === 'view'
+              ? (
+                profileDetails.aboutMe ||
+                  <p>
+                    {isSelfProfile
+                      ? "Tell us a little about yourself..."
+                      : "This user has yet to provide a bio."
+                    }
+                  </p>
+              ): (
+                <TextField
+                  multiline
+                  rows={4}
+                  defaultValue="Tell us a little about yourself..."
+                  onChange={(e) => setProfileDetails({...profileDetails, aboutMe: e.target.value })}
+                  sx={{ width: '100%' }}
+                />
+              )
             }
           </AboutMeContainer>
           <TasksContainer>
@@ -69,91 +151,32 @@ const ProfilePage = () => {
               <p>Status</p>
             </LabelContainer>
             <OverflowContainer>
-            <TaskCard
-                taskId="1"
-                title="Finish report"
-                deadline="12/12/2022"
-                status="In progress"
-              />
-              <TaskCard
-                taskId="1"
-                title="Finish report"
-                deadline="12/12/2022"
-                status="In progress"
-              />
-              <TaskCard
-                taskId="1"
-                title="Finish report"
-                deadline="12/12/2022"
-                status="In progress"
-              />
-              <TaskCard
-                taskId="1"
-                title="Finish report"
-                deadline="12/12/2022"
-                status="In progress"
-              />
-              <TaskCard
-                taskId="1"
-                title="Finish report"
-                deadline="12/12/2022"
-                status="In progress"
-              />
-
+              {/* todo: replace with real data returned from api */}
+              {MockTasks.map((task) => (
+                <TaskCard
+                  key={task.taskId}
+                  taskId={task.taskId}
+                  title={task.title}
+                  deadline={task.deadline}
+                  status={task.status}
+                />
+              ))}
             </OverflowContainer>
           </TasksContainer>
         </LeftContainer>
         <FriendsContainer>
           <h2>Friends</h2>
           <OverflowContainer>
-            <FriendsCard
-              profileId={2}
-              name="John Smith"
-              email="asd@email.com"
-              imageURL={null}
-            />
-            <FriendsCard
-              profileId={2}
-              name="John Smith"
-              email="asd@email.com"
-              imageURL={null}
-            />
-            <FriendsCard
-              profileId={2}
-              name="John Smith"
-              email="asd@email.com"
-              imageURL={null}
-            />
-            <FriendsCard
-              profileId={2}
-              name="John Smith"
-              email="asd@email.com"
-              imageURL={null}
-            />
-            <FriendsCard
-              profileId={2}
-              name="John Smith"
-              email="asd@email.com"
-              imageURL={null}
-            />
-            <FriendsCard
-              profileId={2}
-              name="John Smith"
-              email="asd@email.com"
-              imageURL={null}
-            />
-            <FriendsCard
-              profileId={2}
-              name="John Smith"
-              email="asd@email.com"
-              imageURL={null}
-            />
-            <FriendsCard
-              profileId={2}
-              name="John Smith"
-              email="asd@email.com"
-              imageURL={null}
-            />
+            {/* todo: replace with real data returned from api */}
+            {MockFriends.map((friend) => (
+              <FriendsCard
+                key={friend.profileId}
+                profileId={friend.profileId}
+                name={friend.name}
+                email={friend.email}
+                imageURL={friend.imageURL}
+              />
+            ))}
           </OverflowContainer>
         </FriendsContainer>
       </BodyContainer>

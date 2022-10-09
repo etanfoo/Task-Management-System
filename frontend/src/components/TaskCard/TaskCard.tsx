@@ -14,8 +14,8 @@ const TaskCard = ({ taskId, title, deadline, status}: TaskCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <TaskCardContainer>
-      <p style={{ color: Palette.thGray, width: '10%' }} onClick={() =>navigate(`'/task/${taskId}`)}>{taskId}</p>
+    <TaskCardContainer  onClick={() => navigate(`/task/${taskId}`)}>
+      <p style={{ color: Palette.thGray, width: '10%' }}>{taskId}</p>
       <p style={{ width: '50%' }}>{title}</p>
       <p style={{ width: '20%' }}>{deadline}</p>
       {/* todo: do we want to have this editable? i.e. a <select> component */}
