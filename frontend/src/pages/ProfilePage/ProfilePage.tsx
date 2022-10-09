@@ -10,14 +10,16 @@ import TaskCard from "../../components/TaskCard/TaskCard";
 import EditIcon from "../../assets/edit.png";
 import InfoIcon from "../../assets/info.png";
 import { TextField } from "@mui/material";
-import { EmptyProfile, MockFriends, MockTasks } from "../../constants/profile-page-constants";
+import { EmptyProfile, EmptyUpdatedProfileDetails, MockFriends, MockTasks } from "../../constants/profile-page-constants";
 import { toBase64 } from "../../helpers";
+import { IUpdatedProfileDetails } from "../../interfaces/profile";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams();
   const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
   const [profileDetails, setProfileDetails] = useState<IProfile>(EmptyProfile);
+  const [updatedProfileDetails, setUpdatedProfileDetails] = useState<IUpdatedProfileDetails>(EmptyUpdatedProfileDetails);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
 
   const loadProfile = async () => {
@@ -32,21 +34,28 @@ const ProfilePage = () => {
   const updateLogo = async (e: ChangeEvent) => {
     const file = (e.target as HTMLInputElement).files![0];
     const convertedFile = await toBase64(file);
-    setProfileDetails({ ...profileDetails, profilePicture: convertedFile as string });
+    setUpdatedProfileDetails({ ...updatedProfileDetails, profilePicture: convertedFile as string });
   };
 
   const updateProfile = async () => {
+    // console.log(updatedProfileDetails);
+    // return;
     try {
       await putProfile(
         parseInt(profileId!),
-        profileDetails.name,
-        profileDetails.profilePicture,
-        profileDetails.aboutMe
+        updatedProfileDetails.name,
+        updatedProfileDetails.profilePicture,
+        updatedProfileDetails.aboutMe
       );
       setPageState('view');
     } catch (err: any) {
       console.log(err);
     }
+  };
+
+  const cancelEditProfile = () => {
+    setPageState('view');
+    setUpdatedProfileDetails(EmptyUpdatedProfileDetails);
   };
 
   useEffect(() => {
@@ -72,9 +81,14 @@ const ProfilePage = () => {
               )
           ) : (
             <StyledLabel>
-              {profileDetails.profilePicture
-                ? <img src={profileDetails.profilePicture} alt='user avatar'/>
-                : <EmptyAvatar />
+              {!!updatedProfileDetails.profilePicture
+                ? (
+                  <img src={updatedProfileDetails.profilePicture} alt='user avatar'/>
+                ) : (
+                  profileDetails.profilePicture
+                    ? <img src={profileDetails.profilePicture} alt='user avatar'/>
+                    : <EmptyAvatar />
+                )
               }
               <input
                 type='file'
@@ -90,8 +104,8 @@ const ProfilePage = () => {
               <h1>{profileDetails?.name}</h1>
             ) : (
                 <TextField
-                  defaultValue={profileDetails.name}
-                  onChange={(e) => setProfileDetails({ ...profileDetails, name: e.target.value })}
+                  placeholder={profileDetails.name}
+                  onChange={(e) => setUpdatedProfileDetails({ ...updatedProfileDetails, name: e.target.value })}
                 />
               )
             }
@@ -109,7 +123,7 @@ const ProfilePage = () => {
                   </>
                 ) : (
                   <>
-                    <CancelButton variant='contained' onClick={() => setPageState('view')}>Cancel</CancelButton>
+                    <CancelButton variant='contained' onClick={cancelEditProfile}>Cancel</CancelButton>
                     <UpdateButton variant='contained' onClick={() => updateProfile()}>Update</UpdateButton>
                   </>
                 )
@@ -134,8 +148,8 @@ const ProfilePage = () => {
                 <TextField
                   multiline
                   rows={4}
-                  defaultValue="Tell us a little about yourself..."
-                  onChange={(e) => setProfileDetails({...profileDetails, aboutMe: e.target.value })}
+                  placeholder="Tell us a little about yourself..."
+                  onChange={(e) => setUpdatedProfileDetails({...updatedProfileDetails, aboutMe: e.target.value })}
                   sx={{ width: '100%' }}
                 />
               )

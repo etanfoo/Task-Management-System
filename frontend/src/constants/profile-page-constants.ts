@@ -1,4 +1,5 @@
 import { IProfile } from "../interfaces/api-response";
+import { IUpdatedProfileDetails } from "../interfaces/profile";
 
 export const EmptyProfile: IProfile = {
   id: -1,
@@ -11,6 +12,12 @@ export const EmptyProfile: IProfile = {
   aboutMe: "",
   projects: [],
   tasks: [],
+};
+
+export const EmptyUpdatedProfileDetails: IUpdatedProfileDetails = {
+  name: "",
+  aboutMe: "",
+  profilePicture: "",
 };
 
 export const MockFriends = [
