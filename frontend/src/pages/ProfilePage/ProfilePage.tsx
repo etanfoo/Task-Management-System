@@ -83,7 +83,10 @@ const ProfilePage = () => {
               ? <img src={profileDetails.profilePicture} alt='user avatar'/>
               : (
                 <StyledAvatar>
-                  {profileDetails.name.split(' ')[0][0] + profileDetails.name.split(' ')[1][0]}
+                  {profileDetails.name.split(' ').length >= 2
+                  ? profileDetails.name.split(' ')[0][0] + profileDetails.name.split(' ')[1][0]
+                  : profileDetails.name.split(' ')[0][0]
+                  }
                 </StyledAvatar>
               )
           ) : (
