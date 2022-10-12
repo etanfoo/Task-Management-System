@@ -39,8 +39,8 @@ public class ProfileController {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody Profile profile) {
-        profileService.update(profile);
+    public void update(@RequestBody Profile profile, @PathVariable Long id) {
+        profileService.update(profile, id);
     }
 
     @PostMapping("/signup")

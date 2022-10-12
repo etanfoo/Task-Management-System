@@ -22,7 +22,7 @@ const Header = () => {
   }
 
   const handleLogout = () => {
-    sessionStorage.removeItem(process.env.REACT_APP_TOKEN!);
+    sessionStorage.clear();
     navigate('/');
   }
 

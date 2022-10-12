@@ -1,7 +1,6 @@
 import RewardIcon from "../assets/reward.png";
 import PaintIcon from "../assets/paint.png";
 import GearIcon from "../assets/gear.png";
-
 import FolderIcon from "../assets/folder.png";
 import TaskIcon from "../assets/tasks.png";
 import TaskListIcon from "../assets/taskList.png";

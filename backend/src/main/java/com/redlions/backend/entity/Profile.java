@@ -40,7 +40,7 @@ public class Profile {
     private Long happiness;
 
     @Column(name="profile_picture")
-    private byte[] profilePicture;
+    private String profilePicture;
 
     @Column(name="about_me")
     private String aboutMe;
@@ -82,7 +82,7 @@ public class Profile {
 
     }
 
-    public Profile(Long id, String name, String email, String password, Long points, Long happiness, String aboutMe, byte[] profilePicture, Float busyness) {
+    public Profile(Long id, String name, String email, String password, Long points, Long happiness, String aboutMe, String profilePicture, Float busyness) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -142,11 +142,11 @@ public class Profile {
         this.happiness = happiness;
     }
 
-    public byte[] getProfilePicture() {
+    public String getProfilePicture() {
         return this.profilePicture;
     }
 
-    public void setProfilePicture(byte[] profilePicture) {
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
 

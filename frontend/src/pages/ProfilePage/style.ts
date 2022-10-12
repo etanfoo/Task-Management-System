@@ -1,4 +1,6 @@
+import { Avatar, Button } from "@mui/material";
 import { styled } from "@mui/system";
+import { Palette } from "../../components/Palette";
 
 export const ProfilePageContainer = styled('div')`
   display: flex;
@@ -21,6 +23,47 @@ export const TopContainer = styled('div')`
   width: 80%;
   align-items: center;
   margin-bottom: 2rem;
+
+  > img {
+    width: 6.25rem;
+    height: 6.25rem;
+    margin-right: 1rem;
+    border-radius: 5rem;
+  };
+`;
+
+export const StyledAvatar = styled(Avatar)`
+  margin-right: 1rem;
+  background-color: ${Palette.mainTeal};
+  height: 6.25rem;
+  width: 6.25rem;
+  font-size: 2.5rem;
+`;
+  
+  export const EmptyAvatar = styled(Avatar)`
+  height: 6.25rem;
+  width: 6.25rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+
+  &:hover {
+    background-color: ${Palette.mainTeal};
+  }
+`;
+
+export const StyledLabel = styled('label')`
+  > img {
+    height: 6.25rem;
+    width: 6.25rem;
+    margin-right: 1rem;
+    cursor: pointer;
+    border-radius: 5rem;
+  };
+
+  > input {
+    display: none;
+  };
 `;
 
 export const DetailsContainer = styled('div')`
@@ -31,6 +74,11 @@ export const DetailsContainer = styled('div')`
     font-weight: normal;
     margin-bottom: 0;
   };
+
+  > p {
+    margin-top: 0.5rem;
+    color: ${Palette.thGray};
+  };
 `;
 
 export const IconContainer = styled('div')`
@@ -38,6 +86,38 @@ export const IconContainer = styled('div')`
   flex-direction: row;
   margin-left: auto;
   align-self: flex-start;
+
+  > :first-of-type {
+    margin-right: 1rem;
+  };
+
+  > img {
+    height: 1.5rem;
+    width: 1.5rem;
+    cursor: pointer;
+  };
+`;
+
+export const CancelButton = styled(Button)`
+  text-transform: capitalize;
+  background-color: white;
+  color: black;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: ${Palette.lightGray};
+  }
+`;
+
+export const UpdateButton = styled(Button)`
+  text-transform: capitalize;
+  background-color: ${Palette.mainTeal};
+  font-size: 1rem;
+
+  &:hover {
+    background-color: ${Palette.darkTeal};
+  }
+
 `;
 
 export const BodyContainer = styled('div')`

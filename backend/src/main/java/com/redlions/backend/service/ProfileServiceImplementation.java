@@ -69,20 +69,43 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     }
 
     @Override
-    public Profile update(Profile profile) {
+    public Profile update(Profile profile, Long id) {
         /**
          * Update an existing profile.
          */
+        Profile profileInDb = profileRepo.findById(id).get();
+
         String aboutMe = profile.getAboutMe();
-        if (aboutMe != null && aboutMe.length() > ABOUT_ME_SECTION_CHARACTER_LIMIT) {
-            String errorMessage = String.format("\"About me\" section must be below %d characters long.", ABOUT_ME_SECTION_CHARACTER_LIMIT);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        if (aboutMe != null) {
+            if (aboutMe.length() > ABOUT_ME_SECTION_CHARACTER_LIMIT) {
+                String errorMessage = String.format("\"About me\" section must be below %d characters long.", ABOUT_ME_SECTION_CHARACTER_LIMIT);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            } else {
+                // setting about me
+                profileInDb.setAboutMe((aboutMe));
+            }
+        }
+        
+        String name = profile.getName();
+        if (name != null) {
+            profileInDb.setName(name);
         }
 
-        log.info("Updating profile {}", profile.getEmail());
-        // encrypting password to not save plain text in db
-        profile.setPassword(passwordEncoder.encode(profile.getPassword()));
-        return profileRepo.save(profile);
+        String password = profile.getPassword();
+        if (password != null) {
+            // encrypting password to not save plain text in db
+            // setting password
+            profileInDb.setPassword(passwordEncoder.encode(password));
+        }
+
+        String profilePicture = profile.getProfilePicture();
+        if (profilePicture != null) {
+            // setting profile picture
+            profileInDb.setProfilePicture(profilePicture);
+        }
+
+        log.info("Updating profile {}", profileInDb.getEmail());
+        return profileRepo.save(profileInDb);
     }
 
     @Override

@@ -1,4 +1,5 @@
 import { styled } from "@mui/system";
+import { Palette } from "../Palette";
 
 export const TaskCardContainer = styled('div')`
   display: flex;
@@ -13,5 +14,19 @@ export const TaskCardContainer = styled('div')`
   transition: transform .2s;
   &:hover {
     transform: scale(1.05);
+  };
+
+  > :first-of-type {
+    width: 10%;
+    color: ${Palette.thGray};
+  };
+  > :nth-of-type(2) {
+    width: 50%;
+  };
+  > :nth-of-type(3) {
+    width: 20%
+  };
+  > :nth-of-type(4) {
+    width: 20%;
   };
 `;
