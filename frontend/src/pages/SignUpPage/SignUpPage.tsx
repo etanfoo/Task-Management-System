@@ -18,6 +18,9 @@ const SignUpPage = () => {
     if (email === "" || name === "" || password === "") {
       setError("All fields must be filled.");
       return;
+    } else if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
     } else if (password !== confirmedPassword) {
       setError("Passwords do not match.");
       return;
