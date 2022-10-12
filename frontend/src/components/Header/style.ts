@@ -43,6 +43,7 @@ export const ProfilePicture = styled('img')`
   width: 3rem;
   border-radius: 5rem;
   margin-left: auto;
+  cursor: pointer;
 `;
 
 export const StyledAvatar = styled(Avatar)`
@@ -50,4 +51,5 @@ export const StyledAvatar = styled(Avatar)`
   width: 3rem;
   margin-left: auto;
   background-color: ${Palette.mainTeal};
+  cursor: pointer
 `;

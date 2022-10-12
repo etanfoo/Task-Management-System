@@ -167,6 +167,7 @@ const ProfilePage = () => {
           </AboutMeContainer>
           <TasksContainer>
             <h2>Assigned tasks</h2>
+            {/* todo: sort by id, title, deadline, status? */}
             <LabelContainer>
               <p>ID</p>
               <p>Title</p>
