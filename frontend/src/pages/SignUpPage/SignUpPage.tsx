@@ -1,5 +1,5 @@
 import { InputField, RedirectLink, SignUpPageContainer, StyledButton } from "./style";
-import Logo from "../../assets/COMP3900-Logo.png";
+import Logo from "../../assets/logo.png";
 import { useState } from "react";
 import { postLogin, postSignUp } from "../../api/auth";
 import Popup from "../../components/Popup/Popup";

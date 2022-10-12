@@ -1,7 +1,7 @@
 import { LoginPageContainer, LoginPageIcon, LoginPageTitle, NewUser, LoginPageButton, SignupButton } from "./style";
 import { TextField, Stack }from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import TaskHubIcon from "../../assets/COMP3900-Logo.png";
+import TaskHubIcon from "../../assets/logo.png";
 import { postLogin } from "../../api/auth";
 import { useState } from 'react';
 import Popup from "../../components/Popup/Popup";
