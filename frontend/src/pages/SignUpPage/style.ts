@@ -14,8 +14,8 @@ export const SignUpPageContainer = styled('div')`
   align-items: center;
 
   > img {
-    height: 12,5rem;
-    width: 12,5rem;
+    height: 12.5rem;
+    width: 12.5rem;
     cursor: pointer;
   };
 
