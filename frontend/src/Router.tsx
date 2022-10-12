@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 const AuthenticatedRoutes = () => {
   const token = sessionStorage.getItem(process.env.REACT_APP_TOKEN!);
@@ -23,7 +24,7 @@ const Router = () => (
         <Route path='/task/:taskId' element={ <div>this be the task page</div> } />
         <Route path='/dashboard' element={ <DashboardPage /> } />
       </Route>
-      <Route path="*" element={ <div>this is the 404 page</div> } />
+      <Route path="*" element={ <PageNotFound /> } />
     </Routes>
   </BrowserRouter>
 );
