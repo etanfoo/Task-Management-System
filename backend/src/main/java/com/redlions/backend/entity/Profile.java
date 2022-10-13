@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -39,6 +40,7 @@ public class Profile {
     @Column(name="happiness")
     private Long happiness;
 
+    @Lob
     @Column(name="profile_picture")
     private String profilePicture;
 
