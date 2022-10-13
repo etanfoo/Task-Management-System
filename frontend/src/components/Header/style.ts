@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { Palette } from "../Palette";
@@ -36,4 +36,20 @@ export const LoginLink = styled(Link)`
   &:hover {
     color: ${Palette.mainTeal};
   }
+`;
+
+export const ProfilePicture = styled('img')`
+  height: 3rem;
+  width: 3rem;
+  border-radius: 5rem;
+  margin-left: auto;
+  cursor: pointer;
+`;
+
+export const StyledAvatar = styled(Avatar)`
+  height: 3rem;
+  width: 3rem;
+  margin-left: auto;
+  background-color: ${Palette.mainTeal};
+  cursor: pointer
 `;

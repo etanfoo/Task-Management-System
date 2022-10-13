@@ -22,6 +22,9 @@ export const TaskCardContainer = styled('div')`
   };
   > :nth-of-type(2) {
     width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   };
   > :nth-of-type(3) {
     width: 20%

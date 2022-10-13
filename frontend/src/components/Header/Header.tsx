@@ -1,30 +1,32 @@
-import { HeaderContainer, LoginLink, SignUpButton, Logo } from "./style";
-import LogoIcon from "../../assets/logo.png";
-import ProfileIcon from "../../assets/profile.png";
-import { Menu, IconButton, MenuItem } from "@mui/material";
+import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture } from "./style";
+import LogoIcon from "../../assets/COMP3900-Logo.png";
+import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getProfile } from "../../api/profile";
 
 const Header = () => {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [profilePicture, setProfilePicture] = useState<string>("");
 
-  const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMenuOpen = (e: React.MouseEvent<HTMLImageElement>) => {
     setAnchorEl(e.currentTarget);
     setMenuOpen(true);
-  }
+  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
     setMenuOpen(false);
-  }
+  };
 
   const handleLogout = () => {
     sessionStorage.clear();
     navigate('/');
-  }
+  };
 
   const handleLogoClick = () => {
     if (sessionStorage.getItem(process.env.REACT_APP_TOKEN!)) {
@@ -33,6 +35,22 @@ const Header = () => {
       navigate('/');
     }
   };
+  
+  const fetchUserDetails = async () => {
+    try {
+      const data = await getProfile(parseInt(
+        sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
+      ));
+      setName(data.name);
+      setProfilePicture(data.profilePicture);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
 
   return (
     <HeaderContainer>
@@ -41,12 +59,17 @@ const Header = () => {
         ? 
           (
             <>
-              <IconButton
-                onClick={handleMenuOpen}
-                sx={{ marginLeft: "auto", height: "3rem" }}
-              >
-                <img src={ProfileIcon} style={{ height: '2.5rem' }} alt="profile" />
-              </IconButton>
+              {!!profilePicture
+                ? <ProfilePicture src={profilePicture} onClick={handleMenuOpen} alt='profile' />
+                : (
+                  <StyledAvatar onClick={handleMenuOpen}>
+                    {name.length >= 2 
+                      ? name.split(' ')[0][0] + name.split(' ')[1][0]
+                      : name.split(' ')[0][0]
+                    }
+                  </StyledAvatar>
+                )
+              }
               <Menu
                 open={menuOpen}
                 anchorEl={anchorEl}
