@@ -1,9 +1,8 @@
-import { Button, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { Palette } from "../../components/Palette";
 
-export const SignUpPageContainer = styled('div')`
+export const PageNotFoundContainer = styled('div')`
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -16,7 +15,7 @@ export const SignUpPageContainer = styled('div')`
   > img {
     height: 12.5rem;
     width: 12.5rem;
-    cursor: pointer;
+    margin-bottom: 2rem;
   };
 
   > h1 {
@@ -25,27 +24,11 @@ export const SignUpPageContainer = styled('div')`
   };
 `;
 
-export const InputField = styled(TextField)`
-  width: 200%;
-  margin-bottom: 1rem;
-  align-self: center;
-`;
-
 export const RedirectLink = styled(Link)`
-  color: ${Palette.mainTeal};
   text-decoration: none;
+  color: ${Palette.mainTeal};
   transition: all 0.1s ease 0s;
   &:hover {
     font-weight: bold;
   }
 `;
-
-export const StyledButton = styled(Button)`
-  background-color: ${Palette.mainTeal};
-  margin-top: 1rem;
-
-  &:hover {
-    background-color: ${Palette.darkTeal};
-  }
-`;
-
