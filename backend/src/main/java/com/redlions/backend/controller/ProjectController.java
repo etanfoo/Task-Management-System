@@ -1,5 +1,7 @@
 package com.redlions.backend.controller;
 
+import java.util.Set;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,4 +59,13 @@ public class ProjectController {
         projectService.delete(id);
     }
 
+    public static class ProfileIdsJson {
+        public Set<Long> profileIds;
+    }
+
+    @PostMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Project addProfilesById(@RequestBody ProfileIdsJson json, @PathVariable Long id) {
+        return projectService.addProfilesById(id, json.profileIds);
+    }
 }

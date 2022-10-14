@@ -1,5 +1,6 @@
 package com.redlions.backend.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -109,6 +110,31 @@ public class ProjectServiceImplementation implements ProjectService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
         projectRepo.delete(project);
+    }
+
+    @Override
+    public Project addProfilesById(Long id, Set<Long> profileIds) {
+        
+        Project projectInDb = projectRepo.findById(id).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
+        if (projectInDb == null) {
+            String errorMessage = String.format("Project with id %d does not exist.", id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        Set<Profile> profiles = new HashSet<>();
+        for (Long profileId: profileIds) {
+            Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
+            System.out.println(profile);
+            if (profile == null) {
+                String errorMessage = String.format("Profile with id %d does not exist.", profileId);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            } else {
+                profiles.add(profile);
+            }
+        }
+        for (Profile profile: profiles) {
+            projectInDb.addProfile(profile);
+        }
+        return projectRepo.save(projectInDb);
     }
 
     @Override
