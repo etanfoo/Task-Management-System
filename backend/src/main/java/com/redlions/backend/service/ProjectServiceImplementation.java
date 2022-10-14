@@ -54,7 +54,7 @@ public class ProjectServiceImplementation implements ProjectService {
             String errorMessage = String.format("User with id %d does not exist.", profileId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-        Project projectInDb = projectRepo.findById(projectId).get();
+        Project projectInDb = projectRepo.findById(projectId).stream().findFirst().orElse(null);
         if (projectInDb == null) {
             String errorMessage = String.format("Project with id %d does not exist.", projectId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
@@ -93,12 +93,22 @@ public class ProjectServiceImplementation implements ProjectService {
 
     @Override
     public Project getProject(Long id) {
-        Project project = projectRepo.findById(id).get(); // convert Optional<Profile> to Profile
+        Project project = projectRepo.findById(id).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
         if (project == null) {
             String errorMessage = String.format("Project with id %d does not exist.", id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
         return project;
+    }
+
+    @Override
+    public void delete(Long id) {
+        Project project = projectRepo.findById(id).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
+        if (project == null) {
+            String errorMessage = String.format("Project with id %d does not exist.", id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        projectRepo.delete(project);
     }
 
     @Override
