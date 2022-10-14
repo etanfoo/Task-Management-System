@@ -3,8 +3,10 @@ package com.redlions.backend.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -51,16 +54,18 @@ public class Profile {
     private Float busyness;
 
 
-    @ManyToMany
-    @JoinTable(
-        name="manage",
-        joinColumns = @JoinColumn(name="profile_id"),
-        inverseJoinColumns = @JoinColumn(name="project_id")
+    // @ManyToMany
+    // @JoinTable(
+    //     name="manage",
+    //     joinColumns = @JoinColumn(name="profile_id"),
+    //     inverseJoinColumns = @JoinColumn(name="project_id")
 
-    )
+    // )
+    @JsonIgnore
+    @ManyToMany(mappedBy="profiles")
     private Set<Project> projects = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY ,cascade = {CascadeType.ALL})
     @JoinTable(
         name="profile_task",
         joinColumns = @JoinColumn(name="profile_id"),
@@ -158,6 +163,14 @@ public class Profile {
 
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
+    }
+
+    public void addProject(Project project) {
+        this.projects.add(project);
+    }
+
+    public void removeProject(Project project) {
+        this.projects.remove(project);
     }
 
     public Set<Task> getTasks() {
