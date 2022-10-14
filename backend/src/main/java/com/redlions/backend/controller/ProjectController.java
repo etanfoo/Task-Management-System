@@ -2,6 +2,7 @@ package com.redlions.backend.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,11 +35,11 @@ public class ProjectController {
         return projectService.create(project, profileId);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{projectId}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody ProjectJson projectJson) {
+    public void update(@RequestBody ProjectJson projectJson, @PathVariable Long projectId) {
         Project project = projectJson.project;
         Long profileId = projectJson.profileId;
-        projectService.update(project, profileId);
+        projectService.update(project, projectId, profileId);
     }
 }

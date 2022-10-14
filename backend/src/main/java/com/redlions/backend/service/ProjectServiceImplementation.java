@@ -1,6 +1,7 @@
 package com.redlions.backend.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class ProjectServiceImplementation implements ProjectService {
     private final ProfileRepository profileRepo;
     private final ProjectRepository projectRepo;
-    private final int DESCRIPTION_CHARACTER_LIMIT = 300;
+    private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
 
     @Override
     public Project create(Project project, Long profileId) {
@@ -47,8 +48,47 @@ public class ProjectServiceImplementation implements ProjectService {
     }
     
     @Override
-    public Project update(Project project, Long id) {
-        return null;
+    public Project update(Project project, Long projectId, Long profileId) {
+        Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
+        if (profile == null) {
+            String errorMessage = String.format("User with id %d does not exist.", profileId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        Project projectInDb = projectRepo.findById(projectId).get();
+        if (projectInDb == null) {
+            String errorMessage = String.format("Project with id %d does not exist.", projectId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        // checking if profile passed in is a member of the project
+        Set<Profile> profiles = projectInDb.getProfiles();
+        boolean found = false;
+        for (Profile p: profiles) {
+            if (p.getId() == profileId) {
+                found = true;
+            }
+        }
+        if (found == false) {
+            String errorMessage = String.format("Profile with profile id %d is not a member of Project with id %d.", profileId, projectId);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
+        }
+        
+        String title = project.getTitle();
+        if (title != null ) {
+            projectInDb.setTitle(title);
+        }
+
+        String description = project.getDescription();
+        if (description != null) {
+            if (description.length() > DESCRIPTION_CHARACTER_LIMIT) {
+                String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            } else {
+                projectInDb.setDescription(description);
+            }
+        }
+
+        return projectRepo.save(projectInDb);
     }
 
     @Override
