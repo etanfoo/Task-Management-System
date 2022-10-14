@@ -29,6 +29,7 @@ public class ProjectController {
     public static class ProjectJson {
         public Project project;
         public Long profileId;
+        public Set<Long> profileIdsToAdd;
     }
 
     @PostMapping
@@ -36,7 +37,8 @@ public class ProjectController {
     public Project saveProject(@RequestBody ProjectJson projectJson) {
         Project project = projectJson.project;
         Long profileId = projectJson.profileId;
-        return projectService.create(project, profileId);
+        Set<Long> profileIdsToAdd = projectJson.profileIdsToAdd;
+        return projectService.create(project, profileId, profileIdsToAdd);
     }
 
     @PutMapping(value = "/{id}")
@@ -44,7 +46,8 @@ public class ProjectController {
     public void update(@RequestBody ProjectJson projectJson, @PathVariable Long id) {
         Project project = projectJson.project;
         Long profileId = projectJson.profileId;
-        projectService.update(project, id, profileId);
+        Set<Long> profileIdsToAdd = projectJson.profileIdsToAdd;
+        projectService.update(project, id, profileId, profileIdsToAdd);
     }
 
     @GetMapping(value = "/{id}")
@@ -57,15 +60,5 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteById(@PathVariable Long id) {
         projectService.delete(id);
-    }
-
-    public static class ProfileIdsJson {
-        public Set<Long> profileIds;
-    }
-
-    @PostMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Project addProfilesById(@RequestBody ProfileIdsJson json, @PathVariable Long id) {
-        return projectService.addProfilesById(id, json.profileIds);
     }
 }

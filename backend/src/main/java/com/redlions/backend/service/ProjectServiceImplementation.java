@@ -26,7 +26,7 @@ public class ProjectServiceImplementation implements ProjectService {
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
 
     @Override
-    public Project create(Project project, Long profileId) {
+    public Project create(Project project, Long profileId, Set<Long> profileIdsToAdd) {
         Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
         if (profile == null) {
             String errorMessage = String.format("User with id %d does not exist.", profileId);
@@ -43,13 +43,25 @@ public class ProjectServiceImplementation implements ProjectService {
             String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-
+        Set<Profile> profiles = new HashSet<>();
+        for (Long currProfileId: profileIdsToAdd) {
+            Profile currProfile = profileRepo.findById(currProfileId).stream().findFirst().orElse(null);
+            if (currProfile == null) {
+                String errorMessage = String.format("Profile with id %d does not exist.", currProfileId);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            } else {
+                profiles.add(currProfile);
+            }
+        }
+        for (Profile currProfile: profiles) {
+            project.addProfile(currProfile);
+        }
         project.addProfile(profile);
         return projectRepo.save(project);
     }
     
     @Override
-    public Project update(Project project, Long projectId, Long profileId) {
+    public Project update(Project project, Long projectId, Long profileId, Set<Long> profileIdsToAdd) {
         Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
         if (profile == null) {
             String errorMessage = String.format("User with id %d does not exist.", profileId);
@@ -89,6 +101,20 @@ public class ProjectServiceImplementation implements ProjectService {
             }
         }
 
+        Set<Profile> newProfiles = new HashSet<>();
+        for (Long currProfileId: profileIdsToAdd) {
+            Profile currProfile = profileRepo.findById(currProfileId).stream().findFirst().orElse(null);
+            if (currProfile == null) {
+                String errorMessage = String.format("Profile with id %d does not exist.", currProfileId);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            } else {
+                newProfiles.add(currProfile);
+            }
+        }
+        for (Profile currProfile: newProfiles) {
+            projectInDb.addProfile(currProfile);
+        }
+
         return projectRepo.save(projectInDb);
     }
 
@@ -111,32 +137,7 @@ public class ProjectServiceImplementation implements ProjectService {
         }
         projectRepo.delete(project);
     }
-
-    @Override
-    public Project addProfilesById(Long id, Set<Long> profileIds) {
-        
-        Project projectInDb = projectRepo.findById(id).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
-        if (projectInDb == null) {
-            String errorMessage = String.format("Project with id %d does not exist.", id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
-        Set<Profile> profiles = new HashSet<>();
-        for (Long profileId: profileIds) {
-            Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
-            System.out.println(profile);
-            if (profile == null) {
-                String errorMessage = String.format("Profile with id %d does not exist.", profileId);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-            } else {
-                profiles.add(profile);
-            }
-        }
-        for (Profile profile: profiles) {
-            projectInDb.addProfile(profile);
-        }
-        return projectRepo.save(projectInDb);
-    }
-
+    
     @Override
     public List<Project> getProjects() {
         return null;
