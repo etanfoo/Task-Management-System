@@ -3,6 +3,7 @@ package com.redlions.backend.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -137,9 +138,15 @@ public class ProjectServiceImplementation implements ProjectService {
         }
         projectRepo.delete(project);
     }
-    
+
     @Override
-    public List<Project> getProjects() {
-        return null;
+    public List<Project> getAssociatedProjects(Long profileId) {
+        Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
+        if (profile == null) {
+            String errorMessage = String.format("User with id %d does not exist.", profileId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        Set<Project> projectsSet = profile.getProjects();
+        return projectsSet.stream().collect(Collectors.toList());
     }
 }
