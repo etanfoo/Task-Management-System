@@ -1,5 +1,28 @@
 package com.redlions.backend.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.redlions.backend.entity.Project;
+import com.redlions.backend.service.ProjectService;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/v1/project")
+@RequiredArgsConstructor
+@CrossOrigin
 public class ProjectController {
-    
+    private final ProjectService projectService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Project saveProject(@RequestBody Project project) {
+        return projectService.create(project);
+    }
 }

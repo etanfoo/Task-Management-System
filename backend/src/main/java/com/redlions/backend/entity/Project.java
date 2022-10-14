@@ -32,6 +32,10 @@ public class Project {
     @ManyToMany(mappedBy="projects")
     private Set<Profile> profiles = new HashSet<>();
 
+    public Project() {
+        
+    }
+
     public Project(Long id, String title, String description) {
         this.id = id;
         this.title = title;
