@@ -37,12 +37,12 @@ public class ProjectController {
         return projectService.create(project, profileId);
     }
 
-    @PutMapping(value = "/{projectId}")
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody ProjectJson projectJson, @PathVariable Long projectId) {
+    public void update(@RequestBody ProjectJson projectJson, @PathVariable Long id) {
         Project project = projectJson.project;
         Long profileId = projectJson.profileId;
-        projectService.update(project, projectId, profileId);
+        projectService.update(project, id, profileId);
     }
 
     @GetMapping(value = "/{id}")
@@ -56,4 +56,5 @@ public class ProjectController {
     public void deleteById(@PathVariable Long id) {
         projectService.delete(id);
     }
+
 }
