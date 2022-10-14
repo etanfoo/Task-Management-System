@@ -93,7 +93,12 @@ public class ProjectServiceImplementation implements ProjectService {
 
     @Override
     public Project getProject(Long id) {
-        return null;
+        Project project = projectRepo.findById(id).get(); // convert Optional<Profile> to Profile
+        if (project == null) {
+            String errorMessage = String.format("Project with id %d does not exist.", id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        return project;
     }
 
     @Override
