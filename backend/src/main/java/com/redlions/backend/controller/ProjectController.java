@@ -20,9 +20,16 @@ import lombok.RequiredArgsConstructor;
 public class ProjectController {
     private final ProjectService projectService;
 
+    public static class ProjectJson {
+        public Project project;
+        public Long profileId;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public Project saveProject(@RequestBody Project project) {
-        return projectService.create(project);
+    public Project saveProject(@RequestBody ProjectJson projectJson) {
+        Project project = projectJson.project;
+        Long profileId = projectJson.profileId;
+        return projectService.create(project, profileId);
     }
 }
