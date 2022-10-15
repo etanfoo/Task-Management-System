@@ -26,13 +26,27 @@ public class ProjectServiceImplementation implements ProjectService {
     private final ProjectRepository projectRepo;
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
 
-    @Override
-    public Project create(Project project, Long profileId, Set<Long> profileIdsToAdd) {
+    private Profile checkProfile(Long profileId) {
         Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
         if (profile == null) {
             String errorMessage = String.format("User with id %d does not exist.", profileId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
+        return profile;
+    }
+
+    private Project checkProject(Long projectId) {
+        Project project = projectRepo.findById(projectId).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
+        if (project == null) {
+            String errorMessage = String.format("Project with id %d does not exist.", projectId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        return project;
+    }
+
+    @Override
+    public Project create(Project project, Long profileId, Set<Long> profileIdsToAdd) {
+        Profile profile = checkProfile(profileId);
         
         if (project.getTitle() == null) {
             String errorMessage = String.format("Project must contain a title", profileId);
@@ -63,16 +77,8 @@ public class ProjectServiceImplementation implements ProjectService {
     
     @Override
     public Project update(Project project, Long projectId, Long profileId, Set<Long> profileIdsToAdd) {
-        Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
-        if (profile == null) {
-            String errorMessage = String.format("User with id %d does not exist.", profileId);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
-        Project projectInDb = projectRepo.findById(projectId).stream().findFirst().orElse(null);
-        if (projectInDb == null) {
-            String errorMessage = String.format("Project with id %d does not exist.", projectId);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
+        checkProfile(profileId);
+        Project projectInDb = checkProject(projectId);
 
         // checking if profile passed in is a member of the project
         Set<Profile> profiles = projectInDb.getProfiles();
@@ -121,31 +127,23 @@ public class ProjectServiceImplementation implements ProjectService {
 
     @Override
     public Project getProject(Long id) {
-        Project project = projectRepo.findById(id).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
-        if (project == null) {
-            String errorMessage = String.format("Project with id %d does not exist.", id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
-        return project;
+        return checkProject(id);
     }
 
     @Override
     public void delete(Long id) {
-        Project project = projectRepo.findById(id).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
-        if (project == null) {
-            String errorMessage = String.format("Project with id %d does not exist.", id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
+        Project project = checkProject(id);
         projectRepo.delete(project);
     }
 
     @Override
+    public void removeProfilesFromProject(Long profileId, Set<Long> profileIds) {
+        checkProfile(profileId);
+    }
+
+    @Override
     public List<Project> getAssociatedProjects(Long profileId) {
-        Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
-        if (profile == null) {
-            String errorMessage = String.format("User with id %d does not exist.", profileId);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
+        Profile profile = checkProfile(profileId);
         Set<Project> projectsSet = profile.getProjects();
         return projectsSet.stream().collect(Collectors.toList());
     }
