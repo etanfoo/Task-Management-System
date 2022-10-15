@@ -34,6 +34,11 @@ public class ProjectController {
         public Set<Long> profileIdsToAdd;
     }
 
+    public static class removeProfilesFromProject {
+        public Long profileId;
+        public Set<Long> profileIdsToRemove;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public Project saveProject(@RequestBody ProjectJson projectJson) {
@@ -67,7 +72,14 @@ public class ProjectController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Project> getAssociatedProjects(@RequestParam(value="profileId") Long profileId) {
-        System.out.println(profileId);
         return projectService.getAssociatedProjects(profileId);
+    }
+
+    @DeleteMapping(value = "/{id}/removeProfiles")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeProfilesFromProject(@RequestBody removeProfilesFromProject json, @PathVariable Long id) {
+        Long profileId = json.profileId;
+        Set<Long> profileIdsToRemove = json.profileIdsToRemove;
+        projectService.removeProfilesFromProject(id, profileId, profileIdsToRemove);    
     }
 }
