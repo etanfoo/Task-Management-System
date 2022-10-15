@@ -26,6 +26,12 @@ public class ProjectServiceImplementation implements ProjectService {
     private final ProjectRepository projectRepo;
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
 
+    /**
+     * checks if profile with corresponding id exists
+     * throws http error if it doesn't
+     * @param profileId
+     * @return
+     */
     private Profile checkProfile(Long profileId) {
         Profile profile = profileRepo.findById(profileId).stream().findFirst().orElse(null);
         if (profile == null) {
@@ -35,6 +41,12 @@ public class ProjectServiceImplementation implements ProjectService {
         return profile;
     }
 
+    /**
+     * checks if project with corresponding id exists
+     * throws http error if it doesn't
+     * @param projectId
+     * @return
+     */
     private Project checkProject(Long projectId) {
         Project project = projectRepo.findById(projectId).stream().findFirst().orElse(null); // convert Optional<Profile> to Profile
         if (project == null) {
@@ -42,6 +54,47 @@ public class ProjectServiceImplementation implements ProjectService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
         return project;
+    }
+
+    /**
+     * checks if profile is in a project
+     * throws an http error if profile is not a member
+     * @param profileId
+     * @param projectId
+     * @param projectInDb
+     */
+    private void isProfileInProject(Long profileId, Long projectId, Project projectInDb) {
+        Set<Profile> profiles = projectInDb.getProfiles();
+        boolean found = false;
+        for (Profile p: profiles) {
+            if (p.getId() == profileId) {
+                found = true;
+            }
+        }
+        if (found == false) {
+            String errorMessage = String.format("Profile with profile id %d is not a member of Project with id %d.", profileId, projectId);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
+        }
+    }
+
+    /**
+     * loops through a set of id's and returns corresponding objects
+     * throws an http error if any id not found
+     * @param profileIdsToAdd
+     * @return
+     */
+    private Set<Profile> getProfilesFromIds(Set<Long> profileIdsToAdd) {
+        Set<Profile> profiles = new HashSet<>();
+        for (Long currProfileId: profileIdsToAdd) {
+            Profile currProfile = profileRepo.findById(currProfileId).stream().findFirst().orElse(null);
+            if (currProfile == null) {
+                String errorMessage = String.format("Profile with id %d does not exist.", currProfileId);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            } else {
+                profiles.add(currProfile);
+            }
+        }
+        return profiles;
     }
 
     @Override
@@ -58,16 +111,8 @@ public class ProjectServiceImplementation implements ProjectService {
             String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-        Set<Profile> profiles = new HashSet<>();
-        for (Long currProfileId: profileIdsToAdd) {
-            Profile currProfile = profileRepo.findById(currProfileId).stream().findFirst().orElse(null);
-            if (currProfile == null) {
-                String errorMessage = String.format("Profile with id %d does not exist.", currProfileId);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-            } else {
-                profiles.add(currProfile);
-            }
-        }
+
+        Set<Profile> profiles = getProfilesFromIds(profileIdsToAdd);
         for (Profile currProfile: profiles) {
             project.addProfile(currProfile);
         }
@@ -80,18 +125,7 @@ public class ProjectServiceImplementation implements ProjectService {
         checkProfile(profileId);
         Project projectInDb = checkProject(projectId);
 
-        // checking if profile passed in is a member of the project
-        Set<Profile> profiles = projectInDb.getProfiles();
-        boolean found = false;
-        for (Profile p: profiles) {
-            if (p.getId() == profileId) {
-                found = true;
-            }
-        }
-        if (found == false) {
-            String errorMessage = String.format("Profile with profile id %d is not a member of Project with id %d.", profileId, projectId);
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
-        }
+        isProfileInProject(profileId, projectId, projectInDb);
         
         String title = project.getTitle();
         if (title != null ) {
@@ -108,16 +142,8 @@ public class ProjectServiceImplementation implements ProjectService {
             }
         }
 
-        Set<Profile> newProfiles = new HashSet<>();
-        for (Long currProfileId: profileIdsToAdd) {
-            Profile currProfile = profileRepo.findById(currProfileId).stream().findFirst().orElse(null);
-            if (currProfile == null) {
-                String errorMessage = String.format("Profile with id %d does not exist.", currProfileId);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-            } else {
-                newProfiles.add(currProfile);
-            }
-        }
+        
+        Set<Profile> newProfiles = getProfilesFromIds(profileIdsToAdd);
         for (Profile currProfile: newProfiles) {
             projectInDb.addProfile(currProfile);
         }
@@ -137,8 +163,15 @@ public class ProjectServiceImplementation implements ProjectService {
     }
 
     @Override
-    public void removeProfilesFromProject(Long profileId, Set<Long> profileIds) {
+    public void removeProfilesFromProject(Long projectId, Long profileId, Set<Long> profileIds) {
         checkProfile(profileId);
+        Project projectInDb = checkProject(projectId);
+        isProfileInProject(profileId, projectId, projectInDb);
+
+        Set<Profile> profilesToDelete = getProfilesFromIds(profileIds);
+        for (Profile currProfile: profilesToDelete) {
+            projectInDb.removeProfile(currProfile);
+        }
     }
 
     @Override
