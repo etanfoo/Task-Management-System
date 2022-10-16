@@ -33,7 +33,6 @@ public class Project {
     @OneToMany(mappedBy="project")
     private Set<Task> tasks;
 
-    // @ManyToMany(mappedBy="projects")
     @ManyToMany
     @JoinTable(
         name="manage",

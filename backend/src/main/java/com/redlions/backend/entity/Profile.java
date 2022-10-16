@@ -3,10 +3,8 @@ package com.redlions.backend.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,26 +52,15 @@ public class Profile {
     @Column(name="busyness")
     private Float busyness;
 
-
-    // @ManyToMany
-    // @JoinTable(
-    //     name="manage",
-    //     joinColumns = @JoinColumn(name="profile_id"),
-    //     inverseJoinColumns = @JoinColumn(name="project_id")
-
-    // )
     @JsonIgnore
     @ManyToMany(mappedBy="profiles")
     private Set<Project> projects = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY ,cascade = {CascadeType.ALL})
-    @JoinTable(
-        name="profile_task",
-        joinColumns = @JoinColumn(name="profile_id"),
-        inverseJoinColumns = @JoinColumn(name="task_id")
+    @OneToMany(mappedBy="profileAuthor")
+    private Set<Task> authoredTasks = new HashSet<>();
 
-    )
-    private Set<Task> tasks = new HashSet<>();
+    @OneToMany(mappedBy="profileAssignee")
+    private Set<Task> assignedTasks = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -173,13 +161,39 @@ public class Profile {
         this.projects.remove(project);
     }
 
-    public Set<Task> getTasks() {
-        return this.tasks;
+
+    public Set<Task> getAuthoredTasks() {
+        return this.authoredTasks;
     }
 
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
+    public void setAuthoredTasks(Set<Task> authoredTasks) {
+        this.authoredTasks = authoredTasks;
     }
+
+    public Set<Task> getAssignedTasks() {
+        return this.assignedTasks;
+    }
+
+    public void setAssignedTasks(Set<Task> assignedTasks) {
+        this.assignedTasks = assignedTasks;
+    }
+
+    public Set<Profile> getConnectedTo1() {
+        return this.connectedTo1;
+    }
+
+    public void setConnectedTo1(Set<Profile> connectedTo1) {
+        this.connectedTo1 = connectedTo1;
+    }
+
+    public Set<Profile> getConnectedTo2() {
+        return this.connectedTo2;
+    }
+
+    public void setConnectedTo2(Set<Profile> connectedTo2) {
+        this.connectedTo2 = connectedTo2;
+    }
+
 
     public String getAboutMe() {
         return aboutMe;
