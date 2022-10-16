@@ -38,6 +38,10 @@ public class Task {
     @ManyToMany(mappedBy="tasks")
     private Set<Profile> profiles = new HashSet<>();
 
+    public Task() {
+        
+    }
+
     public Task(Long id, String title, String description, Date deadline) {
         this.id = id;
         this.title = title;
