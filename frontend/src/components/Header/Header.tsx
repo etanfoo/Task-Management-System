@@ -1,5 +1,5 @@
 import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture } from "./style";
-import LogoIcon from "../../assets/COMP3900-Logo.png";
+import LogoIcon from "../../assets/logo.png";
 import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
