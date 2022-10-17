@@ -197,5 +197,6 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
         // userProfile will remove the connection request.
         userProfile.removeRequestedConnection(targetProfile);
+        targetProfile.removeRequestedConnection(userProfile);
     }
 }

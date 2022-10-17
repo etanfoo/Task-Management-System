@@ -57,10 +57,10 @@ public class ProfileController {
 
     }
 
-    @PostMapping("/connect/{id}")
+    @PostMapping("/accept/{id}/{id2}")
     @ResponseStatus(HttpStatus.OK)
-    public void acceptConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
-        // TO:DO
+    public void acceptConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+        profileService.acceptConnection(user_id, target_id);
 
     }
 
