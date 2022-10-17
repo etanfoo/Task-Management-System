@@ -157,8 +157,16 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
         // The target profile gets a request from the user that made the connection request
 
-        Set<Profile> requests = targetProfile.getRequestedConnections();
-        if(requests.contains(userProfile)) {
+        // Throw error if this request has already been made
+        Set<Profile> targetRequests = targetProfile.getRequestedConnections();
+        if(targetRequests.contains(userProfile)) {
+            String errorMessage = String.format("Connection request with user id %d has already been made.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        // Throw error if the user already has a request from the target
+        Set<Profile> userRequests = userProfile.getRequestedConnections();
+        if(userRequests.contains(targetProfile)) {
             String errorMessage = String.format("Connection request with user id %d has already been made.", target_id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
