@@ -34,3 +34,17 @@ export const putProfile = async (
     throw err;
   }
 };
+
+export const getProfiles = async () => {
+  try {
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+      }
+    });
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+};
+

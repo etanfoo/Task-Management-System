@@ -3,6 +3,7 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
+import FriendsPage from "./pages/FriendsPage/FriendsPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
@@ -23,6 +24,7 @@ const Router = () => (
         <Route path='/profile/:profileId' element={ <ProfilePage /> } />
         <Route path='/task/:taskId' element={ <div>this be the task page</div> } />
         <Route path='/dashboard' element={ <DashboardPage /> } />
+        <Route path='/friends' element={ <FriendsPage /> } />
       </Route>
       <Route path="*" element={ <PageNotFound /> } />
     </Routes>
