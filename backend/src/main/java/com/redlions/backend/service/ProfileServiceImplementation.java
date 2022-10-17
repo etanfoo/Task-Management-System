@@ -3,6 +3,7 @@ package com.redlions.backend.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -139,5 +140,66 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     private boolean isValidEmail(String email) {
         // TODO
         return email != null && !email.isEmpty();
+    }
+
+    @Override
+    public void requestConnection(Long user_id, Long target_id) {
+
+        // Check if the users exist first before making a connetion between them.
+
+        // userProfile is the user that is making the request for the connection.
+        Profile userProfile = profileRepo.findById(user_id).stream().findFirst().orElse(null);
+        if (userProfile == null) {
+            String errorMessage = String.format("User with id %d does not exist.", user_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        // targetProfile is the user that will be receiving the connection request.
+        Profile targetProfile = profileRepo.findById(target_id).stream().findFirst().orElse(null);
+        if (targetProfile == null) {
+            String errorMessage = String.format("User with id %d does not exist.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        // The target profile gets a request from the user that made the connection request
+
+        Set<Profile> requests = targetProfile.getRequestedConnections();
+        if(requests.contains(userProfile)) {
+            String errorMessage = String.format("Connection with user id %d has already been made.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        targetProfile.addRequestedConnection(userProfile);
+    }
+
+    @Override
+    public void acceptConnection(Long user_id, Long target_id) {
+        // Check if the users exist first before making a connetion between them.
+
+        // userProfile is the user that is accepting the request for the connection.
+        Profile userProfile = profileRepo.findById(user_id).stream().findFirst().orElse(null);
+        if (userProfile == null) {
+            String errorMessage = String.format("User with id %d does not exist.", user_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        // targetProfile is the user that made the connection to the userProfile.
+        Profile targetProfile = profileRepo.findById(target_id).stream().findFirst().orElse(null);
+        if (targetProfile == null) {
+            String errorMessage = String.format("User with id %d does not exist.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        // userProfile will add the connection to their connections.
+        Set<Profile> connections = userProfile.getAcceptedConnections();
+        if(connections.contains(targetProfile)) {
+            String errorMessage = String.format("Connection with user id %d already exists.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        userProfile.addAcceptedConnection(targetProfile);
+
+        // userProfile will remove the connection request.
+        userProfile.removeRequestedConnection(targetProfile);
     }
 }

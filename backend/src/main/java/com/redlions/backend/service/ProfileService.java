@@ -10,4 +10,6 @@ public interface ProfileService {
     Profile getProfile(String email);
     Profile getProfile(Long id);
     List<Profile> getProfiles();
+    void requestConnection(Long user_id, Long target_id);
+    void acceptConnection(Long user_id, Long target_id);
 }

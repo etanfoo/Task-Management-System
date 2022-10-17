@@ -52,19 +52,21 @@ public class ProfileController {
 
     @PostMapping("/connect/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public long requestConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
-        return profileService.requestConnection(profile, id);
+    public void requestConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
+        // TO:DO
+
     }
 
     @PostMapping("/connect/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public long acceptConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
-        return profileService.acceptConnection(profile, id);
+    public void acceptConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
+        // TO:DO
+
     }
 
     @PostMapping("/reject/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public long rejectConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
-        return profileService.rejectConnection(profile, id);
+    public void rejectConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
+        // TO:DO
     }
 }

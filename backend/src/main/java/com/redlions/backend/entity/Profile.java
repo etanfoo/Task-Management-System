@@ -76,15 +76,27 @@ public class Profile {
 
     @ManyToMany
     @JoinTable(
-        name="connected_to",
+        name="requested_connections",
         joinColumns = @JoinColumn(name="profile_id1"),
         inverseJoinColumns = @JoinColumn(name="profile_id2")
     )
-    private Set<Profile> connectedTo1 = new HashSet<>();
+    private Set<Profile> requestedTo1 = new HashSet<>();
 
-    @ManyToMany(mappedBy="connectedTo1")
-    private Set<Profile> connectedTo2 = new HashSet<>();
+    @ManyToMany(mappedBy="requestedTo1")
+    private Set<Profile> requestedTo2 = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+        name="accepted_connections",
+        joinColumns = @JoinColumn(name="profile_id1"),
+        inverseJoinColumns = @JoinColumn(name="profile_id2")
+    )
+    private Set<Profile> acceptedTo1 = new HashSet<>();
+
+    @ManyToMany(mappedBy="acceptedTo1")
+    private Set<Profile> acceptedTo2 = new HashSet<>();
+
+    
     public Profile () {
 
     }
@@ -195,6 +207,30 @@ public class Profile {
 
     public void setBusyness(Float busyness) {
         this.busyness = busyness;
+    }
+
+    public void addRequestedConnection(Profile profile) {
+        this.requestedTo1.add(profile);
+    }
+
+    public Set<Profile> getRequestedConnections() {
+        return this.requestedTo1;
+    }
+
+    public void removeRequestedConnection(Profile profile) {
+        this.requestedTo1.remove(profile);
+    }
+
+    public void addAcceptedConnection(Profile profile) {
+        this.acceptedTo1.add(profile);
+    }
+
+    public Set<Profile> getAcceptedConnections() {
+        return this.acceptedTo1;
+    }
+
+    public void removeAcceptedConnection(Profile profile) {
+        this.acceptedTo1.remove(profile);
     }
 
     @Override
