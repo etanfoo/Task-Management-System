@@ -48,4 +48,23 @@ public class ProfileController {
     public Profile saveProfile(@RequestBody Profile profile) {
         return profileService.create(profile);
     }
+
+
+    @PostMapping("/connect/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public long requestConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
+        return profileService.requestConnection(profile, id);
+    }
+
+    @PostMapping("/connect/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public long acceptConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
+        return profileService.acceptConnection(profile, id);
+    }
+
+    @PostMapping("/reject/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public long rejectConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
+        return profileService.rejectConnection(profile, id);
+    }
 }
