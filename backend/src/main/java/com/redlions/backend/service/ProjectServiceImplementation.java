@@ -86,8 +86,10 @@ public class ProjectServiceImplementation implements ProjectService {
     }
 
     @Override
-    public void delete(Long id) {
-        Project project = util.checkProject(id);
+    public void delete(Long projectId, Long profileId) {
+        util.checkProfile(profileId);
+        Project project = util.checkProject(projectId);
+        util.isProfileInProject(profileId, projectId, project);
         projectRepo.delete(project);
     }
 

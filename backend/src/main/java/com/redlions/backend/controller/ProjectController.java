@@ -34,6 +34,10 @@ public class ProjectController {
         public Set<Long> profileIdsToAdd;
     }
 
+    public static class deleteProjectJson {
+        public Long profileId;
+    }
+
     public static class removeProfilesFromProject {
         public Long profileId;
         public Set<Long> profileIdsToRemove;
@@ -65,8 +69,9 @@ public class ProjectController {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteById(@PathVariable Long id) {
-        projectService.delete(id);
+    public void deleteById(@RequestBody deleteProjectJson json, @PathVariable Long id) {
+        Long profileId = json.profileId;
+        projectService.delete(id, profileId);
     }
 
     @GetMapping
