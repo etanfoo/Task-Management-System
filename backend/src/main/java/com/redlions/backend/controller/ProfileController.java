@@ -64,9 +64,9 @@ public class ProfileController {
 
     }
 
-    @PostMapping("/reject/{id}")
+    @PostMapping("/reject/{id}/{id2}")
     @ResponseStatus(HttpStatus.OK)
-    public void rejectConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
-        // TO:DO
+    public void rejectConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+        profileService.rejectConnection(user_id, target_id);
     }
 }

@@ -12,4 +12,5 @@ public interface ProfileService {
     List<Profile> getProfiles();
     void requestConnection(Long user_id, Long target_id);
     void acceptConnection(Long user_id, Long target_id);
+    void rejectConnection(Long user_id, Long target_id);
 }

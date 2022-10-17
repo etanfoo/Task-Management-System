@@ -147,15 +147,13 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     @Override
     public void requestConnection(Long user_id, Long target_id) {
 
-        // Check if the users exist first before making a connetion between them.
+        // Check if the users exist first before making a connection between them.
 
         // userProfile is the user that is making the request for the connection.
         Profile userProfile = util.checkProfile(user_id);
 
         // targetProfile is the user that will be receiving the connection request.
         Profile targetProfile = util.checkProfile(target_id);
-
-        // The target profile gets a request from the user that made the connection request
 
         // Throw error if this request has already been made
         Set<Profile> targetRequests = targetProfile.getRequestedConnections();
@@ -164,10 +162,24 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
-        // Throw error if the user already has a request from the target
+        // Throw error if the user already has a request from the target.
         Set<Profile> userRequests = userProfile.getRequestedConnections();
         if(userRequests.contains(targetProfile)) {
-            String errorMessage = String.format("Connection request with user id %d has already been made.", target_id);
+            String errorMessage = String.format("Connection request with user id %d has already been made.", user_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+    
+        // Throw error if the user already has a connection with the target.
+        Set<Profile> targetConnections = targetProfile.getAcceptedConnections();
+        if(targetConnections.contains(userProfile)) {
+            String errorMessage = String.format("Connection with user id %d already exists.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        // Throw error if the user already has a connection with the target.
+        Set<Profile> userConnections = userProfile.getAcceptedConnections();
+        if(userConnections.contains(targetProfile)) {
+            String errorMessage = String.format("Connection with user id %d already exists.", user_id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
@@ -176,20 +188,13 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
     @Override
     public void acceptConnection(Long user_id, Long target_id) {
-        // Check if the users exist first before making a connetion between them.
+        // Check if the users exist first before making a connection between them.
 
         // userProfile is the user that is accepting the request for the connection.
         Profile userProfile = util.checkProfile(user_id);
 
-        // targetProfile is the user that made the connection to the userProfile.
+        // targetProfile is the user that made the connection request to the userProfile.
         Profile targetProfile = util.checkProfile(target_id);
-
-        // userProfile will add the connection to their connections.
-        Set<Profile> connections = userProfile.getAcceptedConnections();
-        if(connections.contains(targetProfile)) {
-            String errorMessage = String.format("Connection with user id %d already exists.", target_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
 
         // Add the connection to both of the user's connections
         userProfile.addAcceptedConnection(targetProfile);
@@ -198,5 +203,16 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         // userProfile will remove the connection request.
         userProfile.removeRequestedConnection(targetProfile);
         targetProfile.removeRequestedConnection(userProfile);
+    }
+
+    @Override
+    public void rejectConnection(Long user_id, Long target_id) {
+        // userProfile is the user that is rejecting the request for the connection.
+        Profile userProfile = util.checkProfile(user_id);
+
+        // targetProfile is the user that made the connection request to the userProfile.
+        Profile targetProfile = util.checkProfile(target_id);
+
+        userProfile.removeRequestedConnection(targetProfile);
     }
 }
