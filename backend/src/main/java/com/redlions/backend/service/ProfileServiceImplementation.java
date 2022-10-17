@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.redlions.backend.entity.Profile;
 import com.redlions.backend.repository.ProfileRepository;
+import com.redlions.backend.util.Util;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     private final ProfileRepository profileRepo;
     private final PasswordEncoder passwordEncoder;
     private final int ABOUT_ME_SECTION_CHARACTER_LIMIT = 300;
+    private final Util util;
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -148,18 +150,10 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         // Check if the users exist first before making a connetion between them.
 
         // userProfile is the user that is making the request for the connection.
-        Profile userProfile = profileRepo.findById(user_id).stream().findFirst().orElse(null);
-        if (userProfile == null) {
-            String errorMessage = String.format("User with id %d does not exist.", user_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
+        Profile userProfile = util.checkProfile(user_id);
 
         // targetProfile is the user that will be receiving the connection request.
-        Profile targetProfile = profileRepo.findById(target_id).stream().findFirst().orElse(null);
-        if (targetProfile == null) {
-            String errorMessage = String.format("User with id %d does not exist.", target_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
+        Profile targetProfile = util.checkProfile(target_id);
 
         // The target profile gets a request from the user that made the connection request
 
@@ -177,18 +171,10 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         // Check if the users exist first before making a connetion between them.
 
         // userProfile is the user that is accepting the request for the connection.
-        Profile userProfile = profileRepo.findById(user_id).stream().findFirst().orElse(null);
-        if (userProfile == null) {
-            String errorMessage = String.format("User with id %d does not exist.", user_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
+        Profile userProfile = util.checkProfile(user_id);
 
         // targetProfile is the user that made the connection to the userProfile.
-        Profile targetProfile = profileRepo.findById(target_id).stream().findFirst().orElse(null);
-        if (targetProfile == null) {
-            String errorMessage = String.format("User with id %d does not exist.", target_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
+        Profile targetProfile = util.checkProfile(target_id);
 
         // userProfile will add the connection to their connections.
         Set<Profile> connections = userProfile.getAcceptedConnections();

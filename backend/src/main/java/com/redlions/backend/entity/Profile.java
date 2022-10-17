@@ -190,23 +190,6 @@ public class Profile {
         this.assignedTasks = assignedTasks;
     }
 
-    public Set<Profile> getConnectedTo1() {
-        return this.connectedTo1;
-    }
-
-    public void setConnectedTo1(Set<Profile> connectedTo1) {
-        this.connectedTo1 = connectedTo1;
-    }
-
-    public Set<Profile> getConnectedTo2() {
-        return this.connectedTo2;
-    }
-
-    public void setConnectedTo2(Set<Profile> connectedTo2) {
-        this.connectedTo2 = connectedTo2;
-    }
-
-
     public String getAboutMe() {
         return aboutMe;
     }
