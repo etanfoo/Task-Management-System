@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
-import { FormControl, Input, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import ConnectionsCard from "../../components/ConnectionsCard/ConnectionsCard";
-import { BodyContainer, DashboardPageContainer } from "./style";
+import { BodyContainer, FriendsPageContainer } from "./style";
 import { getProfiles } from "../../api/profile";
 
 const FriendsPage = () => {
   const [query, setQuery] = useState("");
   const [profiles, setprofiles] = useState([]);
+
+  const onSearchFieldChange = (value: any) => {
+    setQuery(value.toLowerCase());
+  }
 
   // filter all profiles based on name and email
   const search = (profiles: any) => {
@@ -29,19 +33,23 @@ const FriendsPage = () => {
   }, [query]);
 
   return(
-    <DashboardPageContainer>
+    <FriendsPageContainer>
       <Header />
-        <p>TaskHub</p>
+        <h1>TaskHub</h1>
         <p>Looking for someone to connect with?</p>
         
-        <input 
-        placeholder="Search"
-          onChange={e => setQuery(e.target.value.toLowerCase())}
+        <TextField 
+          placeholder="Search"
+          value={query}
+          onChange={e => onSearchFieldChange(e.target.value)}
         />
 
-      {<ConnectionsCard data={search(profiles)}/>}
+      {<ConnectionsCard data={search(profiles)} func={onSearchFieldChange} />}
+      <Button variant="contained">
+        Connect
+      </Button>
       <Footer />
-    </DashboardPageContainer>
+    </FriendsPageContainer>
   );
 }
 

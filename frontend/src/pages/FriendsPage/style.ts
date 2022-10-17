@@ -1,6 +1,6 @@
 import { styled } from "@mui/system";
 
-export const DashboardPageContainer = styled('div')`
+export const FriendsPageContainer = styled('div')`
   display: flex;
   flex-direction: column;
   width: 100%;
