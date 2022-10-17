@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="project")
 public class Project {
@@ -30,6 +32,7 @@ public class Project {
     @Column(name="description")
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy="project")
     private Set<Task> tasks;
 

@@ -27,9 +27,7 @@ import com.redlions.backend.entity.Profile;
 import com.redlions.backend.repository.ProfileRepository;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
