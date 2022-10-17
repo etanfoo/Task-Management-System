@@ -50,10 +50,10 @@ public class ProfileController {
     }
 
 
-    @PostMapping("/connect/{id}")
+    @PostMapping("/connect/{id}/{id2}")
     @ResponseStatus(HttpStatus.OK)
-    public void requestConnection(@RequestBody Profile profile, @PathVariable("id") long id) {
-        // TO:DO
+    public void requestConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+        profileService.requestConnection(user_id, target_id);
 
     }
 

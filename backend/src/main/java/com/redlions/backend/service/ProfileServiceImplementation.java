@@ -159,7 +159,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
         Set<Profile> requests = targetProfile.getRequestedConnections();
         if(requests.contains(userProfile)) {
-            String errorMessage = String.format("Connection with user id %d has already been made.", target_id);
+            String errorMessage = String.format("Connection request with user id %d has already been made.", target_id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
@@ -183,7 +183,9 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
+        // Add the connection to both of the user's connections
         userProfile.addAcceptedConnection(targetProfile);
+        targetProfile.addAcceptedConnection(userProfile);
 
         // userProfile will remove the connection request.
         userProfile.removeRequestedConnection(targetProfile);
