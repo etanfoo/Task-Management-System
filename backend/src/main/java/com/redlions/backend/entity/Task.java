@@ -1,8 +1,6 @@
 package com.redlions.backend.entity;
 
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -36,11 +33,11 @@ public class Task {
     private Project project;
 
     @ManyToOne()
-    @JoinColumn(name="author_id", nullable=false)
+    @JoinColumn(name="author_id")
     private Profile profileAuthor;
 
     @ManyToOne()
-    @JoinColumn(name="assignee_id", nullable=false)
+    @JoinColumn(name="assignee_id")
     private Profile profileAssignee;
 
     public Task() {
