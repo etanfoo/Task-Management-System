@@ -4,23 +4,30 @@ import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import ConnectionsCard from "../../components/ConnectionsCard/ConnectionsCard";
 import { FriendsPageContainer } from "./style";
-import { getProfiles } from "../../api/profile";
+import { getProfiles, getProfile } from "../../api/profile";
 import { IProfile } from '../../interfaces/api-response';
 
 const FriendsPage = () => {
   const [query, setQuery] = useState('');
   const [profiles, setprofiles] = useState([]);
+  const [currentLoggedInUser, setCurrentLoggedInUser] = useState({});
+  // TODO: custom hooks?
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success');
   const [alertMessage, setAlertMessage] = useState('');
 
   const NUMBER_OF_PROFILES_SHOWN = 10;
 
-  // todo: error when trying to connect to self
+
+  // TODO: error when trying to connect to self
+  // TODO: error when trying to connect to invalid email
   const handleConnectButtonClick = () => {
     if (isSearchQueryEmpty()) {
       setAlertSeverity("error");
       setAlertMessage("Search query is empty.");
+   // } else if (currentLoggedInUser.email == query) {
+   //   setAlertSeverity("error");
+   //   setAlertMessage("Can not connect to self.");
     } else {
       setAlertSeverity("success");
       setAlertMessage(`Sent connection request to ${query}.`);
@@ -77,7 +84,6 @@ const FriendsPage = () => {
           value={query}
           onChange={e => onSearchFieldChange(e.target.value)}
         />
-
       {
         !isSearchQueryEmpty() ? <ConnectionsCard profiles={search(profiles)} onSearchFieldChange={onSearchFieldChange} /> : null
       }
@@ -89,12 +95,9 @@ const FriendsPage = () => {
           {alertMessage}
         </Alert>
       </Snackbar>
-
       <Footer />
     </FriendsPageContainer>
   );
 }
-
-
 
 export default FriendsPage;
