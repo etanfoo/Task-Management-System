@@ -3,19 +3,24 @@ import { TextField, Button } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import ConnectionsCard from "../../components/ConnectionsCard/ConnectionsCard";
-import { BodyContainer, FriendsPageContainer } from "./style";
+import { FriendsPageContainer } from "./style";
 import { getProfiles } from "../../api/profile";
+import { IProfile } from '../../interfaces/api-response';
 
 const FriendsPage = () => {
   const [query, setQuery] = useState("");
   const [profiles, setprofiles] = useState([]);
 
-  const onSearchFieldChange = (value: any) => {
+  const onSearchFieldChange = (value: string) => {
     setQuery(value.toLowerCase());
   }
 
+  const isSearchQueryEmpty = () => {
+    return query == '';
+  }
+
   // filter all profiles based on name and email
-  const search = (profiles: any) => {
+  const search = (profiles: IProfile[]) => {
     return profiles.filter((profile: any) => 
       profile.name.toLowerCase().includes(query) || profile.email.toLowerCase().includes(query));
   }
@@ -44,7 +49,9 @@ const FriendsPage = () => {
           onChange={e => onSearchFieldChange(e.target.value)}
         />
 
-      {<ConnectionsCard data={search(profiles)} func={onSearchFieldChange} />}
+      {
+        !isSearchQueryEmpty() ? <ConnectionsCard profiles={search(profiles)} func={onSearchFieldChange} /> : null
+      }
       <Button variant="contained">
         Connect
       </Button>

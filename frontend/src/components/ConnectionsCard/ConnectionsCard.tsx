@@ -1,20 +1,20 @@
 import Box from '@mui/material/Box';
 import { Button } from "@mui/material";
+import { IProfile } from '../../interfaces/api-response';
+import FriendsCard from '../FriendsCard/FriendsCard';
 
 type ConnectionsCardProps = {
-    data: any;
-    func: any;
+    profiles: IProfile[];
+    func: Function;
   };
   
-const ConnectionsCard = ({ data, func }: ConnectionsCardProps) => {
+const ConnectionsCard = ({ profiles, func }: ConnectionsCardProps) => {
 
   return (
     <>
-        {data.map((item: any) => (
-            <Button onClick={() => func(item.name)} key={item.id}>
-                <h2>{item.name} {item.email}</h2>
-                <br/>
-                <p>{item.name} {item.email}</p>
+        {profiles.map((profile: IProfile) => (
+            <Button onClick={() => func(profile.email)} key={profile.id}>
+                <p>{profile.name} - {profile.email}</p>
             </Button>
         ))}
     </>
