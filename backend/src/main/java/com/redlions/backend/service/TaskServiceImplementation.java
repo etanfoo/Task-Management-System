@@ -1,5 +1,6 @@
 package com.redlions.backend.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +32,12 @@ public class TaskServiceImplementation implements TaskService {
         util.isProfileInProject(profileId, projectId, project);
 
         if (task.getTitle() == null) {
-            String errorMessage = String.format("Task must contain a title", profileId);
+            String errorMessage = String.format("Task must contain a title");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        if (task.getPoints() == null) {
+            String errorMessage = String.format("Task must contain points");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
@@ -48,8 +54,37 @@ public class TaskServiceImplementation implements TaskService {
         return taskRepo.save(task);
     }
 
-    public Task update(Task task, Long projectId, Long profileId) {
-        return null;
+    public Task update(Task task, Long projectId, Long profileId, Long taskId) {
+        util.checkProfile(profileId);
+        Project projectInDb = util.checkProject(projectId);
+        util.isProfileInProject(profileId, projectId, projectInDb);
+        Task taskInDb = util.checkTask(taskId);
+        util.isTaskInProject(projectId, taskId);
+
+        String title = task.getTitle();
+        if (title != null) {
+            taskInDb.setTitle(title);
+        }
+
+        String description = task.getDescription();
+        if (description.length() > DESCRIPTION_CHARACTER_LIMIT) {
+            String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        } else {
+            taskInDb.setDescription(description);
+        }
+
+        Date deadline = task.getDeadline();
+        if (deadline != null) {
+            taskInDb.setDeadline(deadline);
+        }
+
+        Integer points = task.getPoints();
+        if (points != null) {
+            taskInDb.setPoints(points);
+        }
+
+        return taskRepo.save(taskInDb);
     }
 
     public Task getTask(Long id) {
@@ -60,11 +95,11 @@ public class TaskServiceImplementation implements TaskService {
 
     }
 
-    public void removeProfilesFromTask(Long taskId, Long profileId, Set<Long> profileIds) {
-
+    public List<Task> getAssociatedTasks(Long profileId) {
+        return null;
     }
 
-    public List<Task> getAssociatedTasks(Long profileId) {
+    public Task updateAssignee(Long taskId, Long profileId, Long newAssigneeId) {
         return null;
     }
 }

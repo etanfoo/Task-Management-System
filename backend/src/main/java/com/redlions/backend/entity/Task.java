@@ -28,6 +28,9 @@ public class Task {
     @Column(name="deadline")
     private Date deadline;
 
+    @Column(name="points")
+    private Integer points;
+
     @ManyToOne()
     @JoinColumn(name="project_id", nullable=false)
     private Project project;
@@ -91,7 +94,6 @@ public class Task {
         this.project = project;
     }
 
-
     public Profile getProfileAuthor() {
         return this.profileAuthor;
     }
@@ -108,6 +110,13 @@ public class Task {
         this.profileAssignee = profileAssignee;
     }
 
+    public Integer getPoints() {
+        return this.points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
 
     @Override
     public String toString() {
