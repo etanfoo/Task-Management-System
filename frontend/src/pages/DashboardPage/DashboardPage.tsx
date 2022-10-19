@@ -5,7 +5,6 @@ import Header from "../../components/Header/Header";
 import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
 import { MockFriends } from "../../constants/profiles";
 import { MockTasks } from "../../constants/tasks";
-import { MockProjects } from "../../constants/projects";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import SadIcon from "../../assets/sad.png";
@@ -13,6 +12,8 @@ import HappyIcon from "../../assets/happy.png";
 import NeutralIcon from "../../assets/neutral.png";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
+import { getProjects } from "../../api/project";
+import { IProject } from "../../interfaces/api-response";
 
 type DashboardPageProps = {
   initialPageState: "tasks" | "projects";
@@ -25,11 +26,25 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   const [taskSortType, setTaskSortType] = useState<string>("ID");
   const [projectSortType, setProjectSortType] = useState<string>("Name");
 
-  const [allProjects, setAllProjects] = useState(MockProjects);
+  const [allProjects, setAllProjects] = useState<IProject[]>([]);
   const [allTasks, setAllTasks] = useState(MockTasks);
 
   const [shownProjects, setShownProjects] = useState(allProjects);
   const [shownTasks, setShownTasks] = useState(allTasks);
+
+  const fetchAllProjects = async () => {
+    try {
+      const data = await getProjects(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      setAllProjects(data);
+    } catch (err: any) {
+      // todo: figure some error handling here? show error popup?
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllProjects();
+  }, []);
 
   useEffect(() => {
     if (pageState === "tasks") {
@@ -57,7 +72,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
       let sortedProjects: any[] = shownProjects;
       if (projectSortType === "Name") {
         sortedProjects = [...shownProjects].sort(
-          (projectA, projectB) => projectA.name.localeCompare(projectB.name)
+          (projectA, projectB) => projectA.title.localeCompare(projectB.title)
         );
       } else if (projectSortType === "Description") {
         sortedProjects = [...shownProjects].sort(
@@ -77,7 +92,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
       setTaskSortType("ID");
     } else {
       setShownProjects(allProjects.filter((project) => 
-        project.name.toLowerCase().includes(searchQuery)
+        project.title.toLowerCase().includes(searchQuery)
       ));
       setProjectSortType("Name");
     }
@@ -186,9 +201,9 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                 ) : (
                   shownProjects.map((project) => (
                     <ProjectCard
-                      key={project.name}
+                      key={project.title}
                       projectId={1}
-                      name={project.name}
+                      name={project.title}
                       description={project.description}
                     />
                   ))

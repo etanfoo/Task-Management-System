@@ -18,7 +18,11 @@ export interface IProfile {
 };
 
 export interface IProject {
-  // todo
+  description: string;
+  id: number;
+  profiles: IProfile[];
+  tasks: ITask[];
+  title: string;
 };
 
 export interface ITask {
