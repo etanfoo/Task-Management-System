@@ -1,59 +1,120 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { useState } from "react";
+import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, DashboardPageContainer } from "./style";
-import { MockTasks } from "../../constants/profile-page-constants";
+import { BodyContainer, StyledForm, DashboardPageContainer, LabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer } from "./style";
+import { MockFriends, MockTasks } from "../../constants/profile-page-constants";
 import TaskCard from "../../components/TaskCard/TaskCard";
+import FriendsCard from "../../components/FriendsCard/FriendsCard";
+import SadIcon from "../../assets/sad.png";
+import HappyIcon from "../../assets/happy.png";
+import NeutralIcon from "../../assets/neutral.png";
 
-const DashboardPage = () => {
-  return(
+type DashboardPageProps = {
+  initialPageState: "tasks" | "projects";
+}
+
+const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [pageState, setPageState] = useState<string>(initialPageState);
+  const [sortType, setSortType] = useState<string>("");
+
+  return (
     <DashboardPageContainer>
       <Header />
       <BodyContainer>
-        {/* copy jobs board single job page */}
-        <div style={{ borderRight: '1px solid black', borderTop: '1px solid black', height: '100%', width: '10rem', borderRadius: '1rem', padding: '1rem' }}>
-          this is the dashboard page
-        </div>
-        <div style={{ height: "100%", width: '100%', padding: '0 2rem' }}>
-          <TextField fullWidth sx={{ marginBottom: '2rem' }}></TextField>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '2rem' }}>
-            <FormControl sx={{ width: '15%', textAlign: 'left' }}>
+        <LeftContainer>
+          <h2>Your friends</h2>
+          <FriendsContainer>
+            {MockFriends.map((friend) => (
+              <FriendsCard
+                key={friend.profileId}
+                profileId={friend.profileId}
+                name={friend.name}
+                email={friend.email}
+                imageURL={friend.imageURL}
+              />
+            ))}
+          </FriendsContainer>
+          {/* if user has not inputted show otherwise show nothing */}
+          <Divider/>
+          <h2>How are you feeling this week?</h2>
+          <ImageContainer>
+            <img alt='sad icon' src={SadIcon} />
+            <img alt='emotionless icon' src={NeutralIcon} />
+            <img alt='happy icon' src={HappyIcon} />
+          </ImageContainer>
+        </LeftContainer>
+        <RightContainer>
+          <StyledTextField
+            fullWidth
+            label="Search for a task"
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <SelectContainer>
+            <StyledForm>
               <InputLabel>Your stuff</InputLabel>
               <Select
                 defaultValue="Your tasks"
-                // value={age}
                 label="Your tasks"
-                // onChange={handleChange}
+                value={pageState}
+                onChange={(e: SelectChangeEvent) => setPageState(e.target.value)}
               >
-                <MenuItem value="Your tasks">Your tasks</MenuItem>
-                <MenuItem value="Your projects">Your projects</MenuItem>
+                <MenuItem value={"tasks"}>Your tasks</MenuItem>
+                <MenuItem value={"projects"}>Your projects</MenuItem>
               </Select>
-            </FormControl>
-            <FormControl sx={{ width: '15%', textAlign: 'left' }}>
+            </StyledForm>
+            <StyledForm>
               <InputLabel>Sort by</InputLabel>
               <Select
-                defaultValue="Sort by"
-                // value={age}
-                label="Your tasks"
-                // onChange={handleChange}
+                label="Sort by"
+                value={sortType}
+                onChange={(e: SelectChangeEvent) => setSortType(e.target.value)}
               >
-                <MenuItem value="Sort by">Sort by</MenuItem>
-                <MenuItem value="Your projects">Your projects</MenuItem>
+                {pageState === "tasks"
+                 ? (
+                  <div>
+                    <MenuItem value={"ID"}>ID</MenuItem>
+                    <MenuItem value={"Name"}>Name</MenuItem>
+                    <MenuItem value={"Status"}>Status</MenuItem>
+                    <MenuItem value={"Deadline"}>Deadline</MenuItem>
+                  </div>
+                 ) : (
+                  <div>
+                    <MenuItem value={"Name"}>Name</MenuItem>
+                    <MenuItem value={"Summary"}>Summary</MenuItem>
+                  </div>
+                 )
+                }
               </Select>
-            </FormControl>
-          </div>
-          <div style={{ width: '100%', height: '100%', border: '1px solid black', padding: '2rem' }}>
-            {MockTasks.map((task) => (
-              <TaskCard
-                key={task.taskId}
-                taskId={task.taskId}
-                title={task.title}
-                deadline={task.deadline}
-                status={task.status}
-              />
-            ))}
-          </div>
-        </div>
+            </StyledForm>
+          </SelectContainer>
+          <TasksContainer>
+            {pageState === "tasks"
+              ? (
+                <LabelContainer>
+                  <p>ID</p>
+                  <p>Title</p>
+                  <p>Deadline</p>
+                  <p>Status</p>
+                </LabelContainer>
+                // todo: replace null with project container
+              ): null
+            }
+            <OverflowContainer>
+              {/* todo: render depending on tasks or project */}
+              {MockTasks.map((task) => (
+                <TaskCard
+                  key={task.taskId}
+                  taskId={task.taskId}
+                  title={task.title}
+                  deadline={task.deadline}
+                  status={task.status}
+                />
+              ))}
+            </OverflowContainer>
+          </TasksContainer>
+        </RightContainer>
       </BodyContainer>
       <Footer />
     </DashboardPageContainer>

@@ -49,7 +49,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    fetchUserDetails();
+    if (sessionStorage.getItem(process.env.REACT_APP_TOKEN!)) {
+      // only do so if user is logged in
+      fetchUserDetails();
+    }
   }, []);
 
   return (

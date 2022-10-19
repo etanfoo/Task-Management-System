@@ -32,6 +32,7 @@ export const StyledAvatar = styled(Avatar)`
 export const DetailsContainer = styled('div')`
   display: flex;
   flex-direction: column;
+  text-align: left;
 
   > h3 {
     margin: 0;
