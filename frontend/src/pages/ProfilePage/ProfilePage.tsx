@@ -11,7 +11,8 @@ import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import InfoIcon from "../../assets/info.png";
 import { TextField } from "@mui/material";
-import { EmptyProfile, EmptyUpdatedProfileDetails, MockFriends, MockTasks } from "../../constants/profile-page-constants";
+import { EmptyProfile, EmptyUpdatedProfileDetails, MockFriends } from "../../constants/profiles";
+import { MockTasks } from "../../constants/tasks";
 import { toBase64 } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
 

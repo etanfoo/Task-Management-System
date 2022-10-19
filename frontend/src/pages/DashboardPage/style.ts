@@ -107,6 +107,19 @@ export const LabelContainer = styled('div')`
   };
 `;
 
+export const LabelContainer2 = styled('div')`
+  display: flex;
+  flex-direction: row;
+  padding: 0 3rem;
+
+  > :first-of-type {
+    width: 20%;
+  };
+  > :nth-of-type(2) {
+    width: 75%;
+  };
+`;
+
 export const OverflowContainer = styled('div')`
   overflow-y: auto;
   padding: 0 2rem;

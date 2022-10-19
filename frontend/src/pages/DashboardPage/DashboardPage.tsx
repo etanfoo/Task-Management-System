@@ -2,17 +2,20 @@ import { useState } from "react";
 import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, StyledForm, DashboardPageContainer, LabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer } from "./style";
-import { MockFriends, MockTasks } from "../../constants/profile-page-constants";
+import { BodyContainer, StyledForm, DashboardPageContainer, LabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer, LabelContainer2 } from "./style";
+import { MockFriends } from "../../constants/profiles";
+import { MockTasks } from "../../constants/tasks";
+import { MockProjects } from "../../constants/projects";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import SadIcon from "../../assets/sad.png";
 import HappyIcon from "../../assets/happy.png";
 import NeutralIcon from "../../assets/neutral.png";
+import ProjectCard from "../../components/ProjectCard/ProjectCard";
 
 type DashboardPageProps = {
   initialPageState: "tasks" | "projects";
-}
+};
 
 const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -98,20 +101,35 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                   <p>Deadline</p>
                   <p>Status</p>
                 </LabelContainer>
-                // todo: replace null with project container
-              ): null
+              ): (
+                <LabelContainer2>
+                  <p>Name</p>
+                  <p>Description</p>                  
+                </LabelContainer2>
+              )
             }
             <OverflowContainer>
-              {/* todo: render depending on tasks or project */}
-              {MockTasks.map((task) => (
-                <TaskCard
-                  key={task.taskId}
-                  taskId={task.taskId}
-                  title={task.title}
-                  deadline={task.deadline}
-                  status={task.status}
-                />
-              ))}
+              {pageState === "tasks"
+                ? (
+                  MockTasks.map((task) => (
+                    <TaskCard
+                      key={task.taskId}
+                      taskId={task.taskId}
+                      title={task.title}
+                      deadline={task.deadline}
+                      status={task.status}
+                    />
+                  ))
+                ) : (
+                  MockProjects.map((project) => (
+                    <ProjectCard
+                      key={project.name}
+                      name={project.name}
+                      description={project.description}
+                    />
+                  ))
+                )
+              }
             </OverflowContainer>
           </TasksContainer>
         </RightContainer>
