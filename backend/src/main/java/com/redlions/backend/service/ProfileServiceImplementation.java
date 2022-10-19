@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
@@ -33,6 +35,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     private final PasswordEncoder passwordEncoder;
     private final int ABOUT_ME_SECTION_CHARACTER_LIMIT = 300;
     private final Util util;
+    private final int MIN_PASSWORD_LENGTH = 6;
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -54,10 +57,18 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
          * Create a profile and save it to database.
          * To create a profile, username and password is required.
          */
-        String email = profile.getEmail();
+
+        // Change all stored emails to lower case
+        String email = profile.getEmail().toLowerCase();
+        profile.setEmail(email);
+
         String password = profile.getPassword();
-        if (!isValidEmail(email) || !isValidPassword(password)) {
-            String errorMessage = "A valid email and password is required for creating a profile.";
+        if (!isValidEmail(email)) {
+            String errorMessage = "A valid email is required for creating a profile.";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        if(!isValidPassword(password)) {
+            String errorMessage = "A valid password is required for creating a profile.";
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
         Profile existingProfile = profileRepo.findByEmail(email);
@@ -135,13 +146,39 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     }
 
     private boolean isValidPassword(String password) {
-        // TODO
-        return password != null && !password.isEmpty();
+
+        if(password.length() < MIN_PASSWORD_LENGTH) { // Password length must be > 6 characters
+            return false;
+        }
+        Boolean has_uppercase = false; // Password must contain at least one of these
+        Boolean has_lowercase = false;
+        Boolean has_special_character = false;
+        Boolean has_number = false;
+
+        for (int i = 0; i < password.length(); i++) {
+            char ch = password.charAt(i);
+            if(Character.isUpperCase(ch)) {
+                has_uppercase = true;
+            }
+            if(Character.isLowerCase(ch)) {
+                has_lowercase = true;
+            }
+            if(Character.isDigit(ch)) {
+                has_number = true;
+            }
+            if(ch>=33 && ch <=46) { // ascii ! " # $ % & ' ( ) * + , - .
+                has_special_character = true;
+            }
+
+        }
+
+        return has_uppercase && has_lowercase && has_number && has_special_character;
     }
 
     private boolean isValidEmail(String email) {
-        // TODO
-        return email != null && !email.isEmpty();
+        Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher match_email = EMAIL_REGEX.matcher(email);
+        return match_email.find();
     }
 
     @Override
