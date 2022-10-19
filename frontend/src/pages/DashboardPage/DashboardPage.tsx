@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
@@ -20,7 +20,50 @@ type DashboardPageProps = {
 const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [pageState, setPageState] = useState<string>(initialPageState);
-  const [sortType, setSortType] = useState<string>("");
+
+  const [taskSortType, setTaskSortType] = useState<string>("");
+  const [projectSortType, setProjectSortType] = useState<string>("");
+
+  const [projects, setProjects] = useState(MockProjects);
+  const [tasks, setTasks] = useState(MockTasks);
+
+  useEffect(() => {
+    if (pageState === "tasks") {
+      let sortedTasks: any[] = tasks;
+      if (taskSortType === "ID") {
+        sortedTasks = [...tasks].sort(
+          (taskA, taskB) => taskA.taskId.localeCompare(taskB.taskId)
+        );
+      } else if (taskSortType === "Title") {
+        sortedTasks = [...tasks].sort(
+          (taskA, taskB) => taskA.title.localeCompare(taskB.title)
+        );        
+      } else if (taskSortType === "Status") {
+        sortedTasks = [...tasks].sort(
+          (taskA, taskB) => taskA.status.localeCompare(taskB.status)
+        );
+      } else if (taskSortType === "Deadline") {
+        sortedTasks = [...tasks].sort(
+          // todo: figure out how deadline is store - date or string?
+          (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
+        );
+      }
+      setTasks(sortedTasks);
+    } else {
+      let sortedProjects: any[] = projects;
+      if (projectSortType === "Name") {
+        sortedProjects = [...projects].sort(
+          (projectA, projectB) => projectA.name.localeCompare(projectB.name)
+        );
+      } else if (projectSortType === "Description") {
+        sortedProjects = [...projects].sort(
+          (projectA, projectB) => projectA.description.localeCompare(projectB.description)
+        );        
+      }
+      setProjects(sortedProjects);
+    }
+    // eslint-disable-next-line
+  }, [taskSortType, projectSortType]);
 
   return (
     <DashboardPageContainer>
@@ -69,27 +112,29 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
             </StyledForm>
             <StyledForm>
               <InputLabel>Sort by</InputLabel>
-              <Select
-                label="Sort by"
-                value={sortType}
-                onChange={(e: SelectChangeEvent) => setSortType(e.target.value)}
-              >
-                {pageState === "tasks"
-                 ? (
-                  <div>
+              {pageState === "tasks"
+                ? (
+                  <Select
+                    label="Sort by"
+                    value={taskSortType}
+                    onChange={(e: SelectChangeEvent) => setTaskSortType(e.target.value)}
+                  >
                     <MenuItem value={"ID"}>ID</MenuItem>
-                    <MenuItem value={"Name"}>Name</MenuItem>
+                    <MenuItem value={"Title"}>Title</MenuItem>
                     <MenuItem value={"Status"}>Status</MenuItem>
                     <MenuItem value={"Deadline"}>Deadline</MenuItem>
-                  </div>
-                 ) : (
-                  <div>
+                  </Select>
+                ): (
+                  <Select
+                    label="Sort by"
+                    value={projectSortType}
+                    onChange={(e: SelectChangeEvent) => setProjectSortType(e.target.value)}
+                  >
                     <MenuItem value={"Name"}>Name</MenuItem>
-                    <MenuItem value={"Summary"}>Summary</MenuItem>
-                  </div>
-                 )
-                }
-              </Select>
+                    <MenuItem value={"Description"}>Description</MenuItem>
+                  </Select>
+                )
+              }
             </StyledForm>
           </SelectContainer>
           <TasksContainer>
@@ -111,7 +156,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
             <OverflowContainer>
               {pageState === "tasks"
                 ? (
-                  MockTasks.map((task) => (
+                  tasks.map((task) => (
                     <TaskCard
                       key={task.taskId}
                       taskId={task.taskId}
@@ -121,7 +166,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                     />
                   ))
                 ) : (
-                  MockProjects.map((project) => (
+                  projects.map((project) => (
                     <ProjectCard
                       key={project.name}
                       name={project.name}
