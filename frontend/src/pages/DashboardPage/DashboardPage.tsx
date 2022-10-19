@@ -25,46 +25,64 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   const [taskSortType, setTaskSortType] = useState<string>("ID");
   const [projectSortType, setProjectSortType] = useState<string>("Name");
 
-  const [projects, setProjects] = useState(MockProjects);
-  const [tasks, setTasks] = useState(MockTasks);
+  const [allProjects, setAllProjects] = useState(MockProjects);
+  const [allTasks, setAllTasks] = useState(MockTasks);
+
+  const [shownProjects, setShownProjects] = useState(allProjects);
+  const [shownTasks, setShownTasks] = useState(allTasks);
 
   useEffect(() => {
     if (pageState === "tasks") {
-      let sortedTasks: any[] = tasks;
+      let sortedTasks: any[] = shownTasks;
       if (taskSortType === "ID") {
-        sortedTasks = [...tasks].sort(
+        sortedTasks = [...shownTasks].sort(
           (taskA, taskB) => taskA.taskId.localeCompare(taskB.taskId)
         );
       } else if (taskSortType === "Title") {
-        sortedTasks = [...tasks].sort(
+        sortedTasks = [...shownTasks].sort(
           (taskA, taskB) => taskA.title.localeCompare(taskB.title)
         );        
       } else if (taskSortType === "Status") {
-        sortedTasks = [...tasks].sort(
+        sortedTasks = [...shownTasks].sort(
           (taskA, taskB) => taskA.status.localeCompare(taskB.status)
         );
       } else if (taskSortType === "Deadline") {
-        sortedTasks = [...tasks].sort(
+        sortedTasks = [...shownTasks].sort(
           // todo: figure out how deadline is store - date or string?
           (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
         );
       }
-      setTasks(sortedTasks);
+      setShownTasks(sortedTasks);
     } else {
-      let sortedProjects: any[] = projects;
+      let sortedProjects: any[] = shownProjects;
       if (projectSortType === "Name") {
-        sortedProjects = [...projects].sort(
+        sortedProjects = [...shownProjects].sort(
           (projectA, projectB) => projectA.name.localeCompare(projectB.name)
         );
       } else if (projectSortType === "Description") {
-        sortedProjects = [...projects].sort(
+        sortedProjects = [...shownProjects].sort(
           (projectA, projectB) => projectA.description.localeCompare(projectB.description)
         );        
       }
-      setProjects(sortedProjects);
+      setShownProjects(sortedProjects);
     }
     // eslint-disable-next-line
   }, [taskSortType, projectSortType]);
+
+  useEffect(() => {
+    if (pageState === "tasks") {
+      setShownTasks(allTasks.filter((task) => 
+        task.title.toLowerCase().includes(searchQuery)
+      ));
+      setTaskSortType("ID");
+    } else {
+      setShownProjects(allProjects.filter((project) => 
+        project.name.toLowerCase().includes(searchQuery)
+      ));
+      setProjectSortType("Name");
+    }
+    // eslint-disable-next-line
+  }, [searchQuery]);
 
   return (
     <DashboardPageContainer>
@@ -83,7 +101,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
               />
             ))}
           </FriendsContainer>
-          {/* if user has not inputted show otherwise show nothing */}
+          {/* todo: if user has not inputted show otherwise show nothing */}
           <Divider/>
           <h2>How are you feeling this week?</h2>
           <ImageContainer>
@@ -156,7 +174,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
             <OverflowContainer>
               {pageState === "tasks"
                 ? (
-                  tasks.map((task) => (
+                  shownTasks.map((task) => (
                     <TaskCard
                       key={task.taskId}
                       taskId={task.taskId}
@@ -166,7 +184,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                     />
                   ))
                 ) : (
-                  projects.map((project) => (
+                  shownProjects.map((project) => (
                     <ProjectCard
                       key={project.name}
                       projectId={1}

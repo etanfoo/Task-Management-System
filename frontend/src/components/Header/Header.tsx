@@ -1,9 +1,10 @@
-import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture } from "./style";
+import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture, StyledIconButton } from "./style";
 import LogoIcon from "../../assets/logo.png";
-import { Menu, MenuItem } from "@mui/material";
+import { Badge, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProfile } from "../../api/profile";
+import NotificationIcon from "../../assets/notification.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const Header = () => {
   
   const fetchUserDetails = async () => {
     try {
+      // todo: check if pending friend requests
       const data = await getProfile(parseInt(
         sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
       ));
@@ -62,10 +64,28 @@ const Header = () => {
         ? 
           (
             <>
+              {window.location.pathname === "/dashboard"
+                ? (
+                  // TODO: onclick functionality open modal
+                  <StyledIconButton>
+                    <Badge color="primary" variant="dot">
+                      <img src={NotificationIcon} alt="notifications" width='40' height='40' />
+                    </Badge>
+                  </StyledIconButton>
+                ): null
+              }
               {!!profilePicture
-                ? <ProfilePicture src={profilePicture} onClick={handleMenuOpen} alt='profile' />
+                ? <ProfilePicture
+                    src={profilePicture}
+                    onClick={handleMenuOpen}
+                    alt='profile'
+                    style={window.location.pathname !== "/dashboard" ? { marginLeft: 'auto' } : undefined}
+                  />
                 : (
-                  <StyledAvatar onClick={handleMenuOpen}>
+                  <StyledAvatar
+                    onClick={handleMenuOpen}
+                    style={window.location.pathname !== "/dashboard" ? { marginLeft: 'auto' } : undefined}
+                  >
                     {name.length >= 2 
                       ? name.split(' ')[0][0] + name.split(' ')[1][0]
                       : name.split(' ')[0][0]
