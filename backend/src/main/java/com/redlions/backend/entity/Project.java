@@ -3,6 +3,7 @@ package com.redlions.backend.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Project {
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy="project")
+    @OneToMany(mappedBy="project", cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
     @ManyToMany

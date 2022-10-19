@@ -30,7 +30,7 @@ public class ProjectServiceImplementation implements ProjectService {
         Profile profile = util.checkProfile(profileId);
         
         if (project.getTitle() == null) {
-            String errorMessage = String.format("Project must contain a title", profileId);
+            String errorMessage = String.format("Project must contain a title");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
@@ -51,13 +51,12 @@ public class ProjectServiceImplementation implements ProjectService {
     @Override
     public Project update(Project project, Long projectId, Long profileId, Set<Long> profileIdsToAdd) {
         util.checkProfile(profileId);
-        // checkProfile(profileId);
         Project projectInDb = util.checkProject(projectId);
 
         util.isProfileInProject(profileId, projectId, projectInDb);
         
         String title = project.getTitle();
-        if (title != null ) {
+        if (title != null) {
             projectInDb.setTitle(title);
         }
 
