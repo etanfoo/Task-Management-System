@@ -28,7 +28,7 @@ const TaskCard = ({ taskId, title, deadline, status}: TaskCardProps) => {
   };
   
   return (
-    <TaskCardContainer  onClick={() => navigate(`/task/${taskId}`)}>
+    <TaskCardContainer onClick={() => navigate(`/task/${taskId}`)}>
       <p>{taskId}</p>
       <p>{title}</p>
       <p>{deadline}</p>

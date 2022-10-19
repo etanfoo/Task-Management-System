@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, StyledForm, DashboardPageContainer, LabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer, LabelContainer2 } from "./style";
+import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
 import { MockFriends } from "../../constants/profiles";
 import { MockTasks } from "../../constants/tasks";
 import { MockProjects } from "../../constants/projects";
@@ -12,6 +12,7 @@ import SadIcon from "../../assets/sad.png";
 import HappyIcon from "../../assets/happy.png";
 import NeutralIcon from "../../assets/neutral.png";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
+import { Palette } from "../../components/Palette";
 
 type DashboardPageProps = {
   initialPageState: "tasks" | "projects";
@@ -21,8 +22,8 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [pageState, setPageState] = useState<string>(initialPageState);
 
-  const [taskSortType, setTaskSortType] = useState<string>("");
-  const [projectSortType, setProjectSortType] = useState<string>("");
+  const [taskSortType, setTaskSortType] = useState<string>("ID");
+  const [projectSortType, setProjectSortType] = useState<string>("Name");
 
   const [projects, setProjects] = useState(MockProjects);
   const [tasks, setTasks] = useState(MockTasks);
@@ -94,14 +95,13 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
         <RightContainer>
           <StyledTextField
             fullWidth
-            label="Search for a task"
+            label="Search for a task..."
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <SelectContainer>
             <StyledForm>
               <InputLabel>Your stuff</InputLabel>
               <Select
-                defaultValue="Your tasks"
                 label="Your tasks"
                 value={pageState}
                 onChange={(e: SelectChangeEvent) => setPageState(e.target.value)}
@@ -140,17 +140,17 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
           <TasksContainer>
             {pageState === "tasks"
               ? (
-                <LabelContainer>
-                  <p>ID</p>
-                  <p>Title</p>
-                  <p>Deadline</p>
-                  <p>Status</p>
-                </LabelContainer>
+                <TasksLabelContainer>
+                  <p style={{ color: taskSortType === "ID" ? "black" : Palette.thGray }}>ID</p>
+                  <p style={{ color: taskSortType === "Title" ? "black" : Palette.thGray }}>Title</p>
+                  <p style={{ color: taskSortType === "Deadline" ? "black" : Palette.thGray }}>Deadline</p>
+                  <p style={{ color: taskSortType === "Status" ? "black" : Palette.thGray }}>Status</p>
+                </TasksLabelContainer>
               ): (
-                <LabelContainer2>
-                  <p>Name</p>
-                  <p>Description</p>                  
-                </LabelContainer2>
+                <ProjectsLabelContainer>
+                  <p style={{ color: projectSortType === "Name" ? "black" : Palette.thGray }}>Name</p>
+                  <p style={{ color: projectSortType === "Description" ? "black" : Palette.thGray }}>Description</p>                  
+                </ProjectsLabelContainer>
               )
             }
             <OverflowContainer>
@@ -169,6 +169,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                   projects.map((project) => (
                     <ProjectCard
                       key={project.name}
+                      projectId={1}
                       name={project.name}
                       description={project.description}
                     />

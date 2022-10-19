@@ -88,7 +88,7 @@ export const TasksContainer = styled('div')`
   text-align: left;
 `;
 
-export const LabelContainer = styled('div')`
+export const TasksLabelContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 0 3rem;
@@ -107,10 +107,11 @@ export const LabelContainer = styled('div')`
   };
 `;
 
-export const LabelContainer2 = styled('div')`
+export const ProjectsLabelContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 0 3rem;
+  justify-content: space-between;
 
   > :first-of-type {
     width: 20%;

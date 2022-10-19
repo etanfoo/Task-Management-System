@@ -22,6 +22,7 @@ const Router = () => (
       <Route element={ <AuthenticatedRoutes /> }>
         <Route path='/profile/:profileId' element={ <ProfilePage /> } />
         <Route path='/task/:taskId' element={ <div>this be the task page</div> } />
+        <Route path='/project/:projecId' element={ <div>this be the projects page</div> } />
         <Route path='/dashboard' element={ <DashboardPage initialPageState="tasks" /> } />
       </Route>
       <Route path="*" element={ <PageNotFound /> } />
