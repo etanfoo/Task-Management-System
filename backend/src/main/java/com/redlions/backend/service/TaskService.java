@@ -7,7 +7,7 @@ import com.redlions.backend.entity.Task;
 public interface TaskService {
     Task create(Task task, Long projectId, Long profileId);
     Task update(Task task, Long projectId, Long profileId, Long taskId);
-    Task getTask(Long id);
+    Task getTask(Long projectId, Long taskId);
     void delete(Long id);
     List<Task> getAssociatedTasks(Long profileId);
     Task updateAssignee(Long taskId, Long profileId, Long newAssigneeId);
