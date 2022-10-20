@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
 import { IProfile } from '../../interfaces/api-response';
+import { Button } from "@mui/material";
 
 type ConnectionsCardProps = {
     profiles: IProfile[];
@@ -11,7 +11,7 @@ const ConnectionsCard = ({ profiles, onSearchFieldChange }: ConnectionsCardProps
   return (
     <>
         {profiles.map((profile: IProfile) => (
-            <Button onClick={() => onSearchFieldChange(profile.email)} key={profile.id}>
+            <Button className="connectionsCardButton" onClick={() => onSearchFieldChange(profile.email)} key={profile.id}>
                <p>{profile.name} - {profile.email}</p>
             </Button>
         ))}
