@@ -2,7 +2,7 @@ import { Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../Palette";
 
-export const FriendsCardContainer = styled('div')`
+export const ConnectionCardContainer = styled('div')`
   display: flex;
   flex-direction: row;
   align-items: center;

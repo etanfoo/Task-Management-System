@@ -1,7 +1,7 @@
 import { getInitials } from "../../helpers";
-import { DetailsContainer, FriendsCardContainer, StyledAvatar } from "./style";
+import { DetailsContainer, ConnectionCardContainer, StyledAvatar } from "./style";
 
-type FriendsCardProps = {
+type ConnectionCardProps = {
   imageURL: string | null;
   name: string;
   email: string;
@@ -9,9 +9,9 @@ type FriendsCardProps = {
   onSearchFieldChange: Function;
 };
 
-const ConnectionsCard = ({ imageURL, name, email, profileId, onSearchFieldChange}: FriendsCardProps) => {
+const ConnectionsCard = ({ imageURL, name, email, profileId, onSearchFieldChange}: ConnectionCardProps) => {
   return (
-    <FriendsCardContainer onClick={() => onSearchFieldChange(email)}>
+    <ConnectionCardContainer onClick={() => onSearchFieldChange(email)}>
       {!!imageURL
         ? (
           <img src={imageURL} alt='user avatar' />
@@ -26,7 +26,7 @@ const ConnectionsCard = ({ imageURL, name, email, profileId, onSearchFieldChange
         <p>{email}</p>
       </DetailsContainer>
 
-    </FriendsCardContainer>
+    </ConnectionCardContainer>
   );
 };
 
