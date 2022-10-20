@@ -6,16 +6,18 @@ import ConnectionsCard from "../../components/ConnectionsCard/ConnectionsCard";
 import { BodyContainer, FriendsPageContainer } from "./style";
 import { getProfiles, getProfile } from "../../api/profile";
 import { IProfile } from '../../interfaces/api-response';
+import { requestConnection } from '../../api/connect';
+import { EmptyProfile } from '../../constants/profile-page-constants';
 
 const FriendsPage = () => {
   const [query, setQuery] = useState('');
   const [profiles, setprofiles] = useState([]);
-  const [currentLoggedInUser, setCurrentLoggedInUser] = useState('');
+  const [currentLoggedInProfile, setCurrentLoggedInProfile] = useState<IProfile>(EmptyProfile);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success');
   const [alertMessage, setAlertMessage] = useState('');
 
-  const MAX_NUMBER_OF_PROFILES_SHOWN = 5;
+  const MAX_NUMBER_OF_PROFILES_SHOWN = 6;
 
   // TODO: link up code to backend
   // TODO: show error when user trying to connect with invalid email
@@ -23,12 +25,27 @@ const FriendsPage = () => {
     if (isSearchQueryEmpty()) {
       setAlertSeverity("error");
       setAlertMessage("Search query is empty.");
-    } else if (query === currentLoggedInUser) {
+    } else if (query === currentLoggedInProfile.email) {
       setAlertSeverity("error");
       setAlertMessage("Can not connect to yourself.");
     } else {
-      setAlertSeverity("success");
-      setAlertMessage(`Sent connection request to ${query}.`);
+      // now try to send connection
+      const profilesPromise = getProfiles();
+      // attempt to convert email to profileId
+      profilesPromise.then(profiles => {
+        const id2 = profiles.filter((profile: IProfile) => profile.email === query).at(0);
+        if (id2 === undefined) {
+          setAlertSeverity("error");
+          setAlertMessage(`User with email ${query} does not exist.`);
+        } else {
+          requestConnection(currentLoggedInProfile.id, id2)
+          setAlertSeverity("success");
+          setAlertMessage(`Sent connection request to ${query}.`);
+        }
+        }).catch((err) => {
+          console.log(err);
+        });
+
     }
     setAlertOpen(true);
   };
@@ -55,15 +72,16 @@ const FriendsPage = () => {
   */
   const search = (profiles: IProfile[]) => {
     return profiles.filter((profile: IProfile) => 
-      profile.name.toLowerCase().includes(query) || profile.email.toLowerCase().includes(query)).slice(0, MAX_NUMBER_OF_PROFILES_SHOWN);
+      profile.name.toLowerCase().includes(query) ||
+      profile.email.toLowerCase().includes(query)).slice(0, MAX_NUMBER_OF_PROFILES_SHOWN);
   }
 
-  const fetchuserdetails = async () => {
+  const fetchCurrentLoggedInUser = async () => {
     try {
       const data = await getProfile(parseInt(
         sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
       ));
-      setCurrentLoggedInUser(data.email);
+      setCurrentLoggedInProfile(data);
     } catch (err: any) {
       console.log(err);
     }
@@ -79,7 +97,7 @@ const FriendsPage = () => {
   };
 
   useEffect(() => {
-      fetchuserdetails();
+      fetchCurrentLoggedInUser();
   }, []);
 
   useEffect(() => {

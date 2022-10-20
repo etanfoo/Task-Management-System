@@ -1,3 +1,7 @@
+import { getProfiles } from "./api/profile";
+import { EmptyProfile } from "./constants/profile-page-constants";
+import { IProfile } from "./interfaces/api-response";
+
 // todo: check file type
 export const toBase64 = (file: any) => {
   return new Promise((resolve, reject) => {
@@ -8,7 +12,7 @@ export const toBase64 = (file: any) => {
   });
 };
 
-export const getInitials = (name : string) => {
+export const getInitials = (name: string) => {
   if (!name) {
     return null;
   }
