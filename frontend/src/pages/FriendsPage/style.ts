@@ -25,25 +25,9 @@ export const BodyContainer = styled('div')`
     margin-bottom: 0;
   }
 
-  div {
-    width: 80%;
-    align-items: center;
+  > div {
+    width: 50%;
   }
 
-  button {
-  }
-
-  .connectionsCardButton {
-    text-transform: none;
-    color: black;
-    width: 80%;
-    height: 4rem;
-    border: 1px solid black;
-    display: block;
-  }
-
-  .connectButton {
-    margin: 1rem;
-  }
 `;
 

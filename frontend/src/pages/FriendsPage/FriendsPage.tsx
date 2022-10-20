@@ -15,7 +15,7 @@ const FriendsPage = () => {
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success');
   const [alertMessage, setAlertMessage] = useState('');
 
-  const MAX_NUMBER_OF_PROFILES_SHOWN = 7;
+  const MAX_NUMBER_OF_PROFILES_SHOWN = 5;
 
   // TODO: link up code to backend
   // TODO: show error when user trying to connect with invalid email
@@ -51,10 +51,10 @@ const FriendsPage = () => {
 
   /*
    * filter all profiles based on name and email
-   * only show maximum 10 results
+   * only show maximum `MAX_NUMBER_OF_PROFILES_SHOWN` results
   */
   const search = (profiles: IProfile[]) => {
-    return profiles.filter((profile: any) => 
+    return profiles.filter((profile: IProfile) => 
       profile.name.toLowerCase().includes(query) || profile.email.toLowerCase().includes(query)).slice(0, MAX_NUMBER_OF_PROFILES_SHOWN);
   }
 
@@ -98,14 +98,27 @@ const FriendsPage = () => {
           value={query}
           onChange={e => onSearchFieldChange(e.target.value)}
         />
+
+
       {
-        !isSearchQueryEmpty() ? <ConnectionsCard profiles={search(profiles)} onSearchFieldChange={onSearchFieldChange} /> : null
+        !isSearchQueryEmpty() 
+        ? search(profiles).map((profile: IProfile) => (
+                      <ConnectionsCard
+                        key={profile.id}
+                        profileId={profile.id}
+                        name={profile.name}
+                        email={profile.email}
+                        imageURL={profile.profilePicture}
+                        onSearchFieldChange={onSearchFieldChange}
+                      />
+                    ))
+         : null
       }
         <Button variant="contained" className="connectButton" onClick={handleConnectButtonClick}>
           Connect
         </Button>
-
       </BodyContainer>
+
       <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleAlertClose}>
         <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: '100%' }}>
           {alertMessage}

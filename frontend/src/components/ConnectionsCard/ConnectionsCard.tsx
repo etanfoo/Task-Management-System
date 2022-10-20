@@ -1,21 +1,31 @@
-import { IProfile } from '../../interfaces/api-response';
-import { Button } from "@mui/material";
+import { DetailsContainer, FriendsCardContainer, StyledAvatar } from "./style";
 
-type ConnectionsCardProps = {
-    profiles: IProfile[];
-    onSearchFieldChange: Function;
-  };
-  
-const ConnectionsCard = ({ profiles, onSearchFieldChange }: ConnectionsCardProps) => {
+type FriendsCardProps = {
+  imageURL: string | null;
+  name: string;
+  email: string;
+  profileId: number;
+  onSearchFieldChange: Function;
+};
 
+const ConnectionsCard = ({ imageURL, name, email, profileId, onSearchFieldChange}: FriendsCardProps) => {
   return (
-    <>
-        {profiles.map((profile: IProfile) => (
-            <Button className="connectionsCardButton" onClick={() => onSearchFieldChange(profile.email)} key={profile.id}>
-               <p>{profile.name} - {profile.email}</p>
-            </Button>
-        ))}
-    </>
+    <FriendsCardContainer onClick={() => onSearchFieldChange(email)}>
+      {!!imageURL
+        ? (
+          <img src={imageURL} alt='user avatar' />
+        ) : (
+          <StyledAvatar>
+            {name.split(' ')[0][0] + name.split(' ')[1][0]}
+          </StyledAvatar>
+        )
+      }
+      <DetailsContainer>
+        <h3>{name}</h3>
+        <p>{email}</p>
+      </DetailsContainer>
+
+    </FriendsCardContainer>
   );
 };
 
