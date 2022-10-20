@@ -106,7 +106,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         }
 
         String password = profile.getPassword();
-        if (password != null) {
+        if (isValidPassword(password)) {
             // encrypting password to not save plain text in db
             // setting password
             profileInDb.setPassword(passwordEncoder.encode(password));
@@ -166,13 +166,18 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             if(Character.isDigit(ch)) {
                 has_number = true;
             }
-            if(ch>=33 && ch <=46) { // ascii ! " # $ % & ' ( ) * + , - .
+            if(isSpecialCharacter(ch)) { 
                 has_special_character = true;
             }
 
         }
 
         return has_uppercase && has_lowercase && has_number && has_special_character;
+    }
+
+    private boolean isSpecialCharacter(char ch) {
+        // ascii ! " # $ % & ' ( ) * + , - .
+        return ch >=33 && ch <=46;
     }
 
     private boolean isValidEmail(String email) {
