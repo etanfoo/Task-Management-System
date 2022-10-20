@@ -35,8 +35,17 @@ public class Task {
     @JoinColumn(name="project_id", nullable=false)
     private Project project;
 
-    @ManyToMany(mappedBy="tasks")
-    private Set<Profile> profiles = new HashSet<>();
+    @ManyToOne()
+    @JoinColumn(name="author_id", nullable=false)
+    private Profile profileAuthor;
+
+    @ManyToOne()
+    @JoinColumn(name="assignee_id", nullable=false)
+    private Profile profileAssignee;
+
+    public Task() {
+
+    }
 
     public Task(Long id, String title, String description, Date deadline) {
         this.id = id;
@@ -85,13 +94,23 @@ public class Task {
         this.project = project;
     }
 
-    public Set<Profile> getProfiles() {
-        return this.profiles;
+
+    public Profile getProfileAuthor() {
+        return this.profileAuthor;
     }
 
-    public void setProfiles(Set<Profile> profiles) {
-        this.profiles = profiles;
+    public void setProfileAuthor(Profile profileAuthor) {
+        this.profileAuthor = profileAuthor;
     }
+
+    public Profile getProfileAssignee() {
+        return this.profileAssignee;
+    }
+
+    public void setProfileAssignee(Profile profileAssignee) {
+        this.profileAssignee = profileAssignee;
+    }
+
 
     @Override
     public String toString() {
