@@ -32,12 +32,11 @@ const FriendsPage = () => {
       // attempt to convert email to profileId
       profilesPromise.then(profiles => {
         const targetProfile = profiles.filter((profile: IProfile) => profile.email === query).at(0);
-        if (targetProfile.id === undefined) {
+        if (targetProfile === undefined) {
           setAlertSeverity("error");
           setAlertMessage(`User with email ${query} does not exist.`);
         } else {
-          //requestConnection(currentLoggedInProfile.id, targetProfile.id)
-          requestConnection(34, 35)
+          requestConnection(currentLoggedInProfile.id, targetProfile.id)
           setAlertSeverity("success");
           setAlertMessage(`Sent connection request to ${query}.`);
         }
