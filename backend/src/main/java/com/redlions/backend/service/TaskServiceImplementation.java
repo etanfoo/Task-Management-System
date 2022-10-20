@@ -87,8 +87,10 @@ public class TaskServiceImplementation implements TaskService {
         return taskRepo.save(taskInDb);
     }
 
-    public Task getTask(Long id) {
-        return null;
+    public Task getTask(Long projectId, Long taskId) {
+        util.checkProject(projectId);
+        util.isTaskInProject(projectId, taskId);
+        return util.checkTask(taskId);
     }
 
     public void delete(Long id) {

@@ -2,6 +2,7 @@ package com.redlions.backend.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,7 +33,7 @@ public class TaskController {
         public Long newAssigneeId;
     }
 
-    @PostMapping(value ="/{projectId}/task")
+    @PostMapping(value = "/{projectId}/task")
     @ResponseStatus(HttpStatus.OK)
     public Task saveTask(@RequestBody TaskJson json, @PathVariable Long projectId) {
         Task task = json.task;
@@ -48,11 +49,17 @@ public class TaskController {
         return taskService.update(task, projectId, profileId, taskId);
     }
 
-    @PutMapping(value = "/{projectId}/task/{taskId}/updateAuthor")
+    @PutMapping(value = "/{projectId}/task/{taskId}/updateAssignee")
     @ResponseStatus(HttpStatus.OK)
     public Task updateAssignee(@RequestBody UpdateAssigneeJson json, @PathVariable Long projectId, @PathVariable Long taskId) {
         Long profileId = json.profileId;
         Long newAssigneeId = json.newAssigneeId;
         return taskService.updateAssignee(taskId, profileId, newAssigneeId);
+    }
+
+    @GetMapping(value = "/{projectId}/task/{taskId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Task findById(@PathVariable Long projectId, @PathVariable Long taskId) {
+        return taskService.getTask(projectId, taskId);
     }
 }
