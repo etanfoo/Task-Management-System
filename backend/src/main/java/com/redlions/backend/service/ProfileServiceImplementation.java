@@ -2,6 +2,7 @@ package com.redlions.backend.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -187,7 +188,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     }
 
     @Override
-    public void requestConnection(Long user_id, Long target_id) {
+    public HashMap<String,Long> requestConnection(Long user_id, Long target_id) {
 
         // Check if the users exist first before making a connection between them.
 
@@ -201,35 +202,42 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         Set<Profile> targetRequests = targetProfile.getRequestedConnections();
         if(targetRequests.contains(userProfile)) {
             String errorMessage = String.format("Connection request with user id %d has already been made.", target_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, errorMessage);
         }
 
         // Throw error if the user already has a request from the target.
         Set<Profile> userRequests = userProfile.getRequestedConnections();
         if(userRequests.contains(targetProfile)) {
             String errorMessage = String.format("Connection request with user id %d has already been made.", user_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, errorMessage);
         }
     
         // Throw error if the user already has a connection with the target.
         Set<Profile> targetConnections = targetProfile.getAcceptedConnections();
         if(targetConnections.contains(userProfile)) {
             String errorMessage = String.format("Connection with user id %d already exists.", target_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, errorMessage);
         }
 
         // Throw error if the user already has a connection with the target.
         Set<Profile> userConnections = userProfile.getAcceptedConnections();
         if(userConnections.contains(targetProfile)) {
             String errorMessage = String.format("Connection with user id %d already exists.", user_id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, errorMessage);
         }
 
         targetProfile.addRequestedConnection(userProfile);
+
+        HashMap<String, Long> response = new HashMap<>();
+        response.put("user_id", user_id);
+        response.put("target_id", target_id);
+
+        return response;
+ 
     }
 
     @Override
-    public void acceptConnection(Long user_id, Long target_id) {
+    public HashMap<String,Long> acceptConnection(Long user_id, Long target_id) {
         // Check if the users exist first before making a connection between them.
 
         // userProfile is the user that is accepting the request for the connection.
@@ -238,6 +246,13 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         // targetProfile is the user that made the connection request to the userProfile.
         Profile targetProfile = util.checkProfile(target_id);
 
+        // User cannot accept a request that was never made
+        Set<Profile> userProfileRequests = userProfile.getRequestedConnections();
+        if(!userProfileRequests.contains(targetProfile)) {
+            String errorMessage = String.format("No connection request exists from user %d.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
         // Add the connection to both of the user's connections
         userProfile.addAcceptedConnection(targetProfile);
         targetProfile.addAcceptedConnection(userProfile);
@@ -245,16 +260,37 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         // userProfile will remove the connection request.
         userProfile.removeRequestedConnection(targetProfile);
         targetProfile.removeRequestedConnection(userProfile);
+
+        HashMap<String, Long> response = new HashMap<>();
+        response.put("user_id", user_id);
+        response.put("target_id", target_id);
+
+        return response;
+
     }
 
     @Override
-    public void rejectConnection(Long user_id, Long target_id) {
+    public HashMap<String, Long> rejectConnection(Long user_id, Long target_id) {
         // userProfile is the user that is rejecting the request for the connection.
         Profile userProfile = util.checkProfile(user_id);
 
         // targetProfile is the user that made the connection request to the userProfile.
         Profile targetProfile = util.checkProfile(target_id);
 
+        // User cannot reject a request that was never made
+        Set<Profile> userProfileRequests = userProfile.getRequestedConnections();
+        if(!userProfileRequests.contains(targetProfile)) {
+            String errorMessage = String.format("No connection request exists from user %d.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
         userProfile.removeRequestedConnection(targetProfile);
+
+        HashMap<String, Long> response = new HashMap<>();
+        response.put("user_id", user_id);
+        response.put("target_id", target_id);
+
+        return response;
+
     }
 }
