@@ -5,7 +5,7 @@ export const requestConnection = async (
   profileId2: number
 ) => {
   try {
-    await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/profile/${profileId1}/${profileId2}`, {
+    await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/profile/connect/${profileId1}/${profileId2}`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
       }
