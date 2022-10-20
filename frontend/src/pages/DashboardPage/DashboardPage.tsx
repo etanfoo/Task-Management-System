@@ -14,6 +14,7 @@ import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
 import { IProject } from "../../interfaces/api-response";
+import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 
 type DashboardPageProps = {
   initialPageState: "tasks" | "projects";
@@ -31,6 +32,8 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
 
   const [shownProjects, setShownProjects] = useState(allProjects);
   const [shownTasks, setShownTasks] = useState(allTasks);
+
+  const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
 
   const fetchAllProjects = async () => {
     try {
@@ -101,7 +104,13 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
 
   return (
     <DashboardPageContainer>
-      <Header />
+      <ConnectionRequestsModal
+        isOpen={isConnectionRequestsModalVisible}
+        handleClose={() => setIsConnectionRequestsModalVisible(false)}
+      />
+      <Header 
+        triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
+      />
       <BodyContainer>
         <LeftContainer>
           <h2>Your friends</h2>

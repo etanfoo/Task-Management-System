@@ -1,12 +1,17 @@
-import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture, StyledIconButton } from "./style";
+import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture, StyledIconButton, CreateButton } from "./style";
 import LogoIcon from "../../assets/logo.png";
-import { Badge, Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProfile } from "../../api/profile";
-import NotificationIcon from "../../assets/notification.png";
+import FriendsIcon from "../../assets/friends.png";
 
-const Header = () => {
+type HeaderProps = {
+  triggerConnectionRequestsModal?: () => void;
+  triggerCreateTaskModal?: () => void;
+};
+
+const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: HeaderProps) => {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -66,12 +71,14 @@ const Header = () => {
             <>
               {window.location.pathname === "/dashboard"
                 ? (
-                  // TODO: onclick functionality open modal
-                  <StyledIconButton>
-                    <Badge color="primary" variant="dot">
-                      <img src={NotificationIcon} alt="notifications" width='40' height='40' />
-                    </Badge>
-                  </StyledIconButton>
+                  <>
+                    {/* // TODO: onclick functionality open modal */}
+                    <StyledIconButton onClick={triggerConnectionRequestsModal}>
+                        <img src={FriendsIcon} alt="friends" width='40' height='40' />
+                    </StyledIconButton>
+                    <CreateButton variant='contained' onClick={triggerCreateTaskModal}>Create Task</CreateButton>
+                    <CreateButton variant='contained' onClick={() => navigate('/project/create')}>Create Project</CreateButton>
+                  </>
                 ): null
               }
               {!!profilePicture

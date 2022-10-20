@@ -54,5 +54,15 @@ export const StyledAvatar = styled(Avatar)`
 
 export const StyledIconButton = styled(IconButton)`
   margin-left: auto;
-  margin-right: 2rem;
+  margin-right: 1rem;
+`;
+
+export const CreateButton = styled(Button)`
+  background-color: ${Palette.mainTeal};
+  margin-right: 1rem;
+  text-transform: capitalize;
+
+  &:hover {
+    background-color: ${Palette.darkTeal};
+  }
 `;
