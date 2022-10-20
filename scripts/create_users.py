@@ -6,7 +6,7 @@ from http import HTTPStatus
 
 API_PORT = 7777
 URL = f'http://localhost:{API_PORT}/api/v1/profile/signup'
-JSON_FILE_NAME = './mock_signup_data.json'
+JSON_FILE_PATH = 'mock_signup_data.json'
 MAX_USERS_TO_CREATE = 1000
 MIN_USERS_TO_CREATE = 1
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
         print(f"Minimum users to create is {MIN_USERS_TO_CREATE}")
         exit(1)
 
-    with open(JSON_FILE_NAME) as f:
+    with open(JSON_FILE_PATH) as f:
         users = json.load(f)
 
     for i in range(number_of_users_to_create):
