@@ -2,7 +2,11 @@ package com.redlions.backend.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.redlions.backend.entity.Profile;
 import com.redlions.backend.repository.ProfileRepository;
+import com.redlions.backend.util.Util;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +35,8 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     private final ProfileRepository profileRepo;
     private final PasswordEncoder passwordEncoder;
     private final int ABOUT_ME_SECTION_CHARACTER_LIMIT = 300;
+    private final Util util;
+    private final int MIN_PASSWORD_LENGTH = 6;
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -51,10 +58,18 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
          * Create a profile and save it to database.
          * To create a profile, username and password is required.
          */
-        String email = profile.getEmail();
+
+        // Change all stored emails to lower case
+        String email = profile.getEmail().toLowerCase();
+        profile.setEmail(email);
+
         String password = profile.getPassword();
-        if (!isValidEmail(email) || !isValidPassword(password)) {
-            String errorMessage = "A valid email and password is required for creating a profile.";
+        if (!isValidEmail(email)) {
+            String errorMessage = "A valid email is required for creating a profile.";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        if(!isValidPassword(password)) {
+            String errorMessage = "A valid password is required for creating a profile.";
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
         Profile existingProfile = profileRepo.findByEmail(email);
@@ -92,7 +107,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         }
 
         String password = profile.getPassword();
-        if (password != null) {
+        if (isValidPassword(password)) {
             // encrypting password to not save plain text in db
             // setting password
             profileInDb.setPassword(passwordEncoder.encode(password));
@@ -132,12 +147,150 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     }
 
     private boolean isValidPassword(String password) {
-        // TODO
-        return password != null && !password.isEmpty();
+
+        if(password.length() < MIN_PASSWORD_LENGTH) { // Password length must be > 6 characters
+            return false;
+        }
+        Boolean has_uppercase = false; // Password must contain at least one of these
+        Boolean has_lowercase = false;
+        Boolean has_special_character = false;
+        Boolean has_number = false;
+
+        for (int i = 0; i < password.length(); i++) {
+            char ch = password.charAt(i);
+            if(Character.isUpperCase(ch)) {
+                has_uppercase = true;
+            }
+            if(Character.isLowerCase(ch)) {
+                has_lowercase = true;
+            }
+            if(Character.isDigit(ch)) {
+                has_number = true;
+            }
+            if(isSpecialCharacter(ch)) { 
+                has_special_character = true;
+            }
+
+        }
+
+        return has_uppercase && has_lowercase && has_number && has_special_character;
+    }
+
+    private boolean isSpecialCharacter(char ch) {
+        // ascii ! " # $ % & ' ( ) * + , - .
+        return ch >=33 && ch <=46;
     }
 
     private boolean isValidEmail(String email) {
-        // TODO
-        return email != null && !email.isEmpty();
+        Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher match_email = EMAIL_REGEX.matcher(email);
+        return match_email.find();
+    }
+
+    @Override
+    public HashMap<String,Long> requestConnection(Long user_id, Long target_id) {
+
+        // Check if the users exist first before making a connection between them.
+
+        // userProfile is the user that is making the request for the connection.
+        Profile userProfile = util.checkProfile(user_id);
+
+        // targetProfile is the user that will be receiving the connection request.
+        Profile targetProfile = util.checkProfile(target_id);
+
+        // Throw error if this request has already been made
+        Set<Profile> targetRequests = targetProfile.getRequestedConnections();
+        if(targetRequests.contains(userProfile)) {
+            String errorMessage = String.format("Connection request with user id %d has already been made.", target_id);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, errorMessage);
+        }
+
+        // Throw error if the user already has a request from the target.
+        Set<Profile> userRequests = userProfile.getRequestedConnections();
+        if(userRequests.contains(targetProfile)) {
+            String errorMessage = String.format("Connection request with user id %d has already been made.", user_id);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, errorMessage);
+        }
+    
+        // Throw error if the user already has a connection with the target.
+        Set<Profile> targetConnections = targetProfile.getAcceptedConnections();
+        if(targetConnections.contains(userProfile)) {
+            String errorMessage = String.format("Connection with user id %d already exists.", target_id);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, errorMessage);
+        }
+
+        // Throw error if the user already has a connection with the target.
+        Set<Profile> userConnections = userProfile.getAcceptedConnections();
+        if(userConnections.contains(targetProfile)) {
+            String errorMessage = String.format("Connection with user id %d already exists.", user_id);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, errorMessage);
+        }
+
+        targetProfile.addRequestedConnection(userProfile);
+
+        HashMap<String, Long> response = new HashMap<>();
+        response.put("user_id", user_id);
+        response.put("target_id", target_id);
+
+        return response;
+ 
+    }
+
+    @Override
+    public HashMap<String,Long> acceptConnection(Long user_id, Long target_id) {
+        // Check if the users exist first before making a connection between them.
+
+        // userProfile is the user that is accepting the request for the connection.
+        Profile userProfile = util.checkProfile(user_id);
+
+        // targetProfile is the user that made the connection request to the userProfile.
+        Profile targetProfile = util.checkProfile(target_id);
+
+        // User cannot accept a request that was never made
+        Set<Profile> userProfileRequests = userProfile.getRequestedConnections();
+        if(!userProfileRequests.contains(targetProfile)) {
+            String errorMessage = String.format("No connection request exists from user %d.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        // Add the connection to both of the user's connections
+        userProfile.addAcceptedConnection(targetProfile);
+        targetProfile.addAcceptedConnection(userProfile);
+
+        // userProfile will remove the connection request.
+        userProfile.removeRequestedConnection(targetProfile);
+        targetProfile.removeRequestedConnection(userProfile);
+
+        HashMap<String, Long> response = new HashMap<>();
+        response.put("user_id", user_id);
+        response.put("target_id", target_id);
+
+        return response;
+
+    }
+
+    @Override
+    public HashMap<String, Long> rejectConnection(Long user_id, Long target_id) {
+        // userProfile is the user that is rejecting the request for the connection.
+        Profile userProfile = util.checkProfile(user_id);
+
+        // targetProfile is the user that made the connection request to the userProfile.
+        Profile targetProfile = util.checkProfile(target_id);
+
+        // User cannot reject a request that was never made
+        Set<Profile> userProfileRequests = userProfile.getRequestedConnections();
+        if(!userProfileRequests.contains(targetProfile)) {
+            String errorMessage = String.format("No connection request exists from user %d.", target_id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
+        userProfile.removeRequestedConnection(targetProfile);
+
+        HashMap<String, Long> response = new HashMap<>();
+        response.put("user_id", user_id);
+        response.put("target_id", target_id);
+
+        return response;
+
     }
 }
