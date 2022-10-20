@@ -16,6 +16,7 @@ const RequestCard = ({ id, name, email }: RequestCardProps) => {
         <p>{email}</p>
       </TextContainer>
       <ButtonContainer>
+        {/* todo: update onclick functionality */}
         <IgnoreButton variant='contained'>
           Ignore
         </IgnoreButton>

@@ -8,6 +8,7 @@ import FriendsIcon from "../../assets/friends.png";
 
 type HeaderProps = {
   triggerConnectionRequestsModal?: () => void;
+  // todo: create task modal
   triggerCreateTaskModal?: () => void;
 };
 
@@ -44,7 +45,6 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
   
   const fetchUserDetails = async () => {
     try {
-      // todo: check if pending friend requests
       const data = await getProfile(parseInt(
         sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
       ));
@@ -72,7 +72,6 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
               {window.location.pathname === "/dashboard"
                 ? (
                   <>
-                    {/* // TODO: onclick functionality open modal */}
                     <StyledIconButton onClick={triggerConnectionRequestsModal}>
                         <img src={FriendsIcon} alt="friends" width='40' height='40' />
                     </StyledIconButton>

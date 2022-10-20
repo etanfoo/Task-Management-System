@@ -28,6 +28,9 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   const [projectSortType, setProjectSortType] = useState<string>("Name");
 
   const [allProjects, setAllProjects] = useState<IProject[]>([]);
+
+  // todo: currently disabling until tasks epic is complete
+  // eslint-disable-next-line
   const [allTasks, setAllTasks] = useState(MockTasks);
 
   const [shownProjects, setShownProjects] = useState(allProjects);
@@ -110,6 +113,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
       />
       <Header 
         triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
+        // todo: include trigger create task modal
       />
       <BodyContainer>
         <LeftContainer>
@@ -128,6 +132,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
           {/* todo: if user has not inputted show otherwise show nothing */}
           <Divider/>
           <h2>How are you feeling this week?</h2>
+          {/* todo: update onclick functionality */}
           <ImageContainer>
             <img alt='sad icon' src={SadIcon} />
             <img alt='emotionless icon' src={NeutralIcon} />
