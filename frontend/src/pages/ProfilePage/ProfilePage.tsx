@@ -12,7 +12,7 @@ import EditIcon from "../../assets/edit.png";
 import InfoIcon from "../../assets/info.png";
 import { TextField } from "@mui/material";
 import { EmptyProfile, EmptyUpdatedProfileDetails, MockFriends, MockTasks } from "../../constants/profile-page-constants";
-import { toBase64 } from "../../helpers";
+import { getInitials, toBase64 } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
 
 const ProfilePage = () => {
@@ -91,10 +91,7 @@ const ProfilePage = () => {
                       ? <img src={profileDetails.profilePicture} alt='user avatar'/>
                       : (
                         <StyledAvatar>
-                          {profileDetails.name.split(' ').length >= 2
-                          ? profileDetails.name.split(' ')[0][0] + profileDetails.name.split(' ')[1][0]
-                          : profileDetails.name.split(' ')[0][0]
-                          }
+                          {getInitials(profileDetails.name)}
                         </StyledAvatar>
                       )
                   ) : (

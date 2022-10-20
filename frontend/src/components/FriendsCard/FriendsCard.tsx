@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { getInitials } from "../../helpers";
 import { DetailsContainer, FriendsCardContainer, StyledAvatar } from "./style";
 
 type FriendsCardProps = {
@@ -19,7 +20,7 @@ const FriendsCard = ({ imageURL, name, email, profileId }: FriendsCardProps) => 
           <img src={imageURL} alt='user avatar' />
         ) : (
           <StyledAvatar>
-            {name.split(' ')[0][0] + name.split(' ')[1][0]}
+            {getInitials(name)}
           </StyledAvatar>
         )
       }

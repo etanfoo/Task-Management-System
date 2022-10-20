@@ -1,3 +1,4 @@
+import { getInitials } from "../../helpers";
 import { DetailsContainer, FriendsCardContainer, StyledAvatar } from "./style";
 
 type FriendsCardProps = {
@@ -16,7 +17,7 @@ const ConnectionsCard = ({ imageURL, name, email, profileId, onSearchFieldChange
           <img src={imageURL} alt='user avatar' />
         ) : (
           <StyledAvatar>
-            {name.split(' ')[0][0] + name.split(' ')[1][0]}
+            {getInitials(name)}
           </StyledAvatar>
         )
       }
