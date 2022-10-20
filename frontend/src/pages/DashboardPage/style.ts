@@ -86,6 +86,11 @@ export const TasksContainer = styled('div')`
   padding: 1rem;
   margin-bottom: 2rem;
   text-align: left;
+
+  > p {
+    margin: auto auto;
+    color: ${Palette.thGray};
+  }
 `;
 
 export const TasksLabelContainer = styled('div')`

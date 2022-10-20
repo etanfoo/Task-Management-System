@@ -182,43 +182,54 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
           <TasksContainer>
             {pageState === "tasks"
               ? (
-                <TasksLabelContainer>
-                  <p style={{ color: taskSortType === "ID" ? "black" : Palette.thGray }}>ID</p>
-                  <p style={{ color: taskSortType === "Title" ? "black" : Palette.thGray }}>Title</p>
-                  <p style={{ color: taskSortType === "Deadline" ? "black" : Palette.thGray }}>Deadline</p>
-                  <p style={{ color: taskSortType === "Status" ? "black" : Palette.thGray }}>Status</p>
-                </TasksLabelContainer>
+                shownTasks.length === 0
+                ? (
+                  <p>Nothing to see here...</p>
+                ) : (
+                  <>
+                    <TasksLabelContainer>
+                      <p style={{ color: taskSortType === "ID" ? "black" : Palette.thGray }}>ID</p>
+                      <p style={{ color: taskSortType === "Title" ? "black" : Palette.thGray }}>Title</p>
+                      <p style={{ color: taskSortType === "Deadline" ? "black" : Palette.thGray }}>Deadline</p>
+                      <p style={{ color: taskSortType === "Status" ? "black" : Palette.thGray }}>Status</p>
+                    </TasksLabelContainer>
+                    <OverflowContainer>
+                      {shownTasks.map((task) => (
+                        <TaskCard
+                          key={task.taskId}
+                          taskId={task.taskId}
+                          title={task.title}
+                          deadline={task.deadline}
+                          status={task.status}
+                        />
+                      ))}
+                    </OverflowContainer>
+                  </>
+                )
               ): (
-                <ProjectsLabelContainer>
-                  <p style={{ color: projectSortType === "Name" ? "black" : Palette.thGray }}>Name</p>
-                  <p style={{ color: projectSortType === "Description" ? "black" : Palette.thGray }}>Description</p>                  
-                </ProjectsLabelContainer>
+                shownProjects.length === 0
+                ? (
+                  <p>Nothing to see here</p>
+                ) : (
+                  <>
+                    <ProjectsLabelContainer>
+                      <p style={{ color: projectSortType === "Name" ? "black" : Palette.thGray }}>Name</p>
+                      <p style={{ color: projectSortType === "Description" ? "black" : Palette.thGray }}>Description</p>                  
+                    </ProjectsLabelContainer>
+                    <OverflowContainer>
+                      {shownProjects.map((project) => (
+                        <ProjectCard
+                          key={project.title}
+                          projectId={1}
+                          name={project.title}
+                          description={project.description}
+                        />
+                      ))}
+                    </OverflowContainer>
+                  </>
+                )
               )
             }
-            <OverflowContainer>
-              {pageState === "tasks"
-                ? (
-                  shownTasks.map((task) => (
-                    <TaskCard
-                      key={task.taskId}
-                      taskId={task.taskId}
-                      title={task.title}
-                      deadline={task.deadline}
-                      status={task.status}
-                    />
-                  ))
-                ) : (
-                  shownProjects.map((project) => (
-                    <ProjectCard
-                      key={project.title}
-                      projectId={1}
-                      name={project.title}
-                      description={project.description}
-                    />
-                  ))
-                )
-              }
-            </OverflowContainer>
           </TasksContainer>
         </RightContainer>
       </BodyContainer>
