@@ -36,9 +36,17 @@ const FriendsPage = () => {
           setAlertSeverity("error");
           setAlertMessage(`User with email ${query} does not exist.`);
         } else {
-          requestConnection(currentLoggedInProfile.id, targetProfile.id)
-          setAlertSeverity("success");
-          setAlertMessage(`Sent connection request to ${query}.`);
+          // attempt to request connection
+          const requestConnectionPromise = requestConnection(currentLoggedInProfile.id, targetProfile.id)
+          requestConnectionPromise.then(response => {
+            if (!response.data) {
+              setAlertSeverity("warning");
+              setAlertMessage(`Already sent a connection request to ${query}.`);
+            } else {
+              setAlertSeverity("success");
+              setAlertMessage(`Sent connection request to ${query}.`);
+            }
+          })
         }
         }).catch((err) => {
           console.log(err);
@@ -115,7 +123,6 @@ const FriendsPage = () => {
           onChange={e => onSearchFieldChange(e.target.value)}
         />
 
-
       {
         !isSearchQueryEmpty() 
         ? search(profiles).map((profile: IProfile) => (
@@ -135,7 +142,7 @@ const FriendsPage = () => {
         </Button>
       </BodyContainer>
 
-      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleAlertClose}>
+      <Snackbar open={alertOpen} autoHideDuration={5000} onClose={handleAlertClose}>
         <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: '100%' }}>
           {alertMessage}
         </Alert>

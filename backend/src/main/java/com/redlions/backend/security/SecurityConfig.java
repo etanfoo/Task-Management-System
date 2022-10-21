@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // allow these api's without authentication
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/login").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/signup").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/connect/**").permitAll(); // TODO: bandaid fix for now
         // these api's need authentication
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/**").hasAnyAuthority("PERMITTED");
         http.authorizeRequests().antMatchers("/api/v1/**").authenticated();
