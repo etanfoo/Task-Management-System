@@ -65,7 +65,7 @@ const FriendsPage = () => {
   };
 
   const onSearchFieldChange = (value: string) => {
-    setQuery(value.toLowerCase());
+    setQuery(value);
   }
 
   const isSearchQueryEmpty = () => {
@@ -77,9 +77,10 @@ const FriendsPage = () => {
    * only show maximum `MAX_NUMBER_OF_PROFILES_SHOWN` results
   */
   const search = (profiles: IProfile[]) => {
+    const lowercaseQuery = query.toLocaleLowerCase();
     return profiles.filter((profile: IProfile) => 
-      profile.name.toLowerCase().includes(query) ||
-      profile.email.toLowerCase().includes(query)).slice(0, MAX_NUMBER_OF_PROFILES_SHOWN);
+      profile.name.toLowerCase().includes(lowercaseQuery) ||
+      profile.email.toLowerCase().includes(lowercaseQuery)).slice(0, MAX_NUMBER_OF_PROFILES_SHOWN);
   }
 
   const fetchCurrentLoggedInUser = async () => {
