@@ -11,7 +11,8 @@ export const EmptyProfile: IProfile = {
   busyness: -1,
   aboutMe: "",
   projects: [],
-  tasks: [],
+  assignedTasks: [],
+  authoredTasks: [],
 };
 
 export const EmptyUpdatedProfileDetails: IUpdatedProfileDetails = {

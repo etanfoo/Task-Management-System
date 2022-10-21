@@ -13,8 +13,8 @@ export interface IProfile {
   busyness: number;
   aboutMe: string;
   projects: IProject[];
-  tasks: ITask[];
-  // todo: include connections
+  assignedTasks: ITask[];
+  authoredTasks: ITask[];
 };
 
 export interface IProject {

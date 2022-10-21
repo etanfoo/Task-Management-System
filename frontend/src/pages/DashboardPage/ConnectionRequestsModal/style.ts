@@ -3,6 +3,8 @@ import { styled } from "@mui/system";
 import { Palette } from "../../../components/Palette";
 
 export const ModalBody = styled('div')`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -16,6 +18,12 @@ export const ModalBody = styled('div')`
   > h2 {
     font-weight: normal;
     margin: 0;
+  }
+
+  > p {
+    color: ${Palette.thGray};
+    margin: auto;
+    font-size: 2rem;
   }
 `;
 
