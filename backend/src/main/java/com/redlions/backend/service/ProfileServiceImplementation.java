@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -292,5 +293,19 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
         return response;
 
+    }
+
+    @Override
+    public List<Profile> getAcceptedConnections(Long id) {
+        Profile profile = util.checkProfile(id);
+        Set<Profile> profileSet = profile.getAcceptedConnections();
+        return profileSet.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Profile> getRequestedConnections(Long id) {
+        Profile profile = util.checkProfile(id);
+        Set<Profile> profileSet = profile.getRequestedConnections();
+        return profileSet.stream().collect(Collectors.toList());
     }
 }
