@@ -8,6 +8,7 @@ import { getProfiles, getProfile } from "../../api/profile";
 import { IProfile } from "../../interfaces/api-response";
 import { requestConnection } from "../../api/connect";
 import { EmptyProfile } from "../../constants/profile-page-constants";
+import Popup from "../../components/Popup/Popup";
 
 const FriendsPage = () => {
   const [query, setQuery] = useState("");
@@ -160,19 +161,13 @@ const FriendsPage = () => {
         </Button>
       </BodyContainer>
 
-      <Snackbar
-        open={alertOpen}
-        autoHideDuration={5000}
-        onClose={handleAlertClose}
-      >
-        <Alert
-          onClose={handleAlertClose}
-          severity={alertSeverity}
-          sx={{ width: "100%" }}
-        >
-          {alertMessage}
-        </Alert>
-      </Snackbar>
+      <Popup
+        isOpen={alertOpen}
+        handleClose={handleAlertClose}
+        popupMessage={alertMessage}
+        type={alertSeverity}
+      />
+
       <Footer />
     </FriendsPageContainer>
   );
