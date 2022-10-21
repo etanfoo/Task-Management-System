@@ -5,12 +5,12 @@ import axios from "axios";
  * empty data response means a connection is already pending
  */
 export const requestConnection = async (
-  profileId1: number,
-  profileId2: number
+  requestorId: number,
+  userId: number
 ) => {
   try {
     const data = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/v1/profile/connect/${profileId1}/${profileId2}`,
+      `${process.env.REACT_APP_API_URL}/api/v1/profile/connect/${requestorId}/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem(

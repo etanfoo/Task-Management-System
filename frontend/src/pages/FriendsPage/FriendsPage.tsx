@@ -11,14 +11,14 @@ import { EmptyProfile } from "../../constants/profile-page-constants";
 
 const FriendsPage = () => {
   const [query, setQuery] = useState("");
-  const [profiles, setprofiles] = useState([]);
+  const [profiles, setProfiles] = useState<IProfile[]>([]);
   const [currentLoggedInProfile, setCurrentLoggedInProfile] =
     useState<IProfile>(EmptyProfile);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>("success");
   const [alertMessage, setAlertMessage] = useState("");
 
-  const MAX_NUMBER_OF_PROFILES_SHOWN = 6;
+  const MAX_NUMBER_OF_PROFILES_SHOWN = 8;
 
   const handleConnectButtonClick = () => {
     if (isSearchQueryEmpty()) {
@@ -113,7 +113,7 @@ const FriendsPage = () => {
   const fetchProfiles = async () => {
     try {
       const data = await getProfiles();
-      setprofiles(data);
+      setProfiles(data);
     } catch (err: any) {
       console.log(err);
     }
@@ -144,7 +144,6 @@ const FriendsPage = () => {
           ? search(profiles).map((profile: IProfile) => (
               <ConnectionsCard
                 key={profile.id}
-                profileId={profile.id}
                 name={profile.name}
                 email={profile.email}
                 imageURL={profile.profilePicture}

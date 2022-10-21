@@ -1,4 +1,5 @@
 import { styled } from "@mui/system";
+import { Palette } from "../../components/Palette";
 
 export const FriendsPageContainer = styled("div")`
   display: flex;
@@ -19,13 +20,21 @@ export const BodyContainer = styled("div")`
   text-align: center;
   box-sizing: border-box;
 
-  h1 {
+  > h1 {
     font-size: 5rem;
     margin-top: 0.5rem;
     margin-bottom: 0;
+    font-weight: normal;
+    color: ${Palette.thGray};
   }
 
   > div {
     width: 50%;
+  }
+
+  .connectButton {
+    margin-top: 0.4rem;
+    margin-bottom: 0.9rem;
+    background-color: ${Palette.mainTeal};
   }
 `;

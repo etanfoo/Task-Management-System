@@ -10,7 +10,6 @@ export const ConnectionCardContainer = styled("div")`
   border-radius: 0.5rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 1rem;
-  margin-bottom: 1rem;
 
   transition: transform 0.2s;
   &:hover {

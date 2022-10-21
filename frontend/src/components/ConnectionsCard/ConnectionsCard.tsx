@@ -9,7 +9,6 @@ type ConnectionCardProps = {
   imageURL: string | null;
   name: string;
   email: string;
-  profileId: number;
   onSearchFieldChange: Function;
 };
 
@@ -17,7 +16,6 @@ const ConnectionsCard = ({
   imageURL,
   name,
   email,
-  profileId,
   onSearchFieldChange,
 }: ConnectionCardProps) => {
   return (
