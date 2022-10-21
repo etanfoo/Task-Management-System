@@ -1,6 +1,6 @@
 import { styled } from "@mui/system";
 
-export const FriendsPageContainer = styled('div')`
+export const FriendsPageContainer = styled("div")`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -11,7 +11,7 @@ export const FriendsPageContainer = styled('div')`
   text-align: center;
 `;
 
-export const BodyContainer = styled('div')`
+export const BodyContainer = styled("div")`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,6 +28,4 @@ export const BodyContainer = styled('div')`
   > div {
     width: 50%;
   }
-
 `;
-

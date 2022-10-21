@@ -1,5 +1,9 @@
 import { getInitials } from "../../helpers";
-import { DetailsContainer, ConnectionCardContainer, StyledAvatar } from "./style";
+import {
+  DetailsContainer,
+  ConnectionCardContainer,
+  StyledAvatar,
+} from "./style";
 
 type ConnectionCardProps = {
   imageURL: string | null;
@@ -9,23 +13,24 @@ type ConnectionCardProps = {
   onSearchFieldChange: Function;
 };
 
-const ConnectionsCard = ({ imageURL, name, email, profileId, onSearchFieldChange}: ConnectionCardProps) => {
+const ConnectionsCard = ({
+  imageURL,
+  name,
+  email,
+  profileId,
+  onSearchFieldChange,
+}: ConnectionCardProps) => {
   return (
     <ConnectionCardContainer onClick={() => onSearchFieldChange(email)}>
-      {!!imageURL
-        ? (
-          <img src={imageURL} alt='user avatar' />
-        ) : (
-          <StyledAvatar>
-            {getInitials(name)}
-          </StyledAvatar>
-        )
-      }
+      {!!imageURL ? (
+        <img src={imageURL} alt="user avatar" />
+      ) : (
+        <StyledAvatar>{getInitials(name)}</StyledAvatar>
+      )}
       <DetailsContainer>
         <h3>{name}</h3>
         <p>{email}</p>
       </DetailsContainer>
-
     </ConnectionCardContainer>
   );
 };
