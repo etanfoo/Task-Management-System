@@ -3,7 +3,6 @@ import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/m
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
-import { MockFriends } from "../../constants/profiles";
 import { MockTasks } from "../../constants/tasks";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
