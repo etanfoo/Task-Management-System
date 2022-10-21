@@ -13,10 +13,6 @@ export const toBase64 = (file: any) => {
 };
 
 export const getInitials = (name: string) => {
-  if (!name) {
-    return null;
-  }
-
   let names = name.split(' '), initials = names[0].substring(0, 1).toUpperCase();
 
   if (names.length > 1) {
