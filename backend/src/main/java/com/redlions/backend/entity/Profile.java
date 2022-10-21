@@ -210,6 +210,7 @@ public class Profile {
         this.requestedTo1.add(profile);
     }
 
+    @JsonIgnore
     public Set<Profile> getRequestedConnections() {
         return this.requestedTo1;
     }
@@ -222,6 +223,7 @@ public class Profile {
         this.acceptedTo1.add(profile);
     }
 
+    @JsonIgnore
     public Set<Profile> getAcceptedConnections() {
         return this.acceptedTo1;
     }

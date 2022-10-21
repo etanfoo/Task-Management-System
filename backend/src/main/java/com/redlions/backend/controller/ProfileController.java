@@ -81,4 +81,17 @@ public class ProfileController {
             HttpStatus.OK);
         
     }
+
+    @GetMapping("/{id}/acceptedConnections")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Profile> getAcceptedConnections(@PathVariable Long id) {
+        return profileService.getAcceptedConnections(id);
+    }
+
+    @GetMapping("/{id}/requestedConnections")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Profile> getRequestedConnections(@PathVariable Long id) {
+        return profileService.getRequestedConnections(id);
+    }
+
 }

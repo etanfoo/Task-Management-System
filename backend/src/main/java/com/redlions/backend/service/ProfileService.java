@@ -14,4 +14,6 @@ public interface ProfileService {
     HashMap<String,Long> requestConnection(Long user_id, Long target_id);
     HashMap<String,Long> acceptConnection(Long user_id, Long target_id);
     HashMap<String,Long> rejectConnection(Long user_id, Long target_id);
+    List<Profile> getAcceptedConnections(Long id);
+    List<Profile> getRequestedConnections(Long id);
 }
