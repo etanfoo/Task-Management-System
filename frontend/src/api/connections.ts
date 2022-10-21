@@ -27,6 +27,20 @@ export const rejectConnection = async (userId: number, requestorId: number) => {
 
 export const getRequestedConnections = async (userId: number): Promise<IProfile[]> => {
   try {
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile/${userId}/requestedConnections`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+      }
+    });
+
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const getConnections = async (userId: number): Promise<IProfile[]> => {
+  try {
     const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile/${userId}/acceptedConnections`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`

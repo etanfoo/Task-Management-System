@@ -13,8 +13,9 @@ import NeutralIcon from "../../assets/neutral.png";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
-import { IProject } from "../../interfaces/api-response";
+import { IProfile, IProject } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
+import { getConnections } from "../../api/connections";
 
 type DashboardPageProps = {
   initialPageState: "tasks" | "projects";
@@ -36,6 +37,8 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   const [shownProjects, setShownProjects] = useState(allProjects);
   const [shownTasks, setShownTasks] = useState(allTasks);
 
+  const [connections, setConnections] = useState<IProfile[]>([]);
+
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
 
   const fetchAllProjects = async () => {
@@ -48,8 +51,21 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
     }
   };
 
+  const fetchFriends = async () => {
+    try {
+      const friends = await getConnections(
+        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
+      );
+      setConnections(friends);
+    } catch (err: any) {
+      // todo: figure some error handling here
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchAllProjects();
+    fetchFriends();
   }, []);
 
   useEffect(() => {
@@ -117,20 +133,26 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
       />
       <BodyContainer>
         <LeftContainer>
-          <h2>Your friends</h2>
-          <FriendsContainer>
-            {MockFriends.map((friend) => (
-              <FriendsCard
-                key={friend.profileId}
-                profileId={friend.profileId}
-                name={friend.name}
-                email={friend.email}
-                imageURL={friend.imageURL}
-              />
-            ))}
-          </FriendsContainer>
+          {connections.length !== 0
+            ? (
+              <>
+                <h2>Your friends</h2>
+                <FriendsContainer>
+                  {connections.map((connection) => (
+                    <FriendsCard
+                      key={connection.id}
+                      profileId={connection.id}
+                      name={connection.name}
+                      email={connection.email}
+                      imageURL={connection.profilePicture}
+                    />
+                  ))}
+                </FriendsContainer>
+                <Divider sx={{ margin: '1rem 0' }} />
+              </>
+            ) : null
+          }
           {/* todo: if user has not inputted show otherwise show nothing */}
-          <Divider/>
           <h2>How are you feeling this week?</h2>
           {/* todo: update onclick functionality */}
           <ImageContainer>
