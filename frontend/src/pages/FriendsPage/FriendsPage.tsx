@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TextField, Button, Alert, Snackbar, AlertColor } from "@mui/material";
+import { TextField, Button, AlertColor } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import ConnectionsCard from "../../components/ConnectionsCard/ConnectionsCard";

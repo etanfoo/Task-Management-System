@@ -25,6 +25,10 @@ export const BodyContainer = styled("div")`
     margin-top: 0.5rem;
     margin-bottom: 0;
     font-weight: normal;
+    color: ${Palette.mainTeal};
+  }
+
+  > p {
     color: ${Palette.thGray};
   }
 
@@ -33,7 +37,7 @@ export const BodyContainer = styled("div")`
   }
 
   .connectButton {
-    margin-top: 0.4rem;
+    margin-top: 1rem;
     margin-bottom: 0.9rem;
     background-color: ${Palette.mainTeal};
   }
