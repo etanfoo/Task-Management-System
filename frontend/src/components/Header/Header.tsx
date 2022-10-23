@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProfile } from "../../api/profile";
 import FriendsIcon from "../../assets/friends.png";
+import { getInitials } from "../../helpers";
 
 type HeaderProps = {
   triggerConnectionRequestsModal?: () => void;
@@ -92,10 +93,7 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
                     onClick={handleMenuOpen}
                     style={window.location.pathname !== "/dashboard" ? { marginLeft: 'auto' } : undefined}
                   >
-                    {name.length >= 2 
-                      ? name.split(' ')[0][0] + name.split(' ')[1][0]
-                      : name.split(' ')[0][0]
-                    }
+                    {getInitials(name)}
                   </StyledAvatar>
                 )
               }
