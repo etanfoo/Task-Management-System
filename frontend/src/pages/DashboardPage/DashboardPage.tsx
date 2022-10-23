@@ -14,7 +14,7 @@ import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
 import { IProfile, IProject } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
-import { getConnections } from "../../api/connections";
+import { getConnections } from "../../api/connect";
 
 type DashboardPageProps = {
   initialPageState: "tasks" | "projects";

@@ -1,21 +1,22 @@
 import { AcceptButton, ButtonContainer, IgnoreButton, RequestCardContainer, TextContainer } from "./style";
 import Icon from "../../../../assets/logo.png";
-import { acceptConnection, rejectConnection } from "../../../../api/connections";
+import { acceptConnection, rejectConnection } from "../../../../api/connect";
 
 type RequestCardProps = {
   id: number;
   name: string;
   email: string;
+  removeRequestCallback: () => void;
 }
 
-const RequestCard = ({ id, name, email }: RequestCardProps) => {
+const RequestCard = ({ id, name, email, removeRequestCallback }: RequestCardProps) => {
   const handleReject = async () => {
     try {
       await rejectConnection(
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!),
         id
       );
-      // todo: remove card from list - will need callback function?
+      removeRequestCallback();
     } catch (err: any) {
       // todo: show some error
     }
@@ -27,7 +28,8 @@ const RequestCard = ({ id, name, email }: RequestCardProps) => {
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!),
         id
       );
-      // todo: remove card from list - will need callback function?
+      console.log('asdasd')
+      removeRequestCallback();
     } catch (err: any) {
       // todo: show some error
     }

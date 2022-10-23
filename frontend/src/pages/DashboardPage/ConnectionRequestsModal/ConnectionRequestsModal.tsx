@@ -1,6 +1,6 @@
 import { Modal } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getRequestedConnections } from "../../../api/connections";
+import { getRequestedConnections } from "../../../api/connect";
 import { IProfile } from "../../../interfaces/api-response";
 import RequestCard from "./RequestCard/RequestCard";
 import { ModalBody, StyledDivider, OverflowContainer } from "./style";
@@ -26,6 +26,12 @@ const ConnectionRequestsModal = ({ isOpen, handleClose }: ConnectionRequestsModa
     }
   };
 
+  const removeRequestCard = (requestorId: number) => {
+    setRequestConnections((requestConnections) => 
+      requestConnections.filter((requestor) => requestor.id !== requestorId)
+    );
+  };
+
   useEffect(() => {
     fetchRequestedConnections();
   }, []);
@@ -41,12 +47,13 @@ const ConnectionRequestsModal = ({ isOpen, handleClose }: ConnectionRequestsModa
               <h2>Invitations</h2>
               <StyledDivider />
               <OverflowContainer>
-                {requestConnections.map((request) => (
+                {requestConnections.map((request, index) => (
                   <RequestCard
                     key={request.id}
                     id={request.id}
                     name={request.name}
                     email={request.email}
+                    removeRequestCallback={() => removeRequestCard(request.id)}
                   />
                 ))
                 }
