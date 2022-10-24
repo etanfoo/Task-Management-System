@@ -10,8 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="profile")
@@ -28,6 +33,7 @@ public class Profile {
     private String email;
 
     @Column(name="password")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name="points")
@@ -36,47 +42,54 @@ public class Profile {
     @Column(name="happiness")
     private Long happiness;
 
+    @Lob
     @Column(name="profile_picture")
-    private byte[] profilePicture;
+    private String profilePicture;
 
     @Column(name="about_me")
     private String aboutMe;
 
+    @Column(name="busyness")
+    private Float busyness;
 
-    @ManyToMany
-    @JoinTable(
-        name="manage",
-        joinColumns = @JoinColumn(name="profile_id"),
-        inverseJoinColumns = @JoinColumn(name="project_id")
-
-    )
+    @JsonIgnore
+    @ManyToMany(mappedBy="profiles")
     private Set<Project> projects = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-        name="profile_task",
-        joinColumns = @JoinColumn(name="profile_id"),
-        inverseJoinColumns = @JoinColumn(name="task_id")
+    @OneToMany(mappedBy="profileAuthor")
+    private Set<Task> authoredTasks = new HashSet<>();
 
-    )
-    private Set<Task> tasks = new HashSet<>();
+    @OneToMany(mappedBy="profileAssignee")
+    private Set<Task> assignedTasks = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
-        name="connected_to",
+        name="requested_connections",
         joinColumns = @JoinColumn(name="profile_id1"),
         inverseJoinColumns = @JoinColumn(name="profile_id2")
     )
-    private Set<Profile> connectedTo1 = new HashSet<>();
+    private Set<Profile> requestedTo1 = new HashSet<>();
 
-    @ManyToMany(mappedBy="connectedTo1")
-    private Set<Profile> connectedTo2 = new HashSet<>();
+    @ManyToMany(mappedBy="requestedTo1")
+    private Set<Profile> requestedTo2 = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+        name="accepted_connections",
+        joinColumns = @JoinColumn(name="profile_id1"),
+        inverseJoinColumns = @JoinColumn(name="profile_id2")
+    )
+    private Set<Profile> acceptedTo1 = new HashSet<>();
+
+    @ManyToMany(mappedBy="acceptedTo1")
+    private Set<Profile> acceptedTo2 = new HashSet<>();
+
+    
     public Profile () {
 
     }
 
-    public Profile(Long id, String name, String email, String password, Long points, Long happiness, String aboutMe, byte[] profilePicture) {
+    public Profile(Long id, String name, String email, String password, Long points, Long happiness, String aboutMe, String profilePicture, Float busyness) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -85,6 +98,7 @@ public class Profile {
         this.happiness = happiness;
         this.profilePicture = profilePicture;
         this.aboutMe = aboutMe;
+        this.busyness = busyness;
     }
 
     public Long getId() {
@@ -135,11 +149,11 @@ public class Profile {
         this.happiness = happiness;
     }
 
-    public byte[] getProfilePicture() {
+    public String getProfilePicture() {
         return this.profilePicture;
     }
 
-    public void setProfilePicture(byte[] profilePicture) {
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
 
@@ -151,12 +165,29 @@ public class Profile {
         this.projects = projects;
     }
 
-    public Set<Task> getTasks() {
-        return this.tasks;
+    public void addProject(Project project) {
+        this.projects.add(project);
     }
 
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
+    public void removeProject(Project project) {
+        this.projects.remove(project);
+    }
+
+
+    public Set<Task> getAuthoredTasks() {
+        return this.authoredTasks;
+    }
+
+    public void setAuthoredTasks(Set<Task> authoredTasks) {
+        this.authoredTasks = authoredTasks;
+    }
+
+    public Set<Task> getAssignedTasks() {
+        return this.assignedTasks;
+    }
+
+    public void setAssignedTasks(Set<Task> assignedTasks) {
+        this.assignedTasks = assignedTasks;
     }
 
     public String getAboutMe() {
@@ -165,6 +196,38 @@ public class Profile {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
+    }
+
+    public Float getBusyness() {
+        return busyness;
+    }
+
+    public void setBusyness(Float busyness) {
+        this.busyness = busyness;
+    }
+
+    public void addRequestedConnection(Profile profile) {
+        this.requestedTo1.add(profile);
+    }
+
+    public Set<Profile> getRequestedConnections() {
+        return this.requestedTo1;
+    }
+
+    public void removeRequestedConnection(Profile profile) {
+        this.requestedTo1.remove(profile);
+    }
+
+    public void addAcceptedConnection(Profile profile) {
+        this.acceptedTo1.add(profile);
+    }
+
+    public Set<Profile> getAcceptedConnections() {
+        return this.acceptedTo1;
+    }
+
+    public void removeAcceptedConnection(Profile profile) {
+        this.acceptedTo1.remove(profile);
     }
 
     @Override
@@ -178,6 +241,7 @@ public class Profile {
             ", happiness='" + getHappiness() + "'" +
             ", aboutMe='" + getAboutMe() + "'" +
             ", profilePicture='" + getProfilePicture() + "'" +
+            ", busyness='" + getBusyness() + "'" +
             "}";
     }
 

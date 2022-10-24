@@ -3,6 +3,7 @@ package com.redlions.backend.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -37,19 +39,34 @@ public class ProfileController {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody Profile profile) {
-        profileService.saveProfile(profile);
-    }
-
-    @PostMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public void create(@RequestBody Profile profile) {
-        profileService.saveProfile(profile);
+    public void update(@RequestBody Profile profile, @PathVariable Long id) {
+        profileService.update(profile, id);
     }
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.OK)
     public Profile saveProfile(@RequestBody Profile profile) {
-        return profileService.saveProfile(profile);
+        return profileService.create(profile);
+    }
+
+
+    @PostMapping("/connect/{id}/{id2}")
+    @ResponseStatus(HttpStatus.OK)
+    public void requestConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+        profileService.requestConnection(user_id, target_id);
+
+    }
+
+    @PostMapping("/accept/{id}/{id2}")
+    @ResponseStatus(HttpStatus.OK)
+    public void acceptConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+        profileService.acceptConnection(user_id, target_id);
+
+    }
+
+    @PostMapping("/reject/{id}/{id2}")
+    @ResponseStatus(HttpStatus.OK)
+    public void rejectConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+        profileService.rejectConnection(user_id, target_id);
     }
 }
