@@ -3,7 +3,6 @@ import { getInitials } from "../../helpers";
 import { DetailsContainer, FriendsCardContainer, StyledAvatar } from "./style";
 
 type FriendsCardProps = {
-  // todo: check type if empty
   imageURL: string | null;
   name: string;
   email: string;
