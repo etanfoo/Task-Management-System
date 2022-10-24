@@ -4,6 +4,7 @@ export const Palette = {
   darkTeal: "#036666",
   lightTeal: "#99e2b4",
   thGray: "#808080",
+  gray: "#C4C4C4",
   lightGray: "#F7FAFC",
   successGreen: "#00875A",
   progressBlue: "#0747A6",

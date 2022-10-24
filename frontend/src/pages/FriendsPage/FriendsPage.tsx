@@ -7,7 +7,7 @@ import { BodyContainer, FriendsPageContainer } from "./style";
 import { getProfiles, getProfile } from "../../api/profile";
 import { IProfile } from "../../interfaces/api-response";
 import { requestConnection } from "../../api/connect";
-import { EmptyProfile } from "../../constants/profile-page-constants";
+import { EmptyProfile } from "../../constants/profiles";
 import Popup from "../../components/Popup/Popup";
 
 const FriendsPage = () => {

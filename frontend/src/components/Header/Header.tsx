@@ -1,12 +1,19 @@
-import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture } from "./style";
+import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture, StyledIconButton, CreateButton } from "./style";
 import LogoIcon from "../../assets/logo.png";
 import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProfile } from "../../api/profile";
+import FriendsIcon from "../../assets/friends.png";
 import { getInitials } from "../../helpers";
 
-const Header = () => {
+type HeaderProps = {
+  triggerConnectionRequestsModal?: () => void;
+  // todo: create task modal
+  triggerCreateTaskModal?: () => void;
+};
+
+const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: HeaderProps) => {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -50,7 +57,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    fetchUserDetails();
+    if (sessionStorage.getItem(process.env.REACT_APP_TOKEN!)) {
+      // only do so if user is logged in
+      fetchUserDetails();
+    }
   }, []);
 
   return (
@@ -60,10 +70,29 @@ const Header = () => {
         ? 
           (
             <>
+              {window.location.pathname === "/dashboard"
+                ? (
+                  <>
+                    <StyledIconButton onClick={triggerConnectionRequestsModal}>
+                        <img src={FriendsIcon} alt="friends" width='40' height='40' />
+                    </StyledIconButton>
+                    <CreateButton variant='contained' onClick={triggerCreateTaskModal}>Create Task</CreateButton>
+                    <CreateButton variant='contained' onClick={() => navigate('/project/create')}>Create Project</CreateButton>
+                  </>
+                ): null
+              }
               {!!profilePicture
-                ? <ProfilePicture src={profilePicture} onClick={handleMenuOpen} alt='profile' />
+                ? <ProfilePicture
+                    src={profilePicture}
+                    onClick={handleMenuOpen}
+                    alt='profile'
+                    style={window.location.pathname !== "/dashboard" ? { marginLeft: 'auto' } : undefined}
+                  />
                 : (
-                  <StyledAvatar onClick={handleMenuOpen}>
+                  <StyledAvatar
+                    onClick={handleMenuOpen}
+                    style={window.location.pathname !== "/dashboard" ? { marginLeft: 'auto' } : undefined}
+                  >
                     {getInitials(name)}
                   </StyledAvatar>
                 )

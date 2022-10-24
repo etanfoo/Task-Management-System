@@ -1,4 +1,4 @@
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Button, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { Palette } from "../Palette";
@@ -42,14 +42,27 @@ export const ProfilePicture = styled('img')`
   height: 3rem;
   width: 3rem;
   border-radius: 5rem;
-  margin-left: auto;
   cursor: pointer;
 `;
 
 export const StyledAvatar = styled(Avatar)`
   height: 3rem;
   width: 3rem;
-  margin-left: auto;
   background-color: ${Palette.mainTeal};
   cursor: pointer
+`;
+
+export const StyledIconButton = styled(IconButton)`
+  margin-left: auto;
+  margin-right: 1rem;
+`;
+
+export const CreateButton = styled(Button)`
+  background-color: ${Palette.mainTeal};
+  margin-right: 1rem;
+  text-transform: capitalize;
+
+  &:hover {
+    background-color: ${Palette.darkTeal};
+  }
 `;
