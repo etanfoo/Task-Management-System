@@ -42,7 +42,7 @@ const ProfilePage = () => {
   const fetchFriends = async () => {
     try {
       const data = await getConnections(
-        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
+        parseInt(profileId!)
       );
       setFriends(data);
     } catch (err: any) {
