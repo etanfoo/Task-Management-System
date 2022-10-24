@@ -40,5 +40,9 @@ export const BodyContainer = styled("div")`
     margin-top: 1rem;
     margin-bottom: 0.9rem;
     background-color: ${Palette.mainTeal};
+
+    &:hover {
+      background-color: ${Palette.darkTeal};
+    }
   }
 `;
