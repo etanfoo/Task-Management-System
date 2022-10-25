@@ -106,7 +106,6 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
                 <MenuItem onClick={() => navigate(`/profile/${sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)}`)}>
                   Profile 
                 </MenuItem>
-                {/* todo: update with friends  */}
                 <MenuItem onClick={() => navigate('/friends')}>
                   Look for a friend 
                 </MenuItem>

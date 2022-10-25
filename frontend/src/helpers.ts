@@ -1,4 +1,3 @@
-// todo: check file type
 export const toBase64 = (file: any) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

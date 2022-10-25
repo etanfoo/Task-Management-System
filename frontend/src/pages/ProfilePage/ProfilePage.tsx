@@ -11,10 +11,11 @@ import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import InfoIcon from "../../assets/info.png";
 import { TextField } from "@mui/material";
-import { EmptyProfile, EmptyUpdatedProfileDetails, MockFriends } from "../../constants/profiles";
+import { EmptyProfile, EmptyUpdatedProfileDetails } from "../../constants/profiles";
 import { MockTasks } from "../../constants/tasks";
 import { toBase64, getInitials } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
+import { getConnections } from "../../api/connect";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const ProfilePage = () => {
   const [updatedProfileDetails, setUpdatedProfileDetails] = useState<IUpdatedProfileDetails>(EmptyUpdatedProfileDetails);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
 
+  const [friends, setFriends] = useState<IProfile[]>([]);
+
   const loadProfile = async () => {
     try {
       const data = await getProfile(parseInt(profileId!));
@@ -34,6 +37,18 @@ const ProfilePage = () => {
       setIsLoading(false);
       console.log(err);
     }
+  };
+
+  const fetchFriends = async () => {
+    try {
+      const data = await getConnections(
+        parseInt(profileId!)
+      );
+      setFriends(data);
+    } catch (err: any) {
+      // todo: some error handling
+      console.log(err);
+    };
   };
 
   const updateLogo = async (e: ChangeEvent) => {
@@ -75,6 +90,7 @@ const ProfilePage = () => {
       setIsSelfProfile(true);
     };
     loadProfile();
+    fetchFriends();
     // eslint-disable-next-line
   }, [profileId]);
 
@@ -130,7 +146,6 @@ const ProfilePage = () => {
                 {isSelfProfile ?
                   (
                     <IconContainer>
-                      {/* todo: update url of info page? */}
                       {pageState === 'view'
                         ? (
                           <>
@@ -196,16 +211,21 @@ const ProfilePage = () => {
                 <FriendsContainer>
                   <h2>Friends</h2>
                   <OverflowContainer>
-                    {/* todo: replace with real data returned from api */}
-                    {MockFriends.map((friend) => (
-                      <FriendsCard
-                        key={friend.profileId}
-                        profileId={friend.profileId}
-                        name={friend.name}
-                        email={friend.email}
-                        imageURL={friend.imageURL}
-                      />
-                    ))}
+                    {friends.length === 0 
+                      ? (
+                        <p>You have no friends...</p>
+                      ) : (
+                        friends.map((friend) => (
+                          <FriendsCard
+                            key={friend.id}
+                            profileId={friend.id}
+                            name={friend.name}
+                            email={friend.email}
+                            imageURL={friend.profilePicture}
+                          />
+                        ))
+                      )
+                    }
                   </OverflowContainer>
                 </FriendsContainer>
               </BodyContainer>

@@ -183,6 +183,10 @@ export const LabelContainer = styled('div')`
 export const OverflowContainer = styled('div')`
   overflow-y: auto;
   padding: 0 1rem;
+
+  > p {
+    color: ${Palette.thGray};
+  }
 `;
 
 export const FriendsContainer = styled('div')`
