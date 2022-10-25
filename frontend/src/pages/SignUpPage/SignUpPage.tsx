@@ -41,7 +41,7 @@ const SignUpPage = () => {
       sessionStorage.setItem(process.env.REACT_APP_PROFILE_ID!, data.profile_id.toString());
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, data.access_token);
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/dashboard', {state:{initialPageState:"tasks"}});
     } catch (err: any) {
       setIsLoading(false);
       setError(

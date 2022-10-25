@@ -123,7 +123,7 @@ const CreateProjectPage = () => {
                 </MembersContainer>  
               </BottomContainer>
               <ControlContainer>
-                <CancelButton variant='contained' onClick={() => navigate("/dashboard")}>Cancel</CancelButton>
+                <CancelButton variant='contained' onClick={() => navigate("/dashboard", {state:{initialPageState:"projects"}})}>Cancel</CancelButton>
                 <CreateButton variant='contained' onClick={createProject}>Create</CreateButton>
               </ControlContainer>
               <Footer />

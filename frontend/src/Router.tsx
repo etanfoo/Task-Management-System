@@ -25,7 +25,7 @@ const Router = () => (
       <Route element={ <AuthenticatedRoutes /> }>
         <Route path='/profile/:profileId' element={ <ProfilePage /> } />
         <Route path='/task/:taskId' element={ <div>this be the task page</div> } />
-        <Route path='/dashboard' element={ <DashboardPage initialPageState="tasks" /> } />
+        <Route path='/dashboard' element={ <DashboardPage /> } />
         <Route path='/project/create' element={ <CreateProjectPage /> } />
         <Route path='/project/:projectId' element={ <ProjectPage /> } />
         <Route path='/project/:projectId/statistics' element={ <div>this be the stats page</div> } />

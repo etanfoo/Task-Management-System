@@ -11,14 +11,15 @@ type projectidProps = {
 }
 
 const ProjectSidebar = ({ id }: projectidProps) => {
+  // const project = "project";
   return(
     <ProjectSidebarContainer>
-      <ProjectButton to="/dashboard">
+      <ProjectButton to="/dashboard" state={{ initialPageState: "projects" }}>
         <img src={MyProjectIcon} alt='My project' />
         <h2>My Project</h2>
-      </ProjectButton>
+      </ProjectButton> 
       <ButtonBorder />
-      <ProjectButton to="/dashboard">
+      <ProjectButton to="/dashboard" state={{ initialPageState: "tasks" }}>
         <img src={TaskIcon} alt='My tasks' />
         <h2>My Tasks</h2>
       </ProjectButton>

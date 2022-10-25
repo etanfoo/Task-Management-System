@@ -18,6 +18,7 @@ import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
 // import { getProfile, getProfiles } from "../../api/profile";
 import { IProfile } from "../../interfaces/api-response";
 import { search } from "../../helpers";
+import { getConnections } from "../../api/connect";
 
 const ProjectPage = () => {
   const { projectId } = useParams();
@@ -27,6 +28,7 @@ const ProjectPage = () => {
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
   const [isDelete, setIsDelete] = useState<boolean>(false); 
   const [members, setMembers] = useState<IProfile[]>([]);
+  const [currentMembers, setCurrentMembers] = useState<IProfile[]>([]);
   const [addedMembers, setAddedMembers] = useState<number[]>([]);
   const [searchMember, setSearchMember] = useState<string>("");
   
@@ -34,7 +36,21 @@ const ProjectPage = () => {
     try {
       const resp = await getProject(projectId!);
       setProjectDetails(resp);
-      setMembers(resp.profiles);
+      setCurrentMembers(resp.profiles);
+      setIsLoading(false);
+    } catch (err: any) {
+      console.log(err);
+      setIsLoading(false);
+    }
+  }
+
+  const loadMembers = async () => {
+    try {
+      const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      setMembers(resp);
+      // const data = await getProfiles();
+      // setMembers(data);
+      console.log(resp)
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -44,8 +60,14 @@ const ProjectPage = () => {
 
   useEffect(() => {
     loadProject();
+    loadMembers();
     // eslint-disable-next-line
   }, [projectId])
+
+  const moveMember = (profileId: number) => {
+    if (!addedMembers.includes(profileId)) setAddedMembers([...addedMembers, profileId]);
+    else setAddedMembers(addedMembers => addedMembers.filter(x => x === profileId));
+  }
 
   const cancelEditProject = () => {
     setPageState('view');
@@ -140,16 +162,35 @@ const ProjectPage = () => {
                     />
                     <OverflowContainer>
                       {/* Change to if empty */}
-                      {search(members, searchMember).map((profile: IProfile) => (
-                        <FriendsCard
-                          key={profile.id}
-                          profileId={profile.id}
-                          name={profile.name}
-                          email={profile.email}
-                          imageURL={profile.profilePicture}
-                          functionality="profile"
-                        />
-                      ))}
+                      
+                      {pageState === 'view'
+                        ? 
+                        <>
+                        {search(currentMembers, searchMember).map((profile: IProfile) => (
+                          <FriendsCard
+                            key={profile.id}
+                            profileId={profile.id}
+                            name={profile.name}
+                            email={profile.email}
+                            imageURL={profile.profilePicture}
+                            functionality="profile"
+                          />
+                        ))}
+                        </>
+                        :
+                        <>
+                        {search(members, searchMember).map((profile: IProfile) => (
+                          <FriendsCard
+                            key={profile.id}
+                            profileId={profile.id}
+                            name={profile.name}
+                            email={profile.email}
+                            imageURL={profile.profilePicture}
+                            functionality="profile"
+                          />
+                        ))}
+                        </>
+                      }
                     </OverflowContainer>
                   </FriendsContainer>
                 </MidContainer>

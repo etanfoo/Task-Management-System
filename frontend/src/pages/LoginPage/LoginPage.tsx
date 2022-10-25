@@ -25,7 +25,7 @@ const LoginPage = () => {
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, resp.access_token);
       sessionStorage.setItem(process.env.REACT_APP_PROFILE_ID!, resp.profile_id.toString());
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/dashboard', {state:{initialPageState:"tasks"}});
     } catch (err: any) {
       setIsLoading(false);
       if (err.response.status === 401) setError("Incorrect email or password");

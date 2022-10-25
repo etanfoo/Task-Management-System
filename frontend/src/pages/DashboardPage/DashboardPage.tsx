@@ -15,12 +15,16 @@ import { getProjects } from "../../api/project";
 import { IProfile, IProject } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 import { getConnections } from "../../api/connect";
+import { useLocation } from "react-router-dom";
 
-type DashboardPageProps = {
-  initialPageState: "tasks" | "projects";
-};
+// type DashboardPageProps = {
+//   initialPageState: "tasks" | "projects";
+// };
 
-const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
+const DashboardPage = () => {
+  const location = useLocation();
+  const { initialPageState } = location.state;
+
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [pageState, setPageState] = useState<string>(initialPageState);
 
@@ -33,7 +37,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   // eslint-disable-next-line
   const [allTasks, setAllTasks] = useState(MockTasks);
 
-  const [shownProjects, setShownProjects] = useState(allProjects);
+  const [shownProjects, setShownProjects] = useState<IProject[]>([]);
   const [shownTasks, setShownTasks] = useState(allTasks);
 
   const [connections, setConnections] = useState<IProfile[]>([]);
@@ -44,6 +48,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
     try {
       const data = await getProjects(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       setAllProjects(data);
+      setShownProjects(data);
     } catch (err: any) {
       // todo: figure some error handling here? show error popup?
       console.log(err);
@@ -223,7 +228,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                     <OverflowContainer>
                       {shownTasks.map((task) => (
                         <TaskCard
-                          key={task.taskId}
+                          key={`task ${task.taskId}`}
                           taskId={task.taskId}
                           title={task.title}
                           deadline={task.deadline}
@@ -246,8 +251,8 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                     <OverflowContainer>
                       {shownProjects.map((project) => (
                         <ProjectCard
-                          key={project.title}
-                          projectId={1}
+                          key={`project ${project.id}`}
+                          projectId={project.id}
                           name={project.title}
                           description={project.description}
                         />

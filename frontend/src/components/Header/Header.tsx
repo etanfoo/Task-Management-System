@@ -38,7 +38,7 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
 
   const handleLogoClick = () => {
     if (sessionStorage.getItem(process.env.REACT_APP_TOKEN!)) {
-      navigate('/dashboard');
+      navigate('/dashboard', {state:{initialPageState:"tasks"}});
     } else {
       navigate('/');
     }

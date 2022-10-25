@@ -16,7 +16,7 @@ const DeleteOverlay = ({ isOpen, content, contentId, closeCallback }: DeleteOver
   const deleteContent = async() => {
     try {
       if (content === "project") await deleteProject(contentId, sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
-      navigate("/dashboard");
+      navigate("/dashboard", {state:{initialPageState:"projects"}});
     } catch (err: any) {
       console.log(err);
     }

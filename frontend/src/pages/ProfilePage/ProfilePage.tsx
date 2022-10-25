@@ -15,6 +15,7 @@ import { EmptyProfile, EmptyUpdatedProfileDetails, MockFriends } from "../../con
 import { MockTasks } from "../../constants/tasks";
 import { toBase64, getInitials } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
+import { getConnections } from "../../api/connect";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -24,14 +25,15 @@ const ProfilePage = () => {
   const [profileDetails, setProfileDetails] = useState<IProfile>(EmptyProfile);
   const [updatedProfileDetails, setUpdatedProfileDetails] = useState<IUpdatedProfileDetails>(EmptyUpdatedProfileDetails);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
+  const [members, setMembers] = useState<IProfile[]>([]);
 
   const loadProfile = async () => {
     try {
       const data = await getProfile(parseInt(profileId!));
       setProfileDetails(data);
-      setIsLoading(false);
+      // setIsLoading(false);
     } catch (err: any) {
-      setIsLoading(false);
+      // setIsLoading(false);
       console.log(err);
     }
   };
@@ -70,11 +72,23 @@ const ProfilePage = () => {
     setUpdatedProfileDetails(EmptyUpdatedProfileDetails);
   };
 
+  const loadMembers = async () => {
+    try {
+      const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      setMembers(resp);
+      setIsLoading(false);
+    } catch (err: any) {
+      console.log(err);
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)) {
       setIsSelfProfile(true);
     };
     loadProfile();
+    loadMembers();
     // eslint-disable-next-line
   }, [profileId]);
 
@@ -197,13 +211,13 @@ const ProfilePage = () => {
                     <h2>Friends</h2>
                     <OverflowContainer>
                       {/* todo: replace with real data returned from api */}
-                      {MockFriends.map((friend) => (
+                      {members.map((friend) => (
                         <FriendsCard
-                          key={friend.profileId}
-                          profileId={friend.profileId}
+                          key={friend.id}
+                          profileId={friend.id}
                           name={friend.name}
                           email={friend.email}
-                          imageURL={friend.imageURL}
+                          imageURL={friend.profilePicture}
                           functionality="profile"
                         />
                       ))}
