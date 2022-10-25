@@ -1,4 +1,4 @@
-import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, LeftContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel } from "./style";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle } from "./style";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -149,65 +149,66 @@ const ProfilePage = () => {
                 }
               </TopContainer>
               <BodyContainer>
-                <LeftContainer>
-                  <AboutMeContainer>
-                    {pageState === 'view'
-                      ? (
-                        profileDetails.aboutMe ||
-                          <p>
-                            {isSelfProfile
-                              ? "Tell us a little about yourself..."
-                              : "This user has yet to provide a bio."
-                            }
-                          </p>
-                      ): (
-                        <TextField
-                          multiline
-                          rows={4}
-                          placeholder="Tell us a little about yourself..."
-                          onChange={(e) => setUpdatedProfileDetails({...updatedProfileDetails, aboutMe: e.target.value })}
-                          sx={{ width: '100%' }}
-                        />
-                      )
-                    }
-                  </AboutMeContainer>
-                  <TasksContainer>
-                    <h2>Assigned tasks</h2>
-                    <LabelContainer>
-                      <p>ID</p>
-                      <p>Title</p>
-                      <p>Deadline</p>
-                      <p>Status</p>
-                    </LabelContainer>
-                    <OverflowContainer>
-                      {/* todo: replace with real data returned from api */}
-                      {MockTasks.map((task) => (
-                        <TaskCard
-                          key={task.taskId}
-                          taskId={task.taskId}
-                          title={task.title}
-                          deadline={task.deadline}
-                          status={task.status}
-                        />
-                      ))}
-                    </OverflowContainer>
-                  </TasksContainer>
-                </LeftContainer>
-                <FriendsContainer>
-                  <h2>Friends</h2>
+                <TasksContainer>
+                  <h2>Assigned tasks</h2>
+                  <LabelContainer>
+                    <p>ID</p>
+                    <p>Title</p>
+                    <p>Deadline</p>
+                    <p>Status</p>
+                  </LabelContainer>
                   <OverflowContainer>
                     {/* todo: replace with real data returned from api */}
-                    {MockFriends.map((friend) => (
-                      <FriendsCard
-                        key={friend.profileId}
-                        profileId={friend.profileId}
-                        name={friend.name}
-                        email={friend.email}
-                        imageURL={friend.imageURL}
+                    {MockTasks.map((task) => (
+                      <TaskCard
+                        key={task.taskId}
+                        taskId={task.taskId}
+                        title={task.title}
+                        deadline={task.deadline}
+                        status={task.status}
                       />
                     ))}
                   </OverflowContainer>
-                </FriendsContainer>
+                </TasksContainer>
+                <RightContainer>
+                  <AboutMeContainer>
+                      {pageState === 'view'
+                        ? (
+                          profileDetails.aboutMe ||
+                            <p>
+                              {isSelfProfile
+                                ? "Tell us a little about yourself..."
+                                : "This user has yet to provide a bio."
+                              }
+                            </p>
+                        ) : (
+                          <TextField
+                            multiline
+                            rows={4}
+                            placeholder="Tell us a little about yourself..."
+                            onChange={(e) => setUpdatedProfileDetails({...updatedProfileDetails, aboutMe: e.target.value })}
+                            sx={TextFieldStyle}
+                            inputProps={{ style: { color: "white"} }}
+                          />
+                        )
+                      }
+                    </AboutMeContainer>
+                  <FriendsContainer>
+                    <h2>Friends</h2>
+                    <OverflowContainer>
+                      {/* todo: replace with real data returned from api */}
+                      {MockFriends.map((friend) => (
+                        <FriendsCard
+                          key={friend.profileId}
+                          profileId={friend.profileId}
+                          name={friend.name}
+                          email={friend.email}
+                          imageURL={friend.imageURL}
+                        />
+                      ))}
+                    </OverflowContainer>
+                  </FriendsContainer>
+                </RightContainer>
               </BodyContainer>
               <Footer />
             </ProfilePageContainer>

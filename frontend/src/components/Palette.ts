@@ -9,4 +9,5 @@ export const Palette = {
   successGreen: "#00875A",
   progressBlue: "#0747A6",
   errorRed: "#f44336",
+  offGray: "#dee2e6"
 };
