@@ -93,8 +93,19 @@ public class TaskServiceImplementation implements TaskService {
         return util.checkTask(taskId);
     }
 
-    public void delete(Long id) {
+    public void delete(Long profileId, Long projectId, Long taskId) {
+        util.checkProfile(profileId);
 
+        Project project = util.checkProject(projectId);
+        util.isProfileInProject(profileId, projectId, project);
+        
+        Task task = util.checkTask(taskId);
+        util.isTaskInProject(projectId, taskId);
+
+        // have to detach tasks from project before removing
+        project.getTasks().remove(task);
+        util.isProfileAuthorOfTask(profileId, taskId);
+        taskRepo.delete(task);
     }
 
     public List<Task> getAssociatedTasks(Long profileId) {

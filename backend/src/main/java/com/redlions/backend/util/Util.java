@@ -129,4 +129,18 @@ public class Util {
         }
         return profiles;
     }
+
+    /**
+     * checks if profile is an author of a task
+     * throws an http error if they are not
+     * @param profileId
+     * @param taskId
+     */
+    public void isProfileAuthorOfTask(Long profileId, Long taskId) {
+        Task task = taskRepo.findById(taskId).stream().findFirst().orElse(null); // convert Optional<Task> to Task
+        if (task.getProfileAuthor().getId() != profileId) {
+            String errorMessage = String.format("Profile with id %d is not the author of Task %d", profileId, taskId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+    }
 }

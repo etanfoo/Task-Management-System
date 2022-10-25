@@ -118,6 +118,7 @@ public class Task {
         this.points = points;
     }
 
+
     @Override
     public String toString() {
         return "{" +
@@ -125,6 +126,11 @@ public class Task {
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", deadline='" + getDeadline() + "'" +
+            ", points='" + getPoints() + "'" +
+            ", project='" + getProject() + "'" +
+            ", profileAuthor='" + getProfileAuthor() + "'" +
+            ", profileAssignee='" + getProfileAssignee() + "'" +
             "}";
     }
+    
 }

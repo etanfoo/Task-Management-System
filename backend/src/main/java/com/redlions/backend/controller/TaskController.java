@@ -2,6 +2,7 @@ package com.redlions.backend.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,10 @@ public class TaskController {
         public Long newAssigneeId;
     }
 
+    public static class deleteTaskJson {
+        public Long profileId;
+    }
+
     @PostMapping(value = "/{projectId}/task")
     @ResponseStatus(HttpStatus.OK)
     public Task saveTask(@RequestBody TaskJson json, @PathVariable Long projectId) {
@@ -61,5 +66,12 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public Task findById(@PathVariable Long projectId, @PathVariable Long taskId) {
         return taskService.getTask(projectId, taskId);
+    }
+
+    @DeleteMapping(value = "/{projectId}/task/{taskId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteById(@RequestBody deleteTaskJson json, @PathVariable Long projectId, @PathVariable Long taskId) {
+        Long profileId = json.profileId;
+        taskService.delete(profileId, projectId, taskId);
     }
 }
