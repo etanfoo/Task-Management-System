@@ -144,6 +144,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                       name={connection.name}
                       email={connection.email}
                       imageURL={connection.profilePicture}
+                      functionality="profile"
                     />
                   ))}
                 </FriendsContainer>

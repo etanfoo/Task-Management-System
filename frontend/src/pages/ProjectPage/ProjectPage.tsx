@@ -3,19 +3,19 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import ProjectSidebar from "../../components/ProjectSidebar/ProjectSidebar";
 import { useParams } from "react-router-dom";
-import { EmptyProject } from "../../constants/project-page-contants";
+import { EmptyProject } from "../../constants/projects";
 import { useEffect, useState } from "react";
 import { IProjectDetails } from "../../interfaces/project";
 import { getProject, putProject } from "../../api/project";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
-import { MockTasks } from "../../constants/profile-page-constants";
+import { MockTasks } from "../../constants/tasks";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import DeleteIcon from "../../assets/delete.png";
 import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
-import { getProfile, getProfiles } from "../../api/profile";
+// import { getProfile, getProfiles } from "../../api/profile";
 import { IProfile } from "../../interfaces/api-response";
 import { search } from "../../helpers";
 
@@ -34,18 +34,7 @@ const ProjectPage = () => {
     try {
       const resp = await getProject(projectId!);
       setProjectDetails(resp);
-    } catch (err: any) {
-      console.log(err);
-      setIsLoading(false);
-    }
-  }
-  // Repeat code with CreateProject
-  const loadMembers = async () => {
-    try {
-      const resp = await getProfile(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      // setMembers(resp.acceptedConnections);
-      const data = await getProfiles();
-      setMembers(data);
+      setMembers(resp.profiles);
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -55,7 +44,6 @@ const ProjectPage = () => {
 
   useEffect(() => {
     loadProject();
-    loadMembers();
     // eslint-disable-next-line
   }, [projectId])
 
@@ -148,8 +136,10 @@ const ProjectPage = () => {
                     <MembersSearchbar 
                       placeholder="Search for a member to add..."
                       onChange={(e) => setSearchMember(e.target.value)}
+                      sx={{ width: "88%" }}
                     />
                     <OverflowContainer>
+                      {/* Change to if empty */}
                       {search(members, searchMember).map((profile: IProfile) => (
                         <FriendsCard
                           key={profile.id}
@@ -157,16 +147,9 @@ const ProjectPage = () => {
                           name={profile.name}
                           email={profile.email}
                           imageURL={profile.profilePicture}
+                          functionality="profile"
                         />
-                      )) ? search(members, searchMember).map((profile: IProfile) => (
-                        <FriendsCard
-                          key={profile.id}
-                          profileId={profile.id}
-                          name={profile.name}
-                          email={profile.email}
-                          imageURL={profile.profilePicture}
-                        />
-                      )) : "test"}
+                      ))}
                     </OverflowContainer>
                   </FriendsContainer>
                 </MidContainer>

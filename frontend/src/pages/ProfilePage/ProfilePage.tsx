@@ -204,6 +204,7 @@ const ProfilePage = () => {
                           name={friend.name}
                           email={friend.email}
                           imageURL={friend.imageURL}
+                          functionality="profile"
                         />
                       ))}
                     </OverflowContainer>
