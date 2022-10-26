@@ -156,7 +156,7 @@ const ProjectPage = () => {
                   </SummaryContainer>
                   <FriendsContainer>
                     <MembersSearchbar 
-                      placeholder="Search for a member to add..."
+                      placeholder={pageState === 'view' ? "Search for a member" : "Search for a member to add..."}
                       onChange={(e) => setSearchMember(e.target.value)}
                       sx={{ width: "88%" }}
                     />

@@ -210,17 +210,22 @@ const ProfilePage = () => {
                   <FriendsContainer>
                     <h2>Friends</h2>
                     <OverflowContainer>
-                      {/* todo: replace with real data returned from api */}
-                      {members.map((friend) => (
-                        <FriendsCard
-                          key={friend.id}
-                          profileId={friend.id}
-                          name={friend.name}
-                          email={friend.email}
-                          imageURL={friend.profilePicture}
-                          functionality="profile"
-                        />
-                      ))}
+                      {members.length === 0 
+                        ?
+                          <p>Add friends</p>
+                        :
+                          (members.map((friend) => (
+                            <FriendsCard
+                              key={friend.id}
+                              profileId={friend.id}
+                              name={friend.name}
+                              email={friend.email}
+                              imageURL={friend.profilePicture}
+                              functionality="profile"
+                            />)
+                          )
+                        )
+                      }
                     </OverflowContainer>
                   </FriendsContainer>
                 </RightContainer>

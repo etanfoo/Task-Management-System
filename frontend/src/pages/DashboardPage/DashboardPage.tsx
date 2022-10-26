@@ -69,6 +69,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     fetchAllProjects();
+    // todo: update friends list after accepting
     fetchFriends();
   }, []);
 

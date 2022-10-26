@@ -48,6 +48,12 @@ export const SummaryContainer = styled('div')`
 export const OverflowContainer = styled('div')`
   overflow-y: auto;
   padding: 0 1rem;
+  
+  > p {
+    text-align: center;
+    margin-top: 7rem;
+    color: ${Palette.thGray};
+  }
 `;
 
 export const MembersSearchbar = styled(TextField)`

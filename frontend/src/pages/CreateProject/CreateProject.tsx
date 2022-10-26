@@ -106,18 +106,22 @@ const CreateProjectPage = () => {
                     />
                     <OverflowContainer>
                       {/* Change to if empty put next*/}
-                      {search(members, searchMember).map((profile: IProfile) => (
-                        <div key={profile.id} onClick={() => moveMember(profile.id)}>
-                          <FriendsCard
-                            key={profile.id}
-                            profileId={profile.id}
-                            name={profile.name}
-                            email={profile.email}
-                            imageURL={profile.profilePicture}
-                            functionality="moveMember"
-                          />
-                        </div>
-                      ))}
+                      {members.length === 0 ?
+                        <p>Add friends</p>
+                        :
+                          (search(members, searchMember).map((profile: IProfile) => (
+                            <div key={profile.id} onClick={() => moveMember(profile.id)}>
+                              <FriendsCard
+                                key={profile.id}
+                                profileId={profile.id}
+                                name={profile.name}
+                                email={profile.email}
+                                imageURL={profile.profilePicture}
+                                functionality="moveMember"
+                              />
+                            </div>
+                          )))
+                      }
                     </OverflowContainer>
                   </FriendsContainer>
                 </MembersContainer>  
