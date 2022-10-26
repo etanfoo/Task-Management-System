@@ -11,7 +11,7 @@ import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import InfoIcon from "../../assets/info.png";
 import { TextField } from "@mui/material";
-import { EmptyProfile, EmptyUpdatedProfileDetails, MockFriends } from "../../constants/profiles";
+import { EmptyProfile, EmptyUpdatedProfileDetails } from "../../constants/profiles";
 import { MockTasks } from "../../constants/tasks";
 import { toBase64, getInitials } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
@@ -222,6 +222,7 @@ const ProfilePage = () => {
                               email={friend.email}
                               imageURL={friend.profilePicture}
                               functionality="profile"
+                              projectId={null!}
                             />)
                           )
                         )

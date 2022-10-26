@@ -151,6 +151,7 @@ const DashboardPage = () => {
                       email={connection.email}
                       imageURL={connection.profilePicture}
                       functionality="profile"
+                      projectId={null!}
                     />
                   ))}
                 </FriendsContainer>

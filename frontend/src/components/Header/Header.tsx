@@ -64,7 +64,6 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
       const requests = await getRequestedConnections(
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
       );
-      console.log(requests);
       setRequestConnections(requests);
     } catch (err: any) {
       // todo: do some error handling
@@ -90,18 +89,11 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
               {window.location.pathname === "/dashboard"
                 ? (
                   <>
-                    {requestConnections.length > 0
-                      ?
-                        <StyledBadge badgeContent={requestConnections.length} color="secondary">
-                          <StyledIconButton onClick={triggerConnectionRequestsModal}>
-                            <img src={FriendsIcon} alt="friends" width='40' height='40' />
-                          </StyledIconButton>
-                        </StyledBadge>
-                      :
-                        <StyledIconButton onClick={triggerConnectionRequestsModal}>
-                          <img src={FriendsIcon} alt="friends" width='40' height='40' />
-                        </StyledIconButton>
-                    }
+                    <StyledBadge badgeContent={requestConnections.length} color="secondary">
+                      <StyledIconButton onClick={triggerConnectionRequestsModal}>
+                        <img src={FriendsIcon} alt="friends" width='40' height='40' />
+                      </StyledIconButton>
+                    </StyledBadge>
                     <CreateButton variant='contained' onClick={triggerCreateTaskModal}>Create Task</CreateButton>
                     <CreateButton variant='contained' onClick={() => navigate('/project/create')}>Create Project</CreateButton>
                   </>

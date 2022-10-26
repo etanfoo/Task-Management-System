@@ -1,6 +1,6 @@
 import { Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { deleteProject } from '../../api/project';
+import { deleteMember, deleteProject } from '../../api/project';
 import { ButtonsContainer, DeleteOverlayContainer, NoButton, YesButton } from './style';
 
 type DeleteOverlaylProps = {
@@ -8,15 +8,23 @@ type DeleteOverlaylProps = {
   content: string;
   contentId: string;
   closeCallback: () => void;
+  memberId: number;
 }
 
-const DeleteOverlay = ({ isOpen, content, contentId, closeCallback }: DeleteOverlaylProps) => {
+const DeleteOverlay = ({ isOpen, content, contentId, closeCallback, memberId}: DeleteOverlaylProps) => {
   const navigate = useNavigate();
 
   const deleteContent = async() => {
     try {
-      if (content === "project") await deleteProject(contentId, sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
-      navigate("/dashboard", {state:{initialPageState:"projects"}});
+      if (content === "project") {
+        await deleteProject(contentId, sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
+        navigate("/dashboard", {state:{initialPageState:"projects"}});
+      } 
+      else if (content === "project-member") {
+        await deleteMember(contentId, sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!, memberId);
+        window.location.reload();
+      }
+
     } catch (err: any) {
       console.log(err);
     }

@@ -24,7 +24,7 @@ const ProjectSidebar = ({ id }: projectidProps) => {
         <h2>My Tasks</h2>
       </ProjectButton>
       <ButtonBorder />
-      <ProjectButton to="/dashboard">
+      <ProjectButton to="/dashboard" state={{ initialPageState: "tasks" }}>
         <img src={CreateIcon} alt='Create task' />
         <h2>Create Task</h2>
       </ProjectButton>

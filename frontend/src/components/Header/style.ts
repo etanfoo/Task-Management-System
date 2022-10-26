@@ -54,7 +54,7 @@ export const StyledAvatar = styled(Avatar)`
 
 export const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   marginLeft: "auto",
-  marginRight: "1rem", 
+  // marginRight: "1rem", 
   '& .MuiBadge-badge': {
     right: 25,
     top: 13,

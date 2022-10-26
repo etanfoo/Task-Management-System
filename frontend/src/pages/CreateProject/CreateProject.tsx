@@ -106,6 +106,7 @@ const CreateProjectPage = () => {
                     />
                     <OverflowContainer>
                       {/* Change to if empty put next*/}
+                      {/* todo: after search save members that were previously added*/}
                       {members.length === 0 ?
                         <p>Add friends</p>
                         :
@@ -118,9 +119,11 @@ const CreateProjectPage = () => {
                                 email={profile.email}
                                 imageURL={profile.profilePicture}
                                 functionality="moveMember"
+                                projectId={null!}
                               />
                             </div>
-                          )))
+                          ))
+                        )
                       }
                     </OverflowContainer>
                   </FriendsContainer>

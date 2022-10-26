@@ -15,7 +15,6 @@ import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import DeleteIcon from "../../assets/delete.png";
 import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
-// import { getProfile, getProfiles } from "../../api/profile";
 import { IProfile } from "../../interfaces/api-response";
 import { search } from "../../helpers";
 import { getConnections } from "../../api/connect";
@@ -48,9 +47,7 @@ const ProjectPage = () => {
     try {
       const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       setMembers(resp);
-      // const data = await getProfiles();
-      // setMembers(data);
-      console.log(resp)
+      // console.log(resp)
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -75,7 +72,7 @@ const ProjectPage = () => {
   };
 
   const updateProject = async () => {
-    if (updatedProjectDetails.title === "" && updatedProjectDetails.description === "") {
+    if (updatedProjectDetails.title === "" && updatedProjectDetails.description === "" && addedMembers.length === 0) {
       setPageState('view');
       return;
     }
@@ -84,6 +81,7 @@ const ProjectPage = () => {
       updatedProjectDetails.title = (!!updatedProjectDetails.title ? updatedProjectDetails.title : projectDetails.title);
       updatedProjectDetails.description = (!!updatedProjectDetails.description ? updatedProjectDetails.description : projectDetails.description);
       updatedProjectDetails.id = projectDetails.id;
+      console.log(addedMembers)
       await putProject(
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!),
         updatedProjectDetails,
@@ -101,7 +99,7 @@ const ProjectPage = () => {
         ? <LoadingOverlay isOpen={isLoading}/>
         : (
           <>
-            <DeleteOverlay isOpen={isDelete} content="project" contentId={projectId!} closeCallback={() => setIsDelete(false)} />
+            <DeleteOverlay isOpen={isDelete} content="project" contentId={projectId!} closeCallback={() => setIsDelete(false)} memberId={0}/>
             <Header />
             <ProjectPageContainer>
               <ProjectSidebar id={projectId!} />
@@ -162,34 +160,41 @@ const ProjectPage = () => {
                     />
                     <OverflowContainer>
                       {/* Change to if empty */}
-                      
                       {pageState === 'view'
                         ? 
-                        <>
-                        {search(currentMembers, searchMember).map((profile: IProfile) => (
-                          <FriendsCard
-                            key={profile.id}
-                            profileId={profile.id}
-                            name={profile.name}
-                            email={profile.email}
-                            imageURL={profile.profilePicture}
-                            functionality="profile"
-                          />
-                        ))}
-                        </>
+                          <>
+                          {currentMembers.length === 0 ?
+                              <p>Add friends</p>
+                            :
+                            search(currentMembers, searchMember).map((profile: IProfile) => (
+                              <FriendsCard
+                                key={profile.id}
+                                profileId={profile.id}
+                                name={profile.name}
+                                email={profile.email}
+                                imageURL={profile.profilePicture}
+                                functionality="profile-project"
+                                projectId={projectId!}
+                              />
+                            ))
+                          }
+                          </>
                         :
-                        <>
-                        {search(members, searchMember).map((profile: IProfile) => (
-                          <FriendsCard
-                            key={profile.id}
-                            profileId={profile.id}
-                            name={profile.name}
-                            email={profile.email}
-                            imageURL={profile.profilePicture}
-                            functionality="profile"
-                          />
-                        ))}
-                        </>
+                          (search(members, searchMember).map((profile: IProfile) => (
+                            // Add colour if user is already in project
+                            <div key={`member ${profile.id}`} onClick={() => moveMember(profile.id)}>
+                              <FriendsCard
+                                key={`key ${profile.id}`}
+                                profileId={profile.id}
+                                name={profile.name}
+                                email={profile.email}
+                                imageURL={profile.profilePicture}
+                                functionality="moveMember"
+                                projectId={null!}
+                              />
+                            </div>
+                          ))
+                        )                        
                       }
                     </OverflowContainer>
                   </FriendsContainer>
