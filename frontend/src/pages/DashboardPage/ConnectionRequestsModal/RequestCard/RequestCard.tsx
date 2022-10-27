@@ -28,7 +28,6 @@ const RequestCard = ({ id, name, email, removeRequestCallback }: RequestCardProp
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!),
         id
       );
-      console.log('asdasd')
       removeRequestCallback();
     } catch (err: any) {
       // todo: show some error
@@ -43,7 +42,6 @@ const RequestCard = ({ id, name, email, removeRequestCallback }: RequestCardProp
         <p>{email}</p>
       </TextContainer>
       <ButtonContainer>
-        {/* todo: update onclick functionality */}
         <IgnoreButton variant='contained' onClick={handleReject}>
           Ignore
         </IgnoreButton>

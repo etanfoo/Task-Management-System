@@ -186,7 +186,7 @@ export const OverflowContainer = styled('div')`
     text-align: center;
     margin-top: 4rem;
     color: ${Palette.thGray};
-  }
+  };
 `;
 
 export const FriendsContainer = styled('div')`

@@ -7,7 +7,7 @@ export const ProjectPageContainer = styled('div')`
 
 export const ProjectContainer = styled('div')`
   width: 80%;
-  margin-left: 2rem;  
+  margin-left: 2rem; 
 
   > div {
     display: flex;
@@ -69,6 +69,12 @@ export const FriendsContainer = styled('div')`
   border-radius: 0.5rem;
   margin-left: 2rem;
   height: 13rem;
+
+  > p {
+    text-align: center;
+    margin-top: 4rem;
+    color: ${Palette.thGray};
+  };
 `;
 
 export const MembersSearchbar = styled(TextField)`
@@ -145,7 +151,7 @@ export const CancelButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.lightGray};
-  }
+  };
 `;
 
 export const UpdateButton = styled(Button)`
@@ -155,7 +161,7 @@ export const UpdateButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.darkTeal};
-  }
+  };
 `;
 
 export const EmptySummary= styled('div')`

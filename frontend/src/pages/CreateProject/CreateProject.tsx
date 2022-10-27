@@ -19,7 +19,7 @@ const CreateProjectPage = () => {
 
   const [error, setError] = useState<string>("");
   const [projectDetail, setProjectDetails] = useState<IProjectDetails>(EmptyProject);
-  const [members, setMembers] = useState<IProfile[]>([]);
+  const [friends, setFriends] = useState<IProfile[]>([]);
   const [addedMembers, setAddedMembers] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchMember, setSearchMember] = useState<string>("");
@@ -37,10 +37,10 @@ const CreateProjectPage = () => {
     }
   }
 
-  const loadMembers = async () => {
+  const fetchFriends = async () => {
     try {
       const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      setMembers(resp);
+      setFriends(resp);
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -49,7 +49,7 @@ const CreateProjectPage = () => {
   }
 
   useEffect(() => {
-    loadMembers();
+    fetchFriends();
   }, [])
   
   // Add or remove member from list
@@ -95,31 +95,33 @@ const CreateProjectPage = () => {
                   <MembersContainer>
                     <h2>Members</h2>
                     <FriendsContainer>
-                      <MembersSearchbar 
-                        placeholder="Search for a member to add..."
-                        onChange={(e) => setSearchMember(e.target.value)}
-                      />
-                      <OverflowContainer>
-                        {members.length === 0 
-                          ?
-                            <p>Add friends</p>
-                          :
-                            (search(members, searchMember).map((profile: IProfile) => (
-                              <div key={profile.id} onClick={() => moveMember(profile.id)}>
-                                <FriendsCard
-                                  key={profile.id}
-                                  profileId={profile.id}
-                                  name={profile.name}
-                                  email={profile.email}
-                                  imageURL={profile.profilePicture}
-                                  functionality="moveMember"
-                                  projectId={null!}
-                                  alreadyAdded={addedMembers.includes(profile.id)}
-                                />
-                              </div>
-                            )))
-                        }
-                      </OverflowContainer>
+                      {friends.length === 0 
+                        ?
+                          <p>You have no friends to add...</p>
+                        :
+                          <>
+                            <MembersSearchbar 
+                              placeholder="Search for a member to add..."
+                              onChange={(e) => setSearchMember(e.target.value)}
+                            />
+                            <OverflowContainer>
+                              {search(friends, searchMember).map((profile: IProfile) => (
+                                <div key={profile.id} onClick={() => moveMember(profile.id)}>
+                                  <FriendsCard
+                                    key={profile.id}
+                                    profileId={profile.id}
+                                    name={profile.name}
+                                    email={profile.email}
+                                    imageURL={profile.profilePicture}
+                                    functionality="moveMember"
+                                    projectId={null!}
+                                    alreadyAdded={addedMembers.includes(profile.id)}
+                                  />
+                                </div>
+                              ))}
+                            </OverflowContainer>
+                          </>
+                      }
                     </FriendsContainer>
                   </MembersContainer>  
                 </BottomContainer>

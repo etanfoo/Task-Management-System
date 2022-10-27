@@ -28,7 +28,7 @@ const ProjectPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
   const [isDelete, setIsDelete] = useState<boolean>(false); 
-  const [members, setMembers] = useState<IProfile[]>([]);
+  const [potentialMembers, setPotentialMembers] = useState<IProfile[]>([]);
   const [currentMembers, setCurrentMembers] = useState<IProfile[]>([]);
   const [addedMembers, setAddedMembers] = useState<number[]>([]);
   const [searchMember, setSearchMember] = useState<string>("");
@@ -53,7 +53,7 @@ const ProjectPage = () => {
   const loadMembers = async () => {
     try {
       const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      setMembers(resp.filter(profile => !currentMembers.includes(profile)));
+      setPotentialMembers(resp.filter(profileA => !currentMembers.some(profileB => profileA.id === profileB.id)));
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -191,55 +191,58 @@ const ProjectPage = () => {
                     }
                   </SummaryContainer>
                   <FriendsContainer>
-                    <MembersSearchbar 
-                      placeholder={pageState === 'view' ? "Search for a member" : "Search for a member to add..."}
-                      onChange={(e) => setSearchMember(e.target.value)}
-                      sx={{ width: "20rem" }}
-                    />
-                    <OverflowContainer>
-                      {pageState === 'view'
-                        ? 
-                          (currentMembers.length === 0 ?
-                              <p>Add friends</p>
-                            :
-                              search(currentMembers, searchMember).map((profile: IProfile) => (
-                                <FriendsCard
-                                  key={profile.id}
-                                  profileId={profile.id}
-                                  name={profile.name}
-                                  email={profile.email}
-                                  imageURL={profile.profilePicture}
-                                  functionality="profile-project"
-                                  projectId={projectId!}
-                                  alreadyAdded={false}
-                                />
-                              ))
-                          )
-                        :
-                          (search(members, searchMember).map((profile: IProfile) => (
-                            <div key={`member ${profile.id}`} onClick={() => moveMember(profile.id)}>
-                              <FriendsCard
-                                key={`key ${profile.id}`}
-                                profileId={profile.id}
-                                name={profile.name}
-                                email={profile.email}
-                                imageURL={profile.profilePicture}
-                                functionality="moveMember"
-                                projectId={null!}
-                                alreadyAdded={addedMembers.includes(profile.id)}
-                              />
-                            </div>
-                          ))
-                        )                        
-                      }
-                    </OverflowContainer>
+                    {potentialMembers.length === 0 && pageState === 'edit'
+                      ?
+                        <p>You have no friends to add...</p>
+                      :
+                        <>
+                          <MembersSearchbar 
+                            placeholder={pageState === 'view' ? "Search for a member" : "Search for a member to add..."}
+                            onChange={(e) => setSearchMember(e.target.value)}
+                            sx={{ width: "23rem" }}
+                          />
+                          <OverflowContainer>
+                            {pageState === 'view'
+                              ?     
+                                search(currentMembers, searchMember).map((profile: IProfile) => (
+                                  <FriendsCard
+                                    key={profile.id}
+                                    profileId={profile.id}
+                                    name={profile.name}
+                                    email={profile.email}
+                                    imageURL={profile.profilePicture}
+                                    functionality="profile-project"
+                                    projectId={projectId!}
+                                    alreadyAdded={false}
+                                  />
+                                ))
+                              :
+                                search(potentialMembers, searchMember).map((profile: IProfile) => (
+                                  <div key={`member ${profile.id}`} onClick={() => moveMember(profile.id)}>
+                                    <FriendsCard
+                                      key={`key ${profile.id}`}
+                                      profileId={profile.id}
+                                      name={profile.name}
+                                      email={profile.email}
+                                      imageURL={profile.profilePicture}
+                                      functionality="moveMember"
+                                      projectId={null!}
+                                      alreadyAdded={addedMembers.includes(profile.id)}
+                                    />
+                                  </div>
+                                )
+                              )                        
+                            }
+                          </OverflowContainer>
+                        </>
+                    }
                   </FriendsContainer>
                 </MidContainer>
                 <BottomContainer>
                   <TaskControls>
                     <TaskSearchbar 
                       label="Search for a task..."
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={(e) => setSearchQuery(e.target.value.toLocaleLowerCase())}
                     />
                     <TaskSort>
                       <InputLabel>Sort by</InputLabel>

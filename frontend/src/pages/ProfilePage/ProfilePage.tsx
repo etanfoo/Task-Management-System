@@ -25,7 +25,7 @@ const ProfilePage = () => {
   const [profileDetails, setProfileDetails] = useState<IProfile>(EmptyProfile);
   const [updatedProfileDetails, setUpdatedProfileDetails] = useState<IUpdatedProfileDetails>(EmptyUpdatedProfileDetails);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
-  const [members, setMembers] = useState<IProfile[]>([]);
+  const [friends, setFriends] = useState<IProfile[]>([]);
 
   const loadProfile = async () => {
     try {
@@ -70,10 +70,10 @@ const ProfilePage = () => {
     setUpdatedProfileDetails(EmptyUpdatedProfileDetails);
   };
 
-  const loadMembers = async () => {
+  const fetchFriends = async () => {
     try {
       const resp = await getConnections(parseInt(profileId!));
-      setMembers(resp);
+      setFriends(resp);
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -83,7 +83,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     loadProfile();
-    loadMembers();
+    fetchFriends();
     // eslint-disable-next-line
   }, [profileId]);
 
@@ -139,7 +139,6 @@ const ProfilePage = () => {
                 {profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!) ?
                   (
                     <IconContainer>
-                      {/* todo: update url of info page? */}
                       {pageState === 'view'
                         ? (
                           <>
@@ -205,11 +204,11 @@ const ProfilePage = () => {
                   <FriendsContainer>
                     <h2>Friends</h2>
                     <OverflowContainer>
-                      {members.length === 0 
+                      {friends.length === 0 
                         ?
-                          <p>Add friends</p>
+                          <p>You have no friends...</p>
                         :
-                          (members.map((friend) => (
+                          (friends.map((friend) => (
                             <FriendsCard
                               key={friend.id}
                               profileId={friend.id}

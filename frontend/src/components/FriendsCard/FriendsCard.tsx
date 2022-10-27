@@ -6,7 +6,6 @@ import DeleteIcon from "../../assets/delete.png";
 import DeleteOverlay from "../DeleteOverlay/DeleteOverlay";
 
 type FriendsCardProps = {
-  // todo: check type if empty
   imageURL: string | null;
   name: string;
   email: string;

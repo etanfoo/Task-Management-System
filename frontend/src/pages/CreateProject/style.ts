@@ -7,6 +7,8 @@ export const CreateProjectPageContainer = styled('div')`
   flex-direction: column;
   text-align: left;
   align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 export const TopContainer = styled('div')`
@@ -33,7 +35,6 @@ export const BottomContainer = styled('div')`
 export const SummaryContainer = styled('div')`
   width: 100%;
   
-  
   > h2 {
     margin-top: 1rem;
     font-weight: normal;
@@ -42,18 +43,12 @@ export const SummaryContainer = styled('div')`
   > TextField {
     background-color: ${Palette.mainTeal};
     color: white;
-  }
+  };
 `;
 
 export const OverflowContainer = styled('div')`
   overflow-y: auto;
   padding: 0 1rem;
-  
-  > p {
-    text-align: center;
-    margin-top: 7rem;
-    color: ${Palette.thGray};
-  }
 `;
 
 export const MembersSearchbar = styled(TextField)`
@@ -83,6 +78,12 @@ export const FriendsContainer = styled('div')`
   margin-top: 1rem;
   margin-bottom: 3rem;
   height: 355px;
+
+  > p {
+    text-align: center;
+    margin-top: 8rem;
+    color: ${Palette.thGray};
+  };
 `;
 
 export const ControlContainer = styled('div')`
@@ -105,7 +106,7 @@ export const CancelButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.lightGray};
-  }
+  };
 `;
 
 export const CreateButton = styled(Button)`
@@ -115,5 +116,5 @@ export const CreateButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.darkTeal};
-  }
+  };
 `;
