@@ -162,7 +162,7 @@ const DashboardPage = () => {
           <StyledTextField
             fullWidth
             label="Search for a task..."
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value.toLocaleLowerCase())}
           />
           <SelectContainer>
             <StyledForm>

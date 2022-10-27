@@ -26,6 +26,7 @@ export const getInitials = (name: string) => {
 }
 
 export const search = (profiles: IProfile[], searchMember: string) => {
+  const lowercaseSearchMember = searchMember.toLocaleLowerCase();
   return profiles.filter((profile: IProfile) => 
-    profile.name.toLowerCase().includes(searchMember) || profile.email.toLowerCase().includes(searchMember));
+    profile.name.toLowerCase().includes(lowercaseSearchMember) || profile.email.toLowerCase().includes(lowercaseSearchMember));
 }
