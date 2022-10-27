@@ -126,19 +126,10 @@ export const BodyContainer = styled('div')`
   width: 80%;
 `;
 
-export const LeftContainer = styled('div')`
-  // display: flex;
-  // flex-direction: column;
-  // margin-right: 1rem;
-  // width: 200px;
-`;
-
 export const RightContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  // width: 200px;
   margin-left: 2rem;
-  // margin-right: 1rem;
 `;
 
 export const AboutMeContainer = styled('div')`
@@ -185,9 +176,6 @@ export const LabelContainer = styled('div')`
   > :nth-of-type(3) {
     width: 17rem;
   };
-  // > :nth-of-type(4) {
-  //   width: 20%;
-  // };
 `;
 
 export const OverflowContainer = styled('div')`
@@ -210,8 +198,8 @@ export const FriendsContainer = styled('div')`
   width: 100%;  
   border-radius: 0.5rem;
   margin-bottom: 3rem;
-  // height: 491px;
   height: 17rem;
+
   > h2 {
     margin-top: 0;
     margin-left: 1rem;

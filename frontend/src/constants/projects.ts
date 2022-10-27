@@ -7,7 +7,6 @@ export const EmptyProject: IProjectDetails = {
   profiles: []
 };
 
-
 export const MockProjects = [
   {
     title: "Red Lions",

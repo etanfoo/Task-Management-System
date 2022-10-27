@@ -5,14 +5,10 @@ import { Palette } from "../Palette";
 export const ProjectSidebarContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  border: 2px solid ${Palette.thGray};
+  border: 1px solid ${Palette.offGray};
   border-radius: 15px;
   border-left: 0;
   width: 18rem;
-  
-  // text-align: center;
-  // height: 100%;
-  // align-items: center;
 `;
 
 export const ProjectButton = styled(Link)`
@@ -24,7 +20,7 @@ export const ProjectButton = styled(Link)`
   transition: transform .2s;
   padding: 10px;
   color: black;
-  // border-bottom: 2px solid #000000;
+
   &:hover {
     transform: scale(1.05);
     border-radius: 10px;
@@ -41,10 +37,8 @@ export const ProjectButton = styled(Link)`
 
   > h2 {
     margin-top: 0.5rem;
-    // margin-left: 1rem;
     font-weight: normal;
   };
-
 `;
 
 export const ButtonBorder = styled('div')`

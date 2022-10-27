@@ -26,7 +26,6 @@ export const postProject = async (profileId: string, project: IProjectDetails, p
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
       }
     });
-    
     return data;
   } catch (err: any) {
     throw err;
@@ -40,7 +39,6 @@ export const getProject = async (profileId: string): Promise<IProject> => {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
       }
     });
-    
     return data;
   } catch (err: any) {
     throw err;
@@ -58,7 +56,6 @@ export const putProject = async (profileId: number, project: IProjectDetails,  p
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
       }
     });
-    
     return data;
   } catch (err: any) {
     throw err;
@@ -75,7 +72,6 @@ export const deleteProject = async (projectId: string, profileId: string): Promi
         profileId
       }
     });
-    
     return data;
   } catch (err: any) {
     throw err;
@@ -93,7 +89,6 @@ export const deleteMember = async (projectId: string, profileId: string, deleteM
         "profileIdsToRemove": [deleteMemberId]
       }
     });
-    
     return data;
   } catch (err: any) {
     throw err;

@@ -38,6 +38,7 @@ export const ProfileContainer = styled('div')`
   flex-direction: row;
   align-items: center;
   transition: transform .2s;
+
   &:hover {
     transform: scale(1.05);
   }
@@ -54,6 +55,7 @@ export const DeleteButton = styled('img')`
   height: 1rem;
   margin-left: auto; 
   margin-right: 0;
+  
   &:hover {
     transform: scale(1.25);
   }

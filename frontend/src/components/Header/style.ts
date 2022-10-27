@@ -22,6 +22,7 @@ export const Logo = styled('img')`
 export const SignUpButton = styled(Button)`
   text-transform: capitalize;
   background-color: ${Palette.mainTeal};
+  
   &:hover {
     background-color: ${Palette.darkTeal};
   }
@@ -33,6 +34,7 @@ export const LoginLink = styled(Link)`
   color: black;
   font-size: 1rem;
   transition: all 0.3s ease 0s;
+  
   &:hover {
     color: ${Palette.mainTeal};
   }
@@ -52,15 +54,14 @@ export const StyledAvatar = styled(Avatar)`
   cursor: pointer
 `;
 
-export const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+export const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   marginLeft: "auto",
-  // marginRight: "1rem", 
+  
   '& .MuiBadge-badge': {
     right: 25,
     top: 13,
   },
 }));
-
 
 export const StyledIconButton = styled(IconButton)`
   margin-left: auto;

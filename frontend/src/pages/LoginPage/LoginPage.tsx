@@ -9,6 +9,7 @@ import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");

@@ -63,7 +63,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     fetchAllProjects();
-    // todo: update friends list after accepting
+    // todo: update friends list after accepting --> right now just refreshing window after modal closes
     fetchFriends();
   }, []);
 

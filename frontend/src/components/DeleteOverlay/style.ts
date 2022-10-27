@@ -1,10 +1,8 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../Palette";
-// import { Palette } from "../Palette";
 
 export const DeleteOverlayContainer = styled('div')`
-  // margin: auto;
   width: 50%;
   height: 40%;
   position: absolute;
@@ -14,6 +12,7 @@ export const DeleteOverlayContainer = styled('div')`
   background-color: white;
   padding: 1rem;
   border-radius: 10px;
+  
   > h1 {
     margin-top: 5rem;
     text-align: center;
@@ -28,7 +27,7 @@ export const ButtonsContainer = styled('div')`
   top: 70%;
   left: 44%;
   transform: translate(-50%, -50%);
-  // margin-right: 1rem;
+
   > :first-of-type {
     margin-right: 2rem;
   };

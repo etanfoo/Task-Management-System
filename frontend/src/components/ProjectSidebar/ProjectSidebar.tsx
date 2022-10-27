@@ -11,7 +11,6 @@ type projectidProps = {
 }
 
 const ProjectSidebar = ({ id }: projectidProps) => {
-  // const project = "project";
   return(
     <ProjectSidebarContainer>
       <ProjectButton to="/dashboard" state={{ initialPageState: "projects" }}>
@@ -34,7 +33,6 @@ const ProjectSidebar = ({ id }: projectidProps) => {
         <h2>View Stats</h2>
       </ProjectButton>
       <ButtonBorder />
-
       <HappinessTracker />
     </ProjectSidebarContainer>
   );

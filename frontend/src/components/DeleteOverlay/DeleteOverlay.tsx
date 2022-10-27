@@ -24,7 +24,6 @@ const DeleteOverlay = ({ isOpen, content, contentId, closeCallback, memberId}: D
         await deleteMember(contentId, sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!, memberId);
         window.location.reload();
       }
-
     } catch (err: any) {
       console.log(err);
     }

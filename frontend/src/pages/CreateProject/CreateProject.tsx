@@ -9,7 +9,6 @@ import { IProjectDetails } from "../../interfaces/project";
 import { postProject } from "../../api/project";
 import Popup from "../../components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
-// import { getProfile, getProfiles } from "../../api/profile";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import { IProfile } from "../../interfaces/api-response";
 import { search } from "../../helpers";
@@ -17,6 +16,7 @@ import { getConnections } from "../../api/connect";
 
 const CreateProjectPage = () => {
   const navigate = useNavigate();
+
   const [error, setError] = useState<string>("");
   const [projectDetail, setProjectDetails] = useState<IProjectDetails>(EmptyProject);
   const [members, setMembers] = useState<IProfile[]>([]);
@@ -52,6 +52,7 @@ const CreateProjectPage = () => {
     loadMembers();
   }, [])
   
+  // Add or remove member from list
   const moveMember = (profileId: number) => {
     if (!addedMembers.includes(profileId)) setAddedMembers([...addedMembers, profileId]);
     else setAddedMembers(addedMembers.filter(userId => userId !== profileId));
@@ -62,77 +63,75 @@ const CreateProjectPage = () => {
       {isLoading 
         ? <LoadingOverlay isOpen={isLoading}/>
         : (
-          <>
-            <Popup
-              isOpen={error !== ""}
-              popupMessage={error}
-              handleClose={() => setError("")}
-              type="error"
-            />
-            <CreateProjectPageContainer>
-              <Header />
-              <TopContainer>
-                <h1>Create a project</h1>
-                <h2>Project name</h2>
-                <TextField
-                  placeholder="Project Name"  
-                  sx={{ width: '100%' }}
-                  onChange={(e) => setProjectDetails({ ...projectDetail, title: e.target.value })}                
-                />
-              </TopContainer>
-              <BottomContainer>
-                <SummaryContainer>
-                  <h2>Summary</h2>
+            <>
+              <Popup
+                isOpen={error !== ""}
+                popupMessage={error}
+                handleClose={() => setError("")}
+                type="error"
+              />
+              <CreateProjectPageContainer>
+                <Header />
+                <TopContainer>
+                  <h1>Create a project</h1>
+                  <h2>Project name</h2>
                   <TextField
-                    multiline
-                    rows={14}
-                    placeholder="Summary of the project"
-                    sx={{ width: '95%' }} 
-                    onChange={(e) => setProjectDetails({ ...projectDetail, description: e.target.value })}
+                    placeholder="Project Name"  
+                    sx={{ width: '100%' }}
+                    onChange={(e) => setProjectDetails({ ...projectDetail, title: e.target.value })}                
                   />
-                </SummaryContainer>
-                <MembersContainer>
-                  <h2>Members</h2>
-                  <FriendsContainer>
-                    <MembersSearchbar 
-                      placeholder="Search for a member to add..."
-                      onChange={(e) => setSearchMember(e.target.value)}
+                </TopContainer>
+                <BottomContainer>
+                  <SummaryContainer>
+                    <h2>Summary</h2>
+                    <TextField
+                      multiline
+                      rows={14}
+                      placeholder="Summary of the project"
+                      sx={{ width: '95%' }} 
+                      onChange={(e) => setProjectDetails({ ...projectDetail, description: e.target.value })}
                     />
-                    <OverflowContainer>
-                      {/* Change to if empty put next*/}
-                      {/* todo: after search save members that were previously added*/}
-                      {members.length === 0 ?
-                        <p>Add friends</p>
-                        :
-                          (search(members, searchMember).map((profile: IProfile) => (
-                            <div key={profile.id} onClick={() => moveMember(profile.id)}>
-                              <FriendsCard
-                                key={profile.id}
-                                profileId={profile.id}
-                                name={profile.name}
-                                email={profile.email}
-                                imageURL={profile.profilePicture}
-                                functionality="moveMember"
-                                projectId={null!}
-                                alreadyAdded={addedMembers.includes(profile.id)}
-                              />
-                            </div>
-                          ))
-                        )
-                      }
-                    </OverflowContainer>
-                  </FriendsContainer>
-                </MembersContainer>  
-              </BottomContainer>
-              <ControlContainer>
-                <CancelButton variant='contained' onClick={() => navigate("/dashboard", {state:{initialPageState:"projects"}})}>Cancel</CancelButton>
-                <CreateButton variant='contained' onClick={createProject}>Create</CreateButton>
-              </ControlContainer>
-              <Footer />
-            </CreateProjectPageContainer>
-          </>
-        )
-      }
+                  </SummaryContainer>
+                  <MembersContainer>
+                    <h2>Members</h2>
+                    <FriendsContainer>
+                      <MembersSearchbar 
+                        placeholder="Search for a member to add..."
+                        onChange={(e) => setSearchMember(e.target.value)}
+                      />
+                      <OverflowContainer>
+                        {members.length === 0 
+                          ?
+                            <p>Add friends</p>
+                          :
+                            (search(members, searchMember).map((profile: IProfile) => (
+                              <div key={profile.id} onClick={() => moveMember(profile.id)}>
+                                <FriendsCard
+                                  key={profile.id}
+                                  profileId={profile.id}
+                                  name={profile.name}
+                                  email={profile.email}
+                                  imageURL={profile.profilePicture}
+                                  functionality="moveMember"
+                                  projectId={null!}
+                                  alreadyAdded={addedMembers.includes(profile.id)}
+                                />
+                              </div>
+                            )))
+                        }
+                      </OverflowContainer>
+                    </FriendsContainer>
+                  </MembersContainer>  
+                </BottomContainer>
+                <ControlContainer>
+                  <CancelButton variant='contained' onClick={() => navigate("/dashboard", {state:{initialPageState:"projects"}})}>Cancel</CancelButton>
+                  <CreateButton variant='contained' onClick={createProject}>Create</CreateButton>
+                </ControlContainer>
+                <Footer />
+              </CreateProjectPageContainer>
+            </>
+          )
+        }
     </>
   );
 }

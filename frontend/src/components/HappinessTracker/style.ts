@@ -5,7 +5,6 @@ export const HappinessTrackerContainer = styled('div')`
   flex-direction: column;
   text-align: center;
   margin-top: 15%;
-  // margin: auto;
 `;
 
 export const EmotionContainer = styled('div')`
@@ -16,6 +15,7 @@ export const EmotionContainer = styled('div')`
     height: 2.7rem;
     width: 2.7rem;
     cursor: pointer;
+
     &:hover {
       transform: scale(1.25);
     }
@@ -29,7 +29,6 @@ export const BottomContainer = styled('div')`
   margin-bottom: 1rem;
 
   > h3 {
-    // margin-top: 5rem;
     text-align: center;
     font-weight: normal;
   };

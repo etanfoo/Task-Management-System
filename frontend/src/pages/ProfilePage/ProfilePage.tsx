@@ -20,7 +20,7 @@ import { getConnections } from "../../api/connect";
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams();
-  // const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [profileDetails, setProfileDetails] = useState<IProfile>(EmptyProfile);
   const [updatedProfileDetails, setUpdatedProfileDetails] = useState<IUpdatedProfileDetails>(EmptyUpdatedProfileDetails);
@@ -31,9 +31,7 @@ const ProfilePage = () => {
     try {
       const data = await getProfile(parseInt(profileId!));
       setProfileDetails(data);
-      // setIsLoading(false);
     } catch (err: any) {
-      // setIsLoading(false);
       console.log(err);
     }
   };
@@ -84,9 +82,6 @@ const ProfilePage = () => {
   }
 
   useEffect(() => {
-    // if (profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)) {
-    //   setIsSelfProfile(true);
-    // };
     loadProfile();
     loadMembers();
     // eslint-disable-next-line

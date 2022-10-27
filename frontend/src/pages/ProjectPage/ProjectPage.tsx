@@ -22,6 +22,7 @@ import { Palette } from "../../components/Palette";
 
 const ProjectPage = () => {
   const { projectId } = useParams();
+
   const [projectDetails, setProjectDetails] = useState<IProjectDetails>(EmptyProject);
   const [updatedProjectDetails, setUpdatedProjectDetails] = useState<IProjectDetails>(EmptyProject);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -52,9 +53,7 @@ const ProjectPage = () => {
   const loadMembers = async () => {
     try {
       const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-
       setMembers(resp.filter(profile => !currentMembers.includes(profile)));
-      // console.log(resp)
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -125,7 +124,6 @@ const ProjectPage = () => {
   }, [taskSortType]);
 
   useEffect(() => {
-    // console.log(searchQuery)
     setShownTasks(allTasks.filter((task) => 
       task.title.toLowerCase().includes(searchQuery)
     ));
@@ -196,10 +194,9 @@ const ProjectPage = () => {
                     <MembersSearchbar 
                       placeholder={pageState === 'view' ? "Search for a member" : "Search for a member to add..."}
                       onChange={(e) => setSearchMember(e.target.value)}
-                      sx={{ width: "88%" }}
+                      sx={{ width: "20rem" }}
                     />
                     <OverflowContainer>
-                      {/* Change to if empty */}
                       {pageState === 'view'
                         ? 
                           (currentMembers.length === 0 ?
@@ -220,7 +217,6 @@ const ProjectPage = () => {
                           )
                         :
                           (search(members, searchMember).map((profile: IProfile) => (
-                            // Add colour if user is already in project
                             <div key={`member ${profile.id}`} onClick={() => moveMember(profile.id)}>
                               <FriendsCard
                                 key={`key ${profile.id}`}

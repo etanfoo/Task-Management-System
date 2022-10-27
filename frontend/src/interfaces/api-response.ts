@@ -20,12 +20,9 @@ export interface IProfile {
 export interface IProject {
   description: string;
   id: number;
-  // Change to number?
   profiles: IProfile[];
   tasks: ITask[];
   title: string;
-  acceptedConnections: IProfile[];
-  // todo: include connections
 };
 
 export interface ITask {
