@@ -223,6 +223,7 @@ const ProfilePage = () => {
                               imageURL={friend.profilePicture}
                               functionality="profile"
                               projectId={null!}
+                              alreadyAdded={false}
                             />)
                           )
                         )

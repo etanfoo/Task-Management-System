@@ -2,13 +2,10 @@ import { useEffect, useState } from "react";
 import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
+import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
 import { MockTasks } from "../../constants/tasks";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
-import SadIcon from "../../assets/sad.png";
-import HappyIcon from "../../assets/happy.png";
-import NeutralIcon from "../../assets/neutral.png";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
@@ -16,10 +13,7 @@ import { IProfile, IProject } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 import { getConnections } from "../../api/connect";
 import { useLocation } from "react-router-dom";
-
-// type DashboardPageProps = {
-//   initialPageState: "tasks" | "projects";
-// };
+import HappinessTracker from "../../components/HappinessTracker/HappinessTracker";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -130,7 +124,8 @@ const DashboardPage = () => {
     <DashboardPageContainer>
       <ConnectionRequestsModal
         isOpen={isConnectionRequestsModalVisible}
-        handleClose={() => setIsConnectionRequestsModalVisible(false)}
+        // todo: temp fix, need to refresh friends list after adding someone
+        handleClose={() => {setIsConnectionRequestsModalVisible(false); window.location.reload();}}
       />
       <Header 
         triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
@@ -152,6 +147,7 @@ const DashboardPage = () => {
                       imageURL={connection.profilePicture}
                       functionality="profile"
                       projectId={null!}
+                      alreadyAdded={false}
                     />
                   ))}
                 </FriendsContainer>
@@ -159,14 +155,8 @@ const DashboardPage = () => {
               </>
             ) : null
           }
-          {/* todo: if user has not inputted show otherwise show nothing */}
-          <h2>How are you feeling this week?</h2>
-          {/* todo: update onclick functionality */}
-          <ImageContainer>
-            <img alt='sad icon' src={SadIcon} />
-            <img alt='emotionless icon' src={NeutralIcon} />
-            <img alt='happy icon' src={HappyIcon} />
-          </ImageContainer>
+          {/* Used the happiness tracker component */}
+          <HappinessTracker />
         </LeftContainer>
         <RightContainer>
           <StyledTextField

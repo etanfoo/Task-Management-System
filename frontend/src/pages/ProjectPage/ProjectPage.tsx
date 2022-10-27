@@ -52,7 +52,8 @@ const ProjectPage = () => {
   const loadMembers = async () => {
     try {
       const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      setMembers(resp);
+
+      setMembers(resp.filter(profile => !currentMembers.includes(profile)));
       // console.log(resp)
       setIsLoading(false);
     } catch (err: any) {
@@ -69,7 +70,7 @@ const ProjectPage = () => {
 
   const moveMember = (profileId: number) => {
     if (!addedMembers.includes(profileId)) setAddedMembers([...addedMembers, profileId]);
-    else setAddedMembers(addedMembers => addedMembers.filter(x => x === profileId));
+    else setAddedMembers(addedMembers.filter(userId => userId !== profileId));
   }
 
   const cancelEditProject = () => {
@@ -124,7 +125,7 @@ const ProjectPage = () => {
   }, [taskSortType]);
 
   useEffect(() => {
-    console.log(searchQuery)
+    // console.log(searchQuery)
     setShownTasks(allTasks.filter((task) => 
       task.title.toLowerCase().includes(searchQuery)
     ));
@@ -201,23 +202,22 @@ const ProjectPage = () => {
                       {/* Change to if empty */}
                       {pageState === 'view'
                         ? 
-                          <>
-                          {currentMembers.length === 0 ?
+                          (currentMembers.length === 0 ?
                               <p>Add friends</p>
                             :
-                            search(currentMembers, searchMember).map((profile: IProfile) => (
-                              <FriendsCard
-                                key={profile.id}
-                                profileId={profile.id}
-                                name={profile.name}
-                                email={profile.email}
-                                imageURL={profile.profilePicture}
-                                functionality="profile-project"
-                                projectId={projectId!}
-                              />
-                            ))
-                          }
-                          </>
+                              search(currentMembers, searchMember).map((profile: IProfile) => (
+                                <FriendsCard
+                                  key={profile.id}
+                                  profileId={profile.id}
+                                  name={profile.name}
+                                  email={profile.email}
+                                  imageURL={profile.profilePicture}
+                                  functionality="profile-project"
+                                  projectId={projectId!}
+                                  alreadyAdded={false}
+                                />
+                              ))
+                          )
                         :
                           (search(members, searchMember).map((profile: IProfile) => (
                             // Add colour if user is already in project
@@ -230,6 +230,7 @@ const ProjectPage = () => {
                                 imageURL={profile.profilePicture}
                                 functionality="moveMember"
                                 projectId={null!}
+                                alreadyAdded={addedMembers.includes(profile.id)}
                               />
                             </div>
                           ))

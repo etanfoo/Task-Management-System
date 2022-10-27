@@ -38,7 +38,14 @@ const DeleteOverlay = ({ isOpen, content, contentId, closeCallback, memberId}: D
     >
       <DeleteOverlayContainer>
         <h1>
-          Are you sure you want to delete {content}?
+          Are you sure you want to 
+          {
+            content === "project-member" 
+              ?
+                <> remove this member?</>
+              :
+                <> delete this {content}?</>
+          }
         </h1>
         <ButtonsContainer>
           <NoButton variant='contained' onClick={closeCallback}>No</NoButton>

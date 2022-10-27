@@ -13,11 +13,12 @@ type FriendsCardProps = {
   profileId: number;
   functionality: string;
   projectId: string | null;
+  alreadyAdded: boolean;
 };
 
-const FriendsCard = ({ imageURL, name, email, profileId, functionality, projectId }: FriendsCardProps) => {
+const FriendsCard = ({ imageURL, name, email, profileId, functionality, projectId, alreadyAdded }: FriendsCardProps) => {
   const navigate = useNavigate();
-  const [isAdded, setIsAdded] = useState<boolean>(false);
+  const [isAdded, setIsAdded] = useState<boolean>(alreadyAdded);
   const [isDelete, setIsDelete] = useState<boolean>(false); 
 
   return (

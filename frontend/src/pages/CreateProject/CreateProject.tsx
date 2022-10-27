@@ -41,9 +41,6 @@ const CreateProjectPage = () => {
     try {
       const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       setMembers(resp);
-      // const data = await getProfiles();
-      // setMembers(data);
-      console.log(resp)
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -57,10 +54,7 @@ const CreateProjectPage = () => {
   
   const moveMember = (profileId: number) => {
     if (!addedMembers.includes(profileId)) setAddedMembers([...addedMembers, profileId]);
-    else {
-      setAddedMembers(addedMembers => addedMembers.filter(x => x === profileId));
-    }
-    // console.log(profileId)
+    else setAddedMembers(addedMembers.filter(userId => userId !== profileId));
   }
 
   return(
@@ -120,6 +114,7 @@ const CreateProjectPage = () => {
                                 imageURL={profile.profilePicture}
                                 functionality="moveMember"
                                 projectId={null!}
+                                alreadyAdded={addedMembers.includes(profile.id)}
                               />
                             </div>
                           ))
