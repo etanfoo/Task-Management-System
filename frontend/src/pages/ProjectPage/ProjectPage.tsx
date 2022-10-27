@@ -10,7 +10,7 @@ import { getProject, putProject } from "../../api/project";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import { MockTasks } from "../../constants/tasks";
 import TaskCard from "../../components/TaskCard/TaskCard";
-import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import DeleteIcon from "../../assets/delete.png";
@@ -18,6 +18,7 @@ import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
 import { IProfile } from "../../interfaces/api-response";
 import { search } from "../../helpers";
 import { getConnections } from "../../api/connect";
+import { Palette } from "../../components/Palette";
 
 const ProjectPage = () => {
   const { projectId } = useParams();
@@ -30,7 +31,12 @@ const ProjectPage = () => {
   const [currentMembers, setCurrentMembers] = useState<IProfile[]>([]);
   const [addedMembers, setAddedMembers] = useState<number[]>([]);
   const [searchMember, setSearchMember] = useState<string>("");
-  
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [taskSortType, setTaskSortType] = useState<string>("ID");
+  // eslint-disable-next-line
+  const [allTasks, setAllTasks] = useState(MockTasks);
+  const [shownTasks, setShownTasks] = useState(allTasks);
+
   const loadProject = async () => {
     try {
       const resp = await getProject(projectId!);
@@ -92,6 +98,39 @@ const ProjectPage = () => {
       console.log(err);
     }
   }
+
+  useEffect(() => {
+    let sortedTasks: any[] = shownTasks;
+    if (taskSortType === "ID") {
+      sortedTasks = [...shownTasks].sort(
+        (taskA, taskB) => taskA.taskId.localeCompare(taskB.taskId)
+      );
+    } else if (taskSortType === "Title") {
+      sortedTasks = [...shownTasks].sort(
+        (taskA, taskB) => taskA.title.localeCompare(taskB.title)
+      );        
+    } else if (taskSortType === "Status") {
+      sortedTasks = [...shownTasks].sort(
+        (taskA, taskB) => taskA.status.localeCompare(taskB.status)
+      );
+    } else if (taskSortType === "Deadline") {
+      sortedTasks = [...shownTasks].sort(
+        // todo: figure out how deadline is store - date or string?
+        (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
+      );
+    }
+    setShownTasks(sortedTasks);
+    // eslint-disable-next-line
+  }, [taskSortType]);
+
+  useEffect(() => {
+    console.log(searchQuery)
+    setShownTasks(allTasks.filter((task) => 
+      task.title.toLowerCase().includes(searchQuery)
+    ));
+    setTaskSortType("ID");
+    // eslint-disable-next-line
+  }, [searchQuery]);
 
   return(
     <>
@@ -201,30 +240,34 @@ const ProjectPage = () => {
                 </MidContainer>
                 <BottomContainer>
                   <TaskControls>
-                    <TaskSearchbar placeholder="Search for a task..."/>
+                    <TaskSearchbar 
+                      label="Search for a task..."
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                     <TaskSort>
                       <InputLabel>Sort by</InputLabel>
                       <Select
-                        defaultValue="Sort by"
-                        // value={age}
                         label="Your tasks"
-                        // onChange={handleChange}
+                        value={taskSortType}
+                        onChange={(e: SelectChangeEvent) => setTaskSortType(e.target.value)}
                       >
-                        <MenuItem value="Sort by">Sort by</MenuItem>
-                        <MenuItem value="Your projects">Your projects</MenuItem>
+                        <MenuItem value={"ID"}>ID</MenuItem>
+                        <MenuItem value={"Title"}>Title</MenuItem>
+                        <MenuItem value={"Deadline"}>Deadline</MenuItem>
+                        <MenuItem value={"Status"}>Status</MenuItem>
                       </Select>
                     </TaskSort>
                   </TaskControls>
                   <TasksContainer>
                     <LabelContainer>
-                      <p>ID</p>
-                      <p>Title</p>
-                      <p>Deadline</p>
-                      <p>Status</p>
+                      <p style={{ color: taskSortType === "ID" ? "black" : Palette.thGray }}>ID</p>
+                      <p style={{ color: taskSortType === "Title" ? "black" : Palette.thGray }}>Title</p>
+                      <p style={{ color: taskSortType === "Deadline" ? "black" : Palette.thGray }}>Deadline</p>
+                      <p style={{ color: taskSortType === "Status" ? "black" : Palette.thGray }}>Status</p>
                     </LabelContainer>
                     <OverflowContainer>
                       {/* todo: replace with real data returned from api */}
-                      {MockTasks.map((task) => (
+                      {shownTasks.map((task) => (
                         <TaskCard
                           key={task.taskId}
                           taskId={task.taskId}

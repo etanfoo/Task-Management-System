@@ -20,7 +20,7 @@ import { getConnections } from "../../api/connect";
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams();
-  const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
+  // const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [profileDetails, setProfileDetails] = useState<IProfile>(EmptyProfile);
   const [updatedProfileDetails, setUpdatedProfileDetails] = useState<IUpdatedProfileDetails>(EmptyUpdatedProfileDetails);
@@ -74,7 +74,7 @@ const ProfilePage = () => {
 
   const loadMembers = async () => {
     try {
-      const resp = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      const resp = await getConnections(parseInt(profileId!));
       setMembers(resp);
       setIsLoading(false);
     } catch (err: any) {
@@ -84,9 +84,9 @@ const ProfilePage = () => {
   }
 
   useEffect(() => {
-    if (profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)) {
-      setIsSelfProfile(true);
-    };
+    // if (profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)) {
+    //   setIsSelfProfile(true);
+    // };
     loadProfile();
     loadMembers();
     // eslint-disable-next-line
@@ -141,7 +141,7 @@ const ProfilePage = () => {
                     }
                   <p>{profileDetails.email}</p>
                 </DetailsContainer>
-                {isSelfProfile ?
+                {profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!) ?
                   (
                     <IconContainer>
                       {/* todo: update url of info page? */}
@@ -190,7 +190,7 @@ const ProfilePage = () => {
                         ? (
                           profileDetails.aboutMe ||
                             <p>
-                              {isSelfProfile
+                              {profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)
                                 ? "Tell us a little about yourself..."
                                 : "This user has yet to provide a bio."
                               }
