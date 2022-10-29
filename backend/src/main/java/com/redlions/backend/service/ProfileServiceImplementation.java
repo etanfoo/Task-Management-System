@@ -108,7 +108,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         }
 
         String password = profile.getPassword();
-        if (isValidPassword(password)) {
+        if (password != null && isValidPassword(password)) {
             // encrypting password to not save plain text in db
             // setting password
             profileInDb.setPassword(passwordEncoder.encode(password));
