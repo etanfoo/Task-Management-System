@@ -57,7 +57,7 @@ export const BodyContainer = styled('div')`
 
 export const RightContainer = styled('div')`
   height: 100%;
-  width: 100%;
+  width: 80%;
   padding: 0 4rem;
 `;
 

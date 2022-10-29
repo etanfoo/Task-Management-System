@@ -15,6 +15,10 @@ export const ProjectContainer = styled('div')`
   };  
 `;
 
+export const PP = styled('div')`
+  display: flex;
+`;
+
 export const TopContainer = styled('div')`
   > h1 {
     font-weight: normal;
@@ -41,10 +45,11 @@ export const IconContainer = styled('div')`
 
 export const MidContainer = styled('div')`
   display: flex;
+  flex-direction: column;
+  width: 65%;
 `;
 
 export const SummaryContainer = styled('div')`
-  width: 80rem;
   padding: 1rem;
   height: 13rem;
   border-radius: 0.5rem;
@@ -56,7 +61,11 @@ export const SummaryContainer = styled('div')`
     padding-bottom: 0;
     margin-top: 0;
     margin-bottom: 0;
-  }
+  };
+
+  > TextField {
+    width: 100%;
+  };
 `;
 
 
@@ -65,10 +74,10 @@ export const FriendsContainer = styled('div')`
   flex-direction: column;
   padding: 1rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 40%;
+  width: 35%;
   border-radius: 0.5rem;
   margin-left: 2rem;
-  height: 13rem;
+  height: 36rem;
 
   > p {
     text-align: center;
@@ -139,7 +148,7 @@ export const LabelContainer = styled('div')`
   };
   
   > :nth-of-type(4) {
-    width: 20%;
+    width: 23%;
   };
 `;
 
@@ -165,5 +174,5 @@ export const UpdateButton = styled(Button)`
 `;
 
 export const EmptySummary= styled('div')`
-  color: ${Palette.thGray}
+  color: ${Palette.thGray};
 `;

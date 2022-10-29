@@ -55,6 +55,7 @@ export const DeleteButton = styled('img')`
   height: 1rem;
   margin-left: auto; 
   margin-right: 0;
+  margin-top: 1rem;
   
   &:hover {
     transform: scale(1.25);

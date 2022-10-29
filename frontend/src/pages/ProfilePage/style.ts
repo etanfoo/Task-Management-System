@@ -170,11 +170,17 @@ export const LabelContainer = styled('div')`
   > :first-of-type {
     width: 10%;
   };
+
   > :nth-of-type(2) {
     width: 50%;
   };
+
   > :nth-of-type(3) {
-    width: 17rem;
+    width: 20%;
+  };
+
+  > :nth-of-type(4) {
+    width: 20%;
   };
 `;
 

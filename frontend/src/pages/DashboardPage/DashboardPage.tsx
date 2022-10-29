@@ -155,13 +155,12 @@ const DashboardPage = () => {
               </>
             ) : null
           }
-          {/* Used the happiness tracker component */}
           <HappinessTracker />
         </LeftContainer>
         <RightContainer>
           <StyledTextField
             fullWidth
-            label="Search for a task..."
+            label={`Search for a ${pageState === "tasks" ? "task..." : "project..."}`}
             onChange={(e) => setSearchQuery(e.target.value.toLocaleLowerCase())}
           />
           <SelectContainer>
