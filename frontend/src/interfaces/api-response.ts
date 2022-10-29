@@ -12,7 +12,6 @@ export interface IProfile {
   profilePicture: string;
   busyness: number;
   aboutMe: string;
-  projects: IProject[];
   assignedTasks: ITask[];
   authoredTasks: ITask[];
 };

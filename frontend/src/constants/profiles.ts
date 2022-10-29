@@ -10,7 +10,6 @@ export const EmptyProfile: IProfile = {
   profilePicture: "",
   busyness: -1,
   aboutMe: "",
-  projects: [],
   assignedTasks: [],
   authoredTasks: [],
 };
