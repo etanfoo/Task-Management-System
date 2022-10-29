@@ -80,13 +80,13 @@ export const deleteProject = async (projectId: string, profileId: string): Promi
 
 export const deleteMember = async (projectId: string, profileId: string, deleteMemberId: number): Promise<string> => {
   try {
-    const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/removeProfiles`, {
+    const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/removeProfile`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
       }, 
       data: {
         profileId,
-        "profileIdsToRemove": [deleteMemberId]
+        "profileIdToRemove": deleteMemberId
       }
     });
     return data;

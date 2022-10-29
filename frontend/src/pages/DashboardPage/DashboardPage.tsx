@@ -186,8 +186,8 @@ const DashboardPage = () => {
                   >
                     <MenuItem value={"ID"}>ID</MenuItem>
                     <MenuItem value={"Title"}>Title</MenuItem>
-                    <MenuItem value={"Status"}>Status</MenuItem>
                     <MenuItem value={"Deadline"}>Deadline</MenuItem>
+                    <MenuItem value={"Status"}>Status</MenuItem>
                   </Select>
                 ): (
                   <Select
