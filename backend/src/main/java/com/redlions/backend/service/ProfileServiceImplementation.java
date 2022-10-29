@@ -38,6 +38,12 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     private final int ABOUT_ME_SECTION_CHARACTER_LIMIT = 300;
     private final Util util;
     private final int MIN_PASSWORD_LENGTH = 6;
+    private final int NO_FACE_PROVIDED = 0;
+    private final int STRESSED_FACE = 1;
+    private final int WORRIED_FACE = 2;
+    private final int NEUTRAL_FACE = 3;
+    private final int COMFORTABLE_FACE = 4;
+    private final int HAPPY_FACE = 5;
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -73,6 +79,13 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             String errorMessage = "A valid password is required for creating a profile.";
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
+
+        if (!isValidHappiness(profile.getHappiness())) {
+            String errorMessage = String.format("\"Happiness\" value must be %d, %d, %d, %d, %d or %d", 
+                NO_FACE_PROVIDED, STRESSED_FACE, WORRIED_FACE, NEUTRAL_FACE, COMFORTABLE_FACE, HAPPY_FACE);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+
         Profile existingProfile = profileRepo.findByEmail(email);
         if (existingProfile != null) {
             String errorMessage = "A profile with that email is already in use.";
@@ -112,6 +125,15 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             // encrypting password to not save plain text in db
             // setting password
             profileInDb.setPassword(passwordEncoder.encode(password));
+        }
+
+        int happiness = profile.getHappiness();
+        if (isValidHappiness(happiness)) {
+            profileInDb.setHappiness(happiness);
+        } else {
+            String errorMessage = String.format("\"Happiness\" value must be %d, %d, %d, %d, %d or %d", 
+                NO_FACE_PROVIDED, STRESSED_FACE, WORRIED_FACE, NEUTRAL_FACE, COMFORTABLE_FACE, HAPPY_FACE);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
         String profilePicture = profile.getProfilePicture();
@@ -186,6 +208,15 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
         Matcher match_email = EMAIL_REGEX.matcher(email);
         return match_email.find();
+    }
+
+    private boolean isValidHappiness(int happiness) {
+        return happiness == NO_FACE_PROVIDED
+            || happiness == STRESSED_FACE
+            || happiness == WORRIED_FACE
+            || happiness == NEUTRAL_FACE
+            || happiness == COMFORTABLE_FACE
+            || happiness == HAPPY_FACE;
     }
 
     @Override

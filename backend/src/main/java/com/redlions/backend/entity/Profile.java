@@ -40,7 +40,7 @@ public class Profile {
     private Long points;
 
     @Column(name="happiness")
-    private Long happiness;
+    private int happiness;
 
     @Lob
     @Column(name="profile_picture")
@@ -89,7 +89,7 @@ public class Profile {
 
     }
 
-    public Profile(Long id, String name, String email, String password, Long points, Long happiness, String aboutMe, String profilePicture, Float busyness) {
+    public Profile(Long id, String name, String email, String password, Long points, int happiness, String aboutMe, String profilePicture, Float busyness) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -141,11 +141,11 @@ public class Profile {
         this.points = points;
     }
 
-    public Long getHappiness() {
+    public int getHappiness() {
         return this.happiness;
     }
 
-    public void setHappiness(Long happiness) {
+    public void setHappiness(int happiness) {
         this.happiness = happiness;
     }
 
