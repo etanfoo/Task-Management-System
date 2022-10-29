@@ -1,4 +1,4 @@
-import { Avatar, Button, IconButton } from "@mui/material";
+import { Avatar, Badge, BadgeProps, Button, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { Palette } from "../Palette";
@@ -22,6 +22,7 @@ export const Logo = styled('img')`
 export const SignUpButton = styled(Button)`
   text-transform: capitalize;
   background-color: ${Palette.mainTeal};
+  
   &:hover {
     background-color: ${Palette.darkTeal};
   }
@@ -33,6 +34,7 @@ export const LoginLink = styled(Link)`
   color: black;
   font-size: 1rem;
   transition: all 0.3s ease 0s;
+  
   &:hover {
     color: ${Palette.mainTeal};
   }
@@ -51,6 +53,15 @@ export const StyledAvatar = styled(Avatar)`
   background-color: ${Palette.mainTeal};
   cursor: pointer
 `;
+
+export const StyledBadge = styled(Badge)<BadgeProps>(() => ({
+  marginLeft: "auto",
+  
+  '& .MuiBadge-badge': {
+    right: 25,
+    top: 13,
+  },
+}));
 
 export const StyledIconButton = styled(IconButton)`
   margin-left: auto;

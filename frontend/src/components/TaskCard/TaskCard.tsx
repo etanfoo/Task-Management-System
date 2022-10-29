@@ -33,7 +33,7 @@ const TaskCard = ({ taskId, title, deadline, status}: TaskCardProps) => {
       <p>{title}</p>
       <p>{deadline}</p>
       {/* todo: do we want to have this editable? i.e. a <select> component */}
-      <p style={{ color: fetchStatusColor() }}>{status}</p>
+      <p style={{ backgroundColor: fetchStatusColor(), color: "white", borderRadius: "1rem", textAlign: "center"}}>{status}</p>
     </TaskCardContainer>
   );
 };

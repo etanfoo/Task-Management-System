@@ -1,3 +1,6 @@
+import { IProfile } from "./interfaces/api-response";
+
+// todo: check file type
 export const toBase64 = (file: any) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -20,4 +23,16 @@ export const getInitials = (name: string) => {
   }
 
   return initials;
+};
+
+/*
+ * filter profiles based on name and email
+ */
+export const search = (profiles: IProfile[], searchMember: string) => {
+  const lowercaseSearchMember = searchMember.toLocaleLowerCase();
+  return profiles.filter(
+    (profile: IProfile) =>
+      profile.name.toLowerCase().includes(lowercaseSearchMember) ||
+      profile.email.toLowerCase().includes(lowercaseSearchMember)
+  );
 };

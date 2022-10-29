@@ -1,4 +1,4 @@
-import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture, StyledIconButton, CreateButton } from "./style";
+import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture, StyledIconButton, CreateButton, StyledBadge } from "./style";
 import LogoIcon from "../../assets/logo.png";
 import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { getProfile } from "../../api/profile";
 import FriendsIcon from "../../assets/friends.png";
 import { getInitials } from "../../helpers";
+import { getRequestedConnections } from "../../api/connect";
+import { IProfile } from "../../interfaces/api-response";
 
 type HeaderProps = {
   triggerConnectionRequestsModal?: () => void;
@@ -20,6 +22,7 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [profilePicture, setProfilePicture] = useState<string>("");
+  const [requestConnections, setRequestConnections] = useState<IProfile[]>([]);
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLImageElement>) => {
     setAnchorEl(e.currentTarget);
@@ -38,7 +41,7 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
 
   const handleLogoClick = () => {
     if (sessionStorage.getItem(process.env.REACT_APP_TOKEN!)) {
-      navigate('/dashboard');
+      navigate('/dashboard', {state:{initialPageState:"tasks"}});
     } else {
       navigate('/');
     }
@@ -56,12 +59,25 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
     }
   };
 
+  const fetchRequestedConnections = async () => {
+    try {
+      const requests = await getRequestedConnections(
+        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
+      );
+      setRequestConnections(requests);
+    } catch (err: any) {
+      // todo: do some error handling
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (sessionStorage.getItem(process.env.REACT_APP_TOKEN!)) {
       // only do so if user is logged in
       fetchUserDetails();
+      fetchRequestedConnections();
     }
-  }, []);
+  }, [requestConnections]);
 
   return (
     <HeaderContainer>
@@ -73,9 +89,11 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
               {window.location.pathname === "/dashboard"
                 ? (
                   <>
-                    <StyledIconButton onClick={triggerConnectionRequestsModal}>
+                    <StyledBadge badgeContent={requestConnections.length} color="secondary">
+                      <StyledIconButton onClick={triggerConnectionRequestsModal}>
                         <img src={FriendsIcon} alt="friends" width='40' height='40' />
-                    </StyledIconButton>
+                      </StyledIconButton>
+                    </StyledBadge>
                     <CreateButton variant='contained' onClick={triggerCreateTaskModal}>Create Task</CreateButton>
                     <CreateButton variant='contained' onClick={() => navigate('/project/create')}>Create Project</CreateButton>
                   </>

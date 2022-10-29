@@ -126,21 +126,23 @@ export const BodyContainer = styled('div')`
   width: 80%;
 `;
 
-export const LeftContainer = styled('div')`
+export const RightContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  margin-right: 1rem;
+  margin-left: 2rem;
 `;
 
 export const AboutMeContainer = styled('div')`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
-  width: 750px;
+  width: 390px;
   height: 175px;
   padding: 1.5rem;
   margin-bottom: 1rem;
   overflow-y: auto;
   text-align: left;
+  background-color: ${Palette.mainTeal};
+  color: white;
 `;
 
 export const TasksContainer = styled('div')`
@@ -148,8 +150,7 @@ export const TasksContainer = styled('div')`
   flex-direction: column;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
-  width: 750px;
-  height: 300px;
+  width: 100%;
   padding: 1.5rem;
   margin-bottom: 3rem;
   text-align: left;
@@ -169,12 +170,15 @@ export const LabelContainer = styled('div')`
   > :first-of-type {
     width: 10%;
   };
+
   > :nth-of-type(2) {
     width: 50%;
   };
+
   > :nth-of-type(3) {
-    width: 20%
+    width: 20%;
   };
+
   > :nth-of-type(4) {
     width: 20%;
   };
@@ -185,8 +189,10 @@ export const OverflowContainer = styled('div')`
   padding: 0 1rem;
 
   > p {
+    text-align: center;
+    margin-top: 4rem;
     color: ${Palette.thGray};
-  }
+  };
 `;
 
 export const FriendsContainer = styled('div')`
@@ -195,10 +201,10 @@ export const FriendsContainer = styled('div')`
   text-align: left;
   padding: 1rem;;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 100%;
+  width: 100%;  
   border-radius: 0.5rem;
   margin-bottom: 3rem;
-  height: 491px;
+  height: 17rem;
 
   > h2 {
     margin-top: 0;
@@ -206,3 +212,18 @@ export const FriendsContainer = styled('div')`
     font-weight: normal;
   };
 `;
+
+export const TextFieldStyle = {
+  width: "100%",
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "white"
+    },
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: `${Palette.lightGray}`
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: `${Palette.offGray}`
+    },
+  }
+}

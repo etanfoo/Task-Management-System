@@ -9,6 +9,7 @@ import { IProfile } from "../../interfaces/api-response";
 import { requestConnection } from "../../api/connect";
 import { EmptyProfile } from "../../constants/profiles";
 import Popup from "../../components/Popup/Popup";
+import { search } from "../../helpers";
 
 const FriendsPage = () => {
   const [query, setQuery] = useState("");
@@ -85,19 +86,13 @@ const FriendsPage = () => {
     return query === "";
   };
 
-  /*
-   * filter all profiles based on name and email
-   * only show maximum `MAX_NUMBER_OF_PROFILES_SHOWN` results
-   */
-  const search = (profiles: IProfile[]) => {
+  // only show maximum `MAX_NUMBER_OF_PROFILES_SHOWN` results
+  const searchConnections = (profiles: IProfile[]) => {
     const lowercaseQuery = query.toLocaleLowerCase();
-    return profiles
-      .filter(
-        (profile: IProfile) =>
-          profile.name.toLowerCase().includes(lowercaseQuery) ||
-          profile.email.toLowerCase().includes(lowercaseQuery)
-      )
-      .slice(0, MAX_NUMBER_OF_PROFILES_SHOWN);
+    return search(profiles, lowercaseQuery).slice(
+      0,
+      MAX_NUMBER_OF_PROFILES_SHOWN
+    );
   };
 
   const fetchCurrentLoggedInUser = async () => {
@@ -142,7 +137,7 @@ const FriendsPage = () => {
         />
 
         {!isSearchQueryEmpty()
-          ? search(profiles).map((profile: IProfile) => (
+          ? searchConnections(profiles).map((profile: IProfile) => (
               <ConnectionsCard
                 key={profile.id}
                 name={profile.name}

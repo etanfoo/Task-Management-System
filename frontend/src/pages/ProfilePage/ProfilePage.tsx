@@ -1,4 +1,4 @@
-import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, LeftContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel } from "./style";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle } from "./style";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -20,35 +20,20 @@ import { getConnections } from "../../api/connect";
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams();
-  const [isSelfProfile, setIsSelfProfile] = useState<boolean>(false);
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [profileDetails, setProfileDetails] = useState<IProfile>(EmptyProfile);
   const [updatedProfileDetails, setUpdatedProfileDetails] = useState<IUpdatedProfileDetails>(EmptyUpdatedProfileDetails);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
-
   const [friends, setFriends] = useState<IProfile[]>([]);
 
   const loadProfile = async () => {
     try {
       const data = await getProfile(parseInt(profileId!));
       setProfileDetails(data);
-      setIsLoading(false);
     } catch (err: any) {
-      setIsLoading(false);
       console.log(err);
     }
-  };
-
-  const fetchFriends = async () => {
-    try {
-      const data = await getConnections(
-        parseInt(profileId!)
-      );
-      setFriends(data);
-    } catch (err: any) {
-      // todo: some error handling
-      console.log(err);
-    };
   };
 
   const updateLogo = async (e: ChangeEvent) => {
@@ -85,10 +70,18 @@ const ProfilePage = () => {
     setUpdatedProfileDetails(EmptyUpdatedProfileDetails);
   };
 
+  const fetchFriends = async () => {
+    try {
+      const resp = await getConnections(parseInt(profileId!));
+      setFriends(resp);
+      setIsLoading(false);
+    } catch (err: any) {
+      console.log(err);
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
-    if (profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)) {
-      setIsSelfProfile(true);
-    };
     loadProfile();
     fetchFriends();
     // eslint-disable-next-line
@@ -143,7 +136,7 @@ const ProfilePage = () => {
                     }
                   <p>{profileDetails.email}</p>
                 </DetailsContainer>
-                {isSelfProfile ?
+                {profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!) ?
                   (
                     <IconContainer>
                       {pageState === 'view'
@@ -164,70 +157,74 @@ const ProfilePage = () => {
                 }
               </TopContainer>
               <BodyContainer>
-                <LeftContainer>
-                  <AboutMeContainer>
-                    {pageState === 'view'
-                      ? (
-                        profileDetails.aboutMe ||
-                          <p>
-                            {isSelfProfile
-                              ? "Tell us a little about yourself..."
-                              : "This user has yet to provide a bio."
-                            }
-                          </p>
-                      ): (
-                        <TextField
-                          multiline
-                          rows={4}
-                          placeholder="Tell us a little about yourself..."
-                          onChange={(e) => setUpdatedProfileDetails({...updatedProfileDetails, aboutMe: e.target.value })}
-                          sx={{ width: '100%' }}
-                        />
-                      )
-                    }
-                  </AboutMeContainer>
-                  <TasksContainer>
-                    <h2>Assigned tasks</h2>
-                    <LabelContainer>
-                      <p>ID</p>
-                      <p>Title</p>
-                      <p>Deadline</p>
-                      <p>Status</p>
-                    </LabelContainer>
-                    <OverflowContainer>
-                      {/* todo: replace with real data returned from api */}
-                      {MockTasks.map((task) => (
-                        <TaskCard
-                          key={task.taskId}
-                          taskId={task.taskId}
-                          title={task.title}
-                          deadline={task.deadline}
-                          status={task.status}
-                        />
-                      ))}
-                    </OverflowContainer>
-                  </TasksContainer>
-                </LeftContainer>
-                <FriendsContainer>
-                  <h2>Friends</h2>
+                <TasksContainer>
+                  <h2>Assigned tasks</h2>
+                  <LabelContainer>
+                    <p>ID</p>
+                    <p>Title</p>
+                    <p>Deadline</p>
+                    <p>Status</p>
+                  </LabelContainer>
                   <OverflowContainer>
-                    {friends.length === 0 
-                      ? (
-                        <p>You have no friends...</p>
-                      ) : (
-                        friends.map((friend) => (
-                          <FriendsCard
-                            key={friend.id}
-                            profileId={friend.id}
-                            name={friend.name}
-                            email={friend.email}
-                            imageURL={friend.profilePicture}
-                          />
-                        ))
-                      )
-                    }
+                    {/* todo: replace with real data returned from api */}
+                    {MockTasks.map((task) => (
+                      <TaskCard
+                        key={task.taskId}
+                        taskId={task.taskId}
+                        title={task.title}
+                        deadline={task.deadline}
+                        status={task.status}
+                      />
+                    ))}
                   </OverflowContainer>
-                </FriendsContainer>
+                </TasksContainer>
+                <RightContainer>
+                  <AboutMeContainer>
+                      {pageState === 'view'
+                        ? (
+                          profileDetails.aboutMe ||
+                            <p>
+                              {profileId === sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)
+                                ? "Tell us a little about yourself..."
+                                : "This user has yet to provide a bio."
+                              }
+                            </p>
+                        ) : (
+                          <TextField
+                            multiline
+                            rows={4}
+                            placeholder="Tell us a little about yourself..."
+                            onChange={(e) => setUpdatedProfileDetails({...updatedProfileDetails, aboutMe: e.target.value })}
+                            sx={TextFieldStyle}
+                            inputProps={{ style: { color: "white"} }}
+                          />
+                        )
+                      }
+                    </AboutMeContainer>
+                  <FriendsContainer>
+                    <h2>Friends</h2>
+                    <OverflowContainer>
+                      {friends.length === 0 
+                        ?
+                          <p>You have no friends...</p>
+                        :
+                          (friends.map((friend) => (
+                            <FriendsCard
+                              key={friend.id}
+                              profileId={friend.id}
+                              name={friend.name}
+                              email={friend.email}
+                              imageURL={friend.profilePicture}
+                              functionality="profile"
+                              projectId={null!}
+                              alreadyAdded={false}
+                            />)
+                          )
+                        )
+                      }
+                    </OverflowContainer>
+                  </FriendsContainer>
+                </RightContainer>
               </BodyContainer>
               <Footer />
             </ProfilePageContainer>

@@ -2,25 +2,23 @@ import { useEffect, useState } from "react";
 import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ImageContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
+import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
 import { MockTasks } from "../../constants/tasks";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
-import SadIcon from "../../assets/sad.png";
-import HappyIcon from "../../assets/happy.png";
-import NeutralIcon from "../../assets/neutral.png";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
 import { IProfile, IProject } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 import { getConnections } from "../../api/connect";
+import { useLocation } from "react-router-dom";
+import HappinessTracker from "../../components/HappinessTracker/HappinessTracker";
 
-type DashboardPageProps = {
-  initialPageState: "tasks" | "projects";
-};
+const DashboardPage = () => {
+  const location = useLocation();
+  const { initialPageState } = location.state;
 
-const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [pageState, setPageState] = useState<string>(initialPageState);
 
@@ -33,7 +31,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
   // eslint-disable-next-line
   const [allTasks, setAllTasks] = useState(MockTasks);
 
-  const [shownProjects, setShownProjects] = useState(allProjects);
+  const [shownProjects, setShownProjects] = useState<IProject[]>([]);
   const [shownTasks, setShownTasks] = useState(allTasks);
 
   const [connections, setConnections] = useState<IProfile[]>([]);
@@ -44,6 +42,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
     try {
       const data = await getProjects(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       setAllProjects(data);
+      setShownProjects(data);
     } catch (err: any) {
       // todo: figure some error handling here? show error popup?
       console.log(err);
@@ -64,6 +63,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
 
   useEffect(() => {
     fetchAllProjects();
+    // todo: update friends list after accepting --> right now just refreshing window after modal closes
     fetchFriends();
   }, []);
 
@@ -124,7 +124,8 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
     <DashboardPageContainer>
       <ConnectionRequestsModal
         isOpen={isConnectionRequestsModalVisible}
-        handleClose={() => setIsConnectionRequestsModalVisible(false)}
+        // todo: temp fix, need to refresh friends list after adding someone
+        handleClose={() => {setIsConnectionRequestsModalVisible(false); window.location.reload();}}
       />
       <Header 
         triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
@@ -144,6 +145,9 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                       name={connection.name}
                       email={connection.email}
                       imageURL={connection.profilePicture}
+                      functionality="profile"
+                      projectId={null!}
+                      alreadyAdded={false}
                     />
                   ))}
                 </FriendsContainer>
@@ -151,20 +155,13 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
               </>
             ) : null
           }
-          {/* todo: if user has not inputted show otherwise show nothing */}
-          <h2>How are you feeling this week?</h2>
-          {/* todo: update onclick functionality */}
-          <ImageContainer>
-            <img alt='sad icon' src={SadIcon} />
-            <img alt='emotionless icon' src={NeutralIcon} />
-            <img alt='happy icon' src={HappyIcon} />
-          </ImageContainer>
+          <HappinessTracker />
         </LeftContainer>
         <RightContainer>
           <StyledTextField
             fullWidth
-            label="Search for a task..."
-            onChange={(e) => setSearchQuery(e.target.value)}
+            label={`Search for a ${pageState === "tasks" ? "task..." : "project..."}`}
+            onChange={(e) => setSearchQuery(e.target.value.toLocaleLowerCase())}
           />
           <SelectContainer>
             <StyledForm>
@@ -222,7 +219,7 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                     <OverflowContainer>
                       {shownTasks.map((task) => (
                         <TaskCard
-                          key={task.taskId}
+                          key={`task ${task.taskId}`}
                           taskId={task.taskId}
                           title={task.title}
                           deadline={task.deadline}
@@ -245,8 +242,8 @@ const DashboardPage = ({ initialPageState }: DashboardPageProps) => {
                     <OverflowContainer>
                       {shownProjects.map((project) => (
                         <ProjectCard
-                          key={project.title}
-                          projectId={1}
+                          key={`project ${project.id}`}
+                          projectId={project.id}
                           name={project.title}
                           description={project.description}
                         />
