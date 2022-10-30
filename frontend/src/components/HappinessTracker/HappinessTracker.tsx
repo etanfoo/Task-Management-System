@@ -9,11 +9,11 @@ const HappinessTracker = () => {
   return(
     <HappinessTrackerContainer>
       <EmotionContainer>
-        <img src={HappyFace} alt='user avatar' />
-        <img src={ComfortableFace} alt='user avatar' />
-        <img src={NeturalFace} alt='user avatar' />
         <img src={WorriedFace} alt='user avatar' />
         <img src={StressedFace} alt='user avatar' />
+        <img src={NeturalFace} alt='user avatar' />
+        <img src={ComfortableFace} alt='user avatar' />
+        <img src={HappyFace} alt='user avatar' />
       </EmotionContainer>
       <BottomContainer>
         <h3>How are you feeling this week?</h3>
