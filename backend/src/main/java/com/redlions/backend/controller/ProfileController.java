@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redlions.backend.entity.Profile;
+import com.redlions.backend.entity.Task;
 import com.redlions.backend.service.ProfileService;
 
 import lombok.RequiredArgsConstructor;
@@ -94,4 +95,9 @@ public class ProfileController {
         return profileService.getRequestedConnections(id);
     }
 
+    @GetMapping("/{id}/associatedTasks")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Task> getAssociatedTasks(@PathVariable Long id) {
+        return profileService.getAssociatedTasks(id);
+    }
 }
