@@ -31,6 +31,9 @@ public class Task {
     @Column(name="points")
     private Integer points;
 
+    @Column(name="status")
+    private Integer status;
+
     @ManyToOne()
     @JoinColumn(name="project_id", nullable=false)
     private Project project;
@@ -116,6 +119,14 @@ public class Task {
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public Integer getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
 
