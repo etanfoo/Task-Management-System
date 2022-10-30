@@ -66,6 +66,7 @@ const StatisticsPage = () => {
     },
   };
 
+  // TODO: do we want to include "NONE FACE"
   const labels = [
     "N/A",
     "Stressed",
