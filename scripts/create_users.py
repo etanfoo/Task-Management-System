@@ -57,7 +57,7 @@ def main():
     if response.status_code != HTTPStatus.OK:
         print(f"Error {response.status_code}! Could not send a post request to {PROJECT_ENDPOINT}.")
         exit(1)
-    print(f"Success! Sent a post request to {PROJECT_ENDPOINT}.")
+    print(f"Success! Sent a POST request to {PROJECT_ENDPOINT}.")
 
 if __name__ == '__main__':
     main()
