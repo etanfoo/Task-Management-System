@@ -1,6 +1,8 @@
 # Scripts
-## `create_users.py`
-Takes in one arguement that is the amount of users to be created.  
-Run following in `/scripts`.  
-Example usage: `python3 create_users.py 50`
+## `usage`
+`python3 john_cena.py`
 
+## What it does?
+* Creates 100 users.
+* Connects and accepts 30 connections for the first user in `./mock_user_data.json`.
+* Creates 15 projects for first user.
