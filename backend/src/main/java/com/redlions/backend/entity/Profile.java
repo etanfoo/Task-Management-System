@@ -56,9 +56,11 @@ public class Profile {
     @ManyToMany(mappedBy="profiles")
     private Set<Project> projects = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy="profileAuthor")
     private Set<Task> authoredTasks = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy="profileAssignee")
     private Set<Task> assignedTasks = new HashSet<>();
 

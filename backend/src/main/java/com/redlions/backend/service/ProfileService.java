@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.redlions.backend.entity.Profile;
+import com.redlions.backend.entity.Task;
 
 public interface ProfileService {
     Profile create(Profile profile);
@@ -16,4 +17,5 @@ public interface ProfileService {
     HashMap<String,Long> rejectConnection(Long user_id, Long target_id);
     List<Profile> getAcceptedConnections(Long id);
     List<Profile> getRequestedConnections(Long id);
+    List<Task> getAssociatedTasks(Long id);
 }
