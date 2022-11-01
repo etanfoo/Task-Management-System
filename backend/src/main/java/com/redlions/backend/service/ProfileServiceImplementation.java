@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.redlions.backend.entity.Profile;
+import com.redlions.backend.entity.Project;
+import com.redlions.backend.entity.Task;
 import com.redlions.backend.repository.ProfileRepository;
 import com.redlions.backend.util.Util;
 
@@ -121,7 +123,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         }
 
         String password = profile.getPassword();
-        if (isValidPassword(password)) {
+        if (password != null && isValidPassword(password)) {
             // encrypting password to not save plain text in db
             // setting password
             profileInDb.setPassword(passwordEncoder.encode(password));
@@ -167,6 +169,20 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     public List<Profile> getProfiles() {
         log.info("Fetching all users");
         return profileRepo.findAll();
+    }
+
+    @Override
+    public List<Task> getAssociatedTasks(Long id) {
+        Profile profile = util.checkProfile(id);
+        List<Task> allTasks = new ArrayList<Task>();
+        Set<Project> projectsSet = profile.getProjects();
+        for (Project project: projectsSet) {
+            Set<Task> projectTasks = project.getTasks();
+            for (Task task: projectTasks) {
+                allTasks.add(task);
+            }
+        }
+        return allTasks;
     }
 
     private boolean isValidPassword(String password) {
