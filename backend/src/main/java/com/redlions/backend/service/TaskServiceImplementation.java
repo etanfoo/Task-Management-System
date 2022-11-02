@@ -104,7 +104,7 @@ public class TaskServiceImplementation implements TaskService {
                 updateProfilePoints(prevStatus, status, taskInDb.getProfileAssignee(), taskInDb.getPoints());
             } else {
                 String errorMessage = String.format("User %d must be the author or assignee to change the status of this task.", profileId);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
             }
             
         }
