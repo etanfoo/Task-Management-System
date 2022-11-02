@@ -24,25 +24,24 @@ ChartJS.register(
 );
 
 const StatisticsPage = () => {
-  const HAPPINESS_TRACKER_BACKGROUND_GREY = "rgb(201, 203, 207, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_RED = "rgb(255, 99, 132, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_ORANGE = "rgb(255, 159, 64, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_PURPOSE = "rgb(153, 102, 255, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_YELLOW = "rgb(255, 205, 86, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_GREEN = "rgb(75, 192, 192, 0.2)";
 
-  const HAPPINESS_TRACKER_BORDER_GREY = "rgb(201, 203, 207)";
   const HAPPINESS_TRACKER_BORDER_RED = "rgb(255, 99, 132)";
   const HAPPINESS_TRACKER_BORDER_ORANGE = "rgb(255, 159, 64)";
   const HAPPINESS_TRACKER_BORDER_PURPOSE = "rgb(153, 102, 255)";
   const HAPPINESS_TRACKER_BORDER_YELLOW = "rgb(255, 205, 86)";
   const HAPPINESS_TRACKER_BORDER_GREEN = "rgb(75, 192, 192)";
 
-  const EMPTY_HAPPINESS_TRACKER_DATA: HappinessValue[] = [0, 0, 0, 0, 0, 0];
+  const ADJUST_FOR_NO_NONE_VALUE = 1; // we don't represent "NONE_FACE" in our graph
+
+  const EMPTY_HAPPINESS_TRACKER_DATA: HappinessValue[] = [0,0, 0, 0, 0, 0];
 
   const { projectId } = useParams();
-  const [currentMembers, setCurrentMembers] = useState<IProfile[]>([]);
-  const [happinessTrackerData, setHappinessTrackerData] = useState<number[]>(
+  const [happinessTrackerData, setHappinessTrackerData] = useState<HappinessValue[]>(
     EMPTY_HAPPINESS_TRACKER_DATA
   );
 
@@ -67,9 +66,7 @@ const StatisticsPage = () => {
     },
   };
 
-  // TODO: do we want to include "NONE FACE"
   const labels = [
-    "N/A",
     "Stressed",
     "Worried",
     "Neutral",
@@ -84,7 +81,6 @@ const StatisticsPage = () => {
         label: "Happiness",
         data: happinessTrackerData,
         backgroundColor: [
-          HAPPINESS_TRACKER_BACKGROUND_GREY,
           HAPPINESS_TRACKER_BACKGROUND_RED,
           HAPPINESS_TRACKER_BACKGROUND_ORANGE,
           HAPPINESS_TRACKER_BACKGROUND_PURPOSE,
@@ -92,7 +88,6 @@ const StatisticsPage = () => {
           HAPPINESS_TRACKER_BACKGROUND_GREEN,
         ],
         borderColor: [
-          HAPPINESS_TRACKER_BORDER_GREY,
           HAPPINESS_TRACKER_BORDER_RED,
           HAPPINESS_TRACKER_BORDER_ORANGE,
           HAPPINESS_TRACKER_BORDER_PURPOSE,
@@ -106,15 +101,13 @@ const StatisticsPage = () => {
 
   const loadProject = async () => {
     try {
-      const resp = await getProject(projectId!);
-      setCurrentMembers(resp.profiles);
+      const response = await getProject(projectId!);
 
       let tmpHappinessTrackerData = EMPTY_HAPPINESS_TRACKER_DATA;
-      resp.profiles.map((profile: IProfile) => {
-        console.log(profile.happiness);
-        ++tmpHappinessTrackerData[profile.happiness];
+      response.profiles.map((profile: IProfile) => {
+          ++tmpHappinessTrackerData[profile.happiness];
       });
-      setHappinessTrackerData(tmpHappinessTrackerData);
+      setHappinessTrackerData(tmpHappinessTrackerData.slice(ADJUST_FOR_NO_NONE_VALUE));
     } catch (err: any) {
       console.log(err);
     }

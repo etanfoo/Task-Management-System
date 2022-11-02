@@ -89,7 +89,7 @@ const HappinessTracker = () => {
         <img src={HappyFace} alt="happy face" id="5" onClick={handleClick} />
       </EmotionContainer>
       <BottomContainer>
-        <h3>How are you feeling this week?</h3>
+        <h3>How are you feeling?</h3>
       </BottomContainer>
     </HappinessTrackerContainer>
   );
