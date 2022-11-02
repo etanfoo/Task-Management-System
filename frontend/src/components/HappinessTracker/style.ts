@@ -40,7 +40,7 @@ export const ExitButton = styled(Button)`
 
   background-color: ${Palette.errorRed};
   color: black;
-  font-size: 1.5rem;
+  font-size: 1rem;
   &:hover {
     background-color: ${Palette.errorRed};
   }

@@ -12,6 +12,7 @@ import { Bar } from "react-chartjs-2";
 import { getProject } from "../../api/project";
 import { useEffect, useState } from "react";
 import { IProfile } from "../../interfaces/api-response";
+import { HappinessValue } from "../../components/HappinessTracker/HappinessTracker";
 
 ChartJS.register(
   CategoryScale,
@@ -23,22 +24,21 @@ ChartJS.register(
 );
 
 const StatisticsPage = () => {
+  const HAPPINESS_TRACKER_BACKGROUND_GREY = "rgb(201, 203, 207, 0.2)";
+  const HAPPINESS_TRACKER_BACKGROUND_RED = "rgb(255, 99, 132, 0.2)";
+  const HAPPINESS_TRACKER_BACKGROUND_ORANGE = "rgb(255, 159, 64, 0.2)";
+  const HAPPINESS_TRACKER_BACKGROUND_PURPOSE = "rgb(153, 102, 255, 0.2)";
+  const HAPPINESS_TRACKER_BACKGROUND_YELLOW = "rgb(255, 205, 86, 0.2)";
+  const HAPPINESS_TRACKER_BACKGROUND_GREEN = "rgb(75, 192, 192, 0.2)";
 
-  const HAPPINESS_TRACKER_BACKGROUND_GREY = 'rgb(201, 203, 207, 0.2)';
-  const HAPPINESS_TRACKER_BACKGROUND_RED = 'rgb(255, 99, 132, 0.2)';
-  const HAPPINESS_TRACKER_BACKGROUND_ORANGE = 'rgb(255, 159, 64, 0.2)';
-  const HAPPINESS_TRACKER_BACKGROUND_PURPOSE = 'rgb(153, 102, 255, 0.2)';
-  const HAPPINESS_TRACKER_BACKGROUND_YELLOW = 'rgb(255, 205, 86, 0.2)';
-  const HAPPINESS_TRACKER_BACKGROUND_GREEN = 'rgb(75, 192, 192, 0.2)';
+  const HAPPINESS_TRACKER_BORDER_GREY = "rgb(201, 203, 207)";
+  const HAPPINESS_TRACKER_BORDER_RED = "rgb(255, 99, 132)";
+  const HAPPINESS_TRACKER_BORDER_ORANGE = "rgb(255, 159, 64)";
+  const HAPPINESS_TRACKER_BORDER_PURPOSE = "rgb(153, 102, 255)";
+  const HAPPINESS_TRACKER_BORDER_YELLOW = "rgb(255, 205, 86)";
+  const HAPPINESS_TRACKER_BORDER_GREEN = "rgb(75, 192, 192)";
 
-  const HAPPINESS_TRACKER_BORDER_GREY = 'rgb(201, 203, 207)';
-  const HAPPINESS_TRACKER_BORDER_RED = 'rgb(255, 99, 132)';
-  const HAPPINESS_TRACKER_BORDER_ORANGE = 'rgb(255, 159, 64)';
-  const HAPPINESS_TRACKER_BORDER_PURPOSE = 'rgb(153, 102, 255)';
-  const HAPPINESS_TRACKER_BORDER_YELLOW = 'rgb(255, 205, 86)';
-  const HAPPINESS_TRACKER_BORDER_GREEN = 'rgb(75, 192, 192)';
-
-  const EMPTY_HAPPINESS_TRACKER_DATA = [0, 0, 0, 0, 0, 0];
+  const EMPTY_HAPPINESS_TRACKER_DATA: HappinessValue[] = [0, 0, 0, 0, 0, 0];
 
   const { projectId } = useParams();
   const [currentMembers, setCurrentMembers] = useState<IProfile[]>([]);
@@ -46,13 +46,19 @@ const StatisticsPage = () => {
     EMPTY_HAPPINESS_TRACKER_DATA
   );
 
-  // TODO: set stepSize to 1
-  // TODO: set to whole numbers only
   const options = {
+    scales: {
+      y: {
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+
     responsive: true,
     plugins: {
       legend: {
-        position: "top" as const,
+        display: false,
       },
       title: {
         display: true,
@@ -78,22 +84,22 @@ const StatisticsPage = () => {
         label: "Happiness",
         data: happinessTrackerData,
         backgroundColor: [
-         HAPPINESS_TRACKER_BACKGROUND_GREY,
-         HAPPINESS_TRACKER_BACKGROUND_RED,
-         HAPPINESS_TRACKER_BACKGROUND_ORANGE,
-         HAPPINESS_TRACKER_BACKGROUND_PURPOSE,
-         HAPPINESS_TRACKER_BACKGROUND_YELLOW,
-         HAPPINESS_TRACKER_BACKGROUND_GREEN
+          HAPPINESS_TRACKER_BACKGROUND_GREY,
+          HAPPINESS_TRACKER_BACKGROUND_RED,
+          HAPPINESS_TRACKER_BACKGROUND_ORANGE,
+          HAPPINESS_TRACKER_BACKGROUND_PURPOSE,
+          HAPPINESS_TRACKER_BACKGROUND_YELLOW,
+          HAPPINESS_TRACKER_BACKGROUND_GREEN,
         ],
         borderColor: [
-         HAPPINESS_TRACKER_BORDER_GREY,
-         HAPPINESS_TRACKER_BORDER_RED,
-         HAPPINESS_TRACKER_BORDER_ORANGE,
-         HAPPINESS_TRACKER_BORDER_PURPOSE,
-         HAPPINESS_TRACKER_BORDER_YELLOW,
-         HAPPINESS_TRACKER_BORDER_GREEN
+          HAPPINESS_TRACKER_BORDER_GREY,
+          HAPPINESS_TRACKER_BORDER_RED,
+          HAPPINESS_TRACKER_BORDER_ORANGE,
+          HAPPINESS_TRACKER_BORDER_PURPOSE,
+          HAPPINESS_TRACKER_BORDER_YELLOW,
+          HAPPINESS_TRACKER_BORDER_GREEN,
         ],
-        borderWidth: 1
+        borderWidth: 1,
       },
     ],
   };
@@ -106,8 +112,8 @@ const StatisticsPage = () => {
       let tmpHappinessTrackerData = EMPTY_HAPPINESS_TRACKER_DATA;
       resp.profiles.map((profile: IProfile) => {
         console.log(profile.happiness);
-        ++tmpHappinessTrackerData[profile.happiness]
-      })
+        ++tmpHappinessTrackerData[profile.happiness];
+      });
       setHappinessTrackerData(tmpHappinessTrackerData);
     } catch (err: any) {
       console.log(err);
@@ -120,7 +126,7 @@ const StatisticsPage = () => {
 
   return (
     <>
-      <Bar options={options} data={data} />;
+      <Bar options={options} data={data} />
     </>
   );
 };
