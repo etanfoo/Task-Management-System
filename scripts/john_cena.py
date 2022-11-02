@@ -90,7 +90,7 @@ def create_projects(headers: dict):
 if __name__ == '__main__':
     first_user_access_token = create_users()
     headers = {
-        "Authorization": first_user_access_token
+        "Authorization": "Bearer " + first_user_access_token
     }
     create_connections(headers)
     create_projects(headers)

@@ -13,6 +13,7 @@ import { getProject } from "../../api/project";
 import { useEffect, useState } from "react";
 import { IProfile } from "../../interfaces/api-response";
 import { HappinessValue } from "../../components/HappinessTracker/HappinessTracker";
+import { StatisticsPageContainer } from "./style"
 
 ChartJS.register(
   CategoryScale,
@@ -94,6 +95,7 @@ const HappinessTrackerGraph = () => {
   };
 
   const loadProject = async () => {
+    console.log("e")
     try {
       const response = await getProject(projectId!);
 
@@ -122,9 +124,9 @@ const HappinessTrackerGraph = () => {
 
 const StatisticsPage = () => {
   return (
-    <>
+    <StatisticsPageContainer>
       <HappinessTrackerGraph />
-    </>
+  </StatisticsPageContainer>
   );
 };
 export default StatisticsPage;
