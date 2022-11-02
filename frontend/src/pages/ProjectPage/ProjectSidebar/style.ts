@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Palette } from "../Palette";
+import { Palette } from "../../../components/Palette";
 
 export const ProjectSidebarContainer = styled('div')`
   display: flex;

@@ -1,16 +1,16 @@
 
 import { ProjectSidebarContainer, ProjectButton, ButtonBorder } from "./style";
-import MyProjectIcon from "../../assets/folder.png";
-import TaskIcon from "../../assets/task_list.png";
-import CreateIcon from "../../assets/create_task.png";
-import StatsIcon from "../../assets/stats.png";
-import HappinessTracker from "../HappinessTracker/HappinessTracker";
+import MyProjectIcon from "../../../assets/folder.png";
+import TaskIcon from "../../../assets/task_list.png";
+import CreateIcon from "../../../assets/create_task.png";
+import StatsIcon from "../../../assets/stats.png";
+import HappinessTracker from "../../../components/HappinessTracker/HappinessTracker";
 
-type projectidProps = {
+type projectIdProps = {
   id: string;
 }
 
-const ProjectSidebar = ({ id }: projectidProps) => {
+const ProjectSidebar = ({ id }: projectIdProps) => {
   return(
     <ProjectSidebarContainer>
       <ProjectButton to="/dashboard" state={{ initialPageState: "projects" }}>

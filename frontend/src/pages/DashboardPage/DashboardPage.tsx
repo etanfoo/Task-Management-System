@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
-import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
+import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ProjectsLabelContainer } from "./style";
 import { MockTasks } from "../../constants/tasks";
 import TaskCard from "../../components/TaskCard/TaskCard";
-import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
-import { IProfile, IProject } from "../../interfaces/api-response";
+import { IProject } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
-import { getConnections } from "../../api/connect";
 import { useLocation } from "react-router-dom";
-import HappinessTracker from "../../components/HappinessTracker/HappinessTracker";
+import FriendsList from "../../components/FriendsList/FriendsList";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -34,8 +32,6 @@ const DashboardPage = () => {
   const [shownProjects, setShownProjects] = useState<IProject[]>([]);
   const [shownTasks, setShownTasks] = useState(allTasks);
 
-  const [connections, setConnections] = useState<IProfile[]>([]);
-
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
 
   const fetchAllProjects = async () => {
@@ -49,22 +45,8 @@ const DashboardPage = () => {
     }
   };
 
-  const fetchFriends = async () => {
-    try {
-      const friends = await getConnections(
-        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
-      );
-      setConnections(friends);
-    } catch (err: any) {
-      // todo: figure some error handling here
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
     fetchAllProjects();
-    // todo: update friends list after accepting --> right now just refreshing window after modal closes
-    fetchFriends();
   }, []);
 
   useEffect(() => {
@@ -132,31 +114,7 @@ const DashboardPage = () => {
         // todo: include trigger create task modal
       />
       <BodyContainer>
-        <LeftContainer>
-          {connections.length !== 0
-            ? (
-              <>
-                <h2>Your friends</h2>
-                <FriendsContainer>
-                  {connections.map((connection) => (
-                    <FriendsCard
-                      key={connection.id}
-                      profileId={connection.id}
-                      name={connection.name}
-                      email={connection.email}
-                      imageURL={connection.profilePicture}
-                      functionality="profile"
-                      projectId={null!}
-                      alreadyAdded={false}
-                    />
-                  ))}
-                </FriendsContainer>
-                <Divider sx={{ margin: '1rem 0' }} />
-              </>
-            ) : null
-          }
-          <HappinessTracker />
-        </LeftContainer>
+        <FriendsList />
         <RightContainer>
           <StyledTextField
             fullWidth

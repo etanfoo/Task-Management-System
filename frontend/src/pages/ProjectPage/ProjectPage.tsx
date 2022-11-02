@@ -1,7 +1,7 @@
 import { BottomContainer, CancelButton, EmptySummary, FriendsContainer, IconContainer, LabelContainer, MembersSearchbar, MidContainer, OverflowContainer, PP, ProjectContainer, ProjectPageContainer, SummaryContainer, TaskControls, TasksContainer, TaskSearchbar, TaskSort, TopContainer, UpdateButton } from "./style";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import ProjectSidebar from "../../components/ProjectSidebar/ProjectSidebar";
+import ProjectSidebar from "./ProjectSidebar/ProjectSidebar";
 import { useParams } from "react-router-dom";
 import { EmptyProject } from "../../constants/projects";
 import { useEffect, useState } from "react";
