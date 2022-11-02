@@ -12,6 +12,7 @@ import { IProject } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 import { useLocation } from "react-router-dom";
 import FriendsList from "../../components/FriendsList/FriendsList";
+import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -33,6 +34,8 @@ const DashboardPage = () => {
   const [shownTasks, setShownTasks] = useState(allTasks);
 
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
+
+  const [isCreateTaskModalVisible, setIsCreateTaskModalVisible] = useState<boolean>(false);
 
   const fetchAllProjects = async () => {
     try {
@@ -109,9 +112,14 @@ const DashboardPage = () => {
         // todo: temp fix, need to refresh friends list after adding someone
         handleClose={() => {setIsConnectionRequestsModalVisible(false); window.location.reload();}}
       />
+      <CreateTaskModal 
+        isOpen={isCreateTaskModalVisible}
+        handleClose={() => {setIsCreateTaskModalVisible(false)}}
+      />
       <Header 
         triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
         // todo: include trigger create task modal
+        triggerCreateTaskModal={() => setIsCreateTaskModalVisible(true)}
       />
       <BodyContainer>
         <FriendsList />

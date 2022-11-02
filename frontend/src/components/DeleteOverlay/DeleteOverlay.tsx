@@ -30,11 +30,7 @@ const DeleteOverlay = ({ isOpen, content, contentId, closeCallback, memberId}: D
   }
 
   return (
-    <Modal
-      open={isOpen}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Modal open={isOpen}>
       <DeleteOverlayContainer>
         <h1>
           Are you sure you want to 

@@ -24,6 +24,11 @@ export interface IProject {
   title: string;
 };
 
+// Add more fields
 export interface ITask {
-  // todo
+  title: string;
+  description: string;
+  projectId: number;
+  deadline: Date;
+  assignee: number;
 };
