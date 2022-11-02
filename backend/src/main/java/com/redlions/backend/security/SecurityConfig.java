@@ -51,7 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/connect/**").permitAll(); // TODO: bandaid fix for now
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/accept/**").permitAll(); // TODO: bandaid fix for now
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/reject/**").permitAll(); // TODO: bandaid fix for now
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/project").permitAll(); // TODO: bandaid fix for now
         // these api's need authentication
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/**").hasAnyAuthority("PERMITTED");
         http.authorizeRequests().antMatchers("/api/v1/**").authenticated();
