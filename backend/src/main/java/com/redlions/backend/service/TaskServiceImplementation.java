@@ -91,15 +91,22 @@ public class TaskServiceImplementation implements TaskService {
         Integer status = task.getStatus();
         
         if(status != null) {
-            // Get the status from the task in the db
-            Integer prevStatus = taskInDb.getStatus();
-            // Set it to the new status
-            taskInDb.setStatus(status);
+            Long assigneeId = taskInDb.getProfileAssignee().getId();
+            Long authorId = taskInDb.getProfileAuthor().getId();
 
-            // Use prev status and current status to determine how we need to update the user's points
-            updateProfilePoints(prevStatus, status, taskInDb.getProfileAssignee(), taskInDb.getPoints());
+            // Only the assignee and the author are able to change the status of the task
+            if(profileId == assigneeId || profileId == authorId) {
+                // Get the status from the task in the db
+                Integer prevStatus = taskInDb.getStatus();
+                // Set it to the new status
+                taskInDb.setStatus(status);
+                // Use prev status and current status to determine how we need to update the user's points
+                updateProfilePoints(prevStatus, status, taskInDb.getProfileAssignee(), taskInDb.getPoints());
+            } else {
+                String errorMessage = String.format("User %d must be the author or assignee to change the status of this task.", profileId);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            }
             
-
         }
 
         return taskRepo.save(taskInDb);
