@@ -12,33 +12,31 @@ import StressedFace from "./../../assets/stressed_face.png";
 import { getProfile, putProfileHappiness } from "../../api/profile";
 import { IProfile } from "../../interfaces/api-response";
 import { EmptyProfile } from "../../constants/profiles";
-import { ExitButton } from "./style";
 
+/**
+   NONE = 0;
+   STRESSED = 1;
+   WORRIED = 2;
+   NEUTRAL = 3;
+   COMFORTABLE = 4;
+   HAPPY = 5;
+ */
 export type HappinessValue = 0 | 1 | 2 | 3 | 4 | 5;
 
-// TODO: deal with hiding happiness tracker
 const HappinessTracker = () => {
-  const STRESSED = 1;
-  const WORRIED = 2;
-  const NEUTRAL = 3;
-  const COMFORTABLE = 4;
-  const HAPPY = 5;
-
   const [currentLoggedInProfile, setCurrentLoggedInProfile] =
     useState<IProfile>(EmptyProfile);
+  const [showHappinessTracker, setShowHappinessTracker] = useState(true);
 
   const handleClick = async (event: any) => {
     const happinessValue = event.target.id;
-    console.log(happinessValue)
 
-    // TODO: send api request
     try {
-      await putProfileHappiness(
-        currentLoggedInProfile.id, happinessValue
-      );
+      await putProfileHappiness(currentLoggedInProfile.id, happinessValue);
     } catch (err: any) {
       console.log(err);
     }
+    setShowHappinessTracker(false);
   };
 
   const fetchCurrentLoggedInUser = async () => {
@@ -57,41 +55,52 @@ const HappinessTracker = () => {
   }, []);
 
   return (
-    <HappinessTrackerContainer>
-      <EmotionContainer>
-        <ExitButton variant="contained" onClick={handleClick} id="0">
-          X
-        </ExitButton>
-        <img
-          src={WorriedFace}
-          alt="worried face"
-          id="1"
-          onClick={handleClick}
-        />
-        <img
-          src={StressedFace}
-          alt="stressed face"
-          id="2"
-          onClick={handleClick}
-        />
-        <img
-          src={NeturalFace}
-          alt="netural face"
-          id="3"
-          onClick={handleClick}
-        />
-        <img
-          src={ComfortableFace}
-          alt="comfortable face"
-          id="4"
-          onClick={handleClick}
-        />
-        <img src={HappyFace} alt="happy face" id="5" onClick={handleClick} />
-      </EmotionContainer>
-      <BottomContainer>
-        <h3>How are you feeling?</h3>
+    <>
+      {showHappinessTracker ? (
+        <HappinessTrackerContainer>
+          <EmotionContainer>
+            <img
+              src={WorriedFace}
+              alt="worried face"
+              id="1"
+              onClick={handleClick}
+            />
+            <img
+              src={StressedFace}
+              alt="stressed face"
+              id="2"
+              onClick={handleClick}
+            />
+            <img
+              src={NeturalFace}
+              alt="netural face"
+              id="3"
+              onClick={handleClick}
+            />
+            <img
+              src={ComfortableFace}
+              alt="comfortable face"
+              id="4"
+              onClick={handleClick}
+            />
+            <img
+              src={HappyFace}
+              alt="happy face"
+              id="5"
+              onClick={handleClick}
+            />
+          </EmotionContainer>
+          <BottomContainer>
+            <h3>How are you feeling?</h3>
+          </BottomContainer>
+        </HappinessTrackerContainer>
+      ) :
+      
+          <BottomContainer>
+      <h3>Thank you.</h3>
       </BottomContainer>
-    </HappinessTrackerContainer>
+      }
+    </>
   );
 };
 

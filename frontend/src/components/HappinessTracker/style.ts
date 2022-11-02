@@ -1,6 +1,4 @@
 import { styled } from "@mui/material";
-import { Button } from "@mui/material";
-import { Palette } from "../Palette";
 
 export const HappinessTrackerContainer = styled('div')`
   display: flex;
@@ -34,15 +32,4 @@ export const BottomContainer = styled('div')`
     text-align: center;
     font-weight: normal;
   };
-`;
-
-export const ExitButton = styled(Button)`
-
-  background-color: ${Palette.errorRed};
-  color: black;
-  font-size: 1rem;
-  &:hover {
-    background-color: ${Palette.errorRed};
-  }
-  margin-right: auto;
 `;

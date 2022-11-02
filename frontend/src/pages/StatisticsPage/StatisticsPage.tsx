@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const StatisticsPage = () => {
+const HappinessTrackerGraph = () => {
   const HAPPINESS_TRACKER_BACKGROUND_RED = "rgb(255, 99, 132, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_ORANGE = "rgb(255, 159, 64, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_PURPOSE = "rgb(153, 102, 255, 0.2)";
@@ -116,6 +116,14 @@ const StatisticsPage = () => {
   return (
     <>
       <Bar options={options} data={data} />
+    </>
+  );
+};
+
+const StatisticsPage = () => {
+  return (
+    <>
+      <HappinessTrackerGraph />
     </>
   );
 };
