@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import CreateProjectPage from "./pages/CreateProject/CreateProject";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ProjectPage from "./pages/ProjectPage/ProjectPage";
+import TaskPage from "./pages/TaskPage/TaskPage";
 
 const AuthenticatedRoutes = () => {
   const token = sessionStorage.getItem(process.env.REACT_APP_TOKEN!);
@@ -24,7 +25,7 @@ const Router = () => (
       <Route path='/signup' element={ <SignUpPage /> } />
       <Route element={ <AuthenticatedRoutes /> }>
         <Route path='/profile/:profileId' element={ <ProfilePage /> } />
-        <Route path='/task/:taskId' element={ <div>this be the task page</div> } />
+        <Route path='/task/:taskId' element={ <TaskPage /> } />
         <Route path='/dashboard' element={ <DashboardPage /> } />
         <Route path='/project/create' element={ <CreateProjectPage /> } />
         <Route path='/project/:projectId' element={ <ProjectPage /> } />
