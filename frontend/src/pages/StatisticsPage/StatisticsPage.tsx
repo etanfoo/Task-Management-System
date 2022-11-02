@@ -38,12 +38,12 @@ const StatisticsPage = () => {
 
   const ADJUST_FOR_NO_NONE_VALUE = 1; // we don't represent "NONE_FACE" in our graph
 
-  const EMPTY_HAPPINESS_TRACKER_DATA: HappinessValue[] = [0,0, 0, 0, 0, 0];
+  const EMPTY_HAPPINESS_TRACKER_DATA: HappinessValue[] = [0, 0, 0, 0, 0, 0];
 
   const { projectId } = useParams();
-  const [happinessTrackerData, setHappinessTrackerData] = useState<HappinessValue[]>(
-    EMPTY_HAPPINESS_TRACKER_DATA
-  );
+  const [happinessTrackerData, setHappinessTrackerData] = useState<
+    HappinessValue[]
+  >(EMPTY_HAPPINESS_TRACKER_DATA);
 
   const options = {
     scales: {
@@ -66,13 +66,7 @@ const StatisticsPage = () => {
     },
   };
 
-  const labels = [
-    "Stressed",
-    "Worried",
-    "Neutral",
-    "Comfortable",
-    "Happy",
-  ];
+  const labels = ["Stressed", "Worried", "Neutral", "Comfortable", "Happy"];
 
   const data = {
     labels,
@@ -105,9 +99,11 @@ const StatisticsPage = () => {
 
       let tmpHappinessTrackerData = EMPTY_HAPPINESS_TRACKER_DATA;
       response.profiles.map((profile: IProfile) => {
-          ++tmpHappinessTrackerData[profile.happiness];
+        ++tmpHappinessTrackerData[profile.happiness];
       });
-      setHappinessTrackerData(tmpHappinessTrackerData.slice(ADJUST_FOR_NO_NONE_VALUE));
+      setHappinessTrackerData(
+        tmpHappinessTrackerData.slice(ADJUST_FOR_NO_NONE_VALUE)
+      );
     } catch (err: any) {
       console.log(err);
     }
