@@ -105,6 +105,17 @@ public class ProjectServiceImplementation implements ProjectService {
     }
 
     @Override
+    public void removeProfileFromProject(Long projectId, Long profileId, Long profileIdToRemove) {
+        util.checkProfile(profileId);
+        Project projectInDb = util.checkProject(projectId);
+        util.isProfileInProject(profileId, projectId, projectInDb);
+
+        Profile profileToRemove = util.checkProfile(profileIdToRemove);
+        System.out.println(profileToRemove);
+        projectInDb.removeProfile(profileToRemove);
+    }
+
+    @Override
     public List<Project> getAssociatedProjects(Long profileId) {
         Profile profile = util.checkProfile(profileId);
         Set<Project> projectsSet = profile.getProjects();

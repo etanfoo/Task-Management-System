@@ -1,9 +1,9 @@
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, AlertColor } from '@mui/material';
 
 type PopupProps = {
   isOpen: boolean;
   popupMessage: string;
-  type: "error" | "success";
+  type: AlertColor;
   handleClose: () => void;
 }
 

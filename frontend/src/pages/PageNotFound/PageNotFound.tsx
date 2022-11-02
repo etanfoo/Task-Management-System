@@ -12,7 +12,7 @@ const PageNotFound = () => {
         <h1>looks like something went wrong</h1>
         <h1>
           click&nbsp;
-          <RedirectLink to={ isAuthorised ? '/dashboard' : '/' }>
+          <RedirectLink to={ isAuthorised ? '/dashboard' : '/' } state={{ initialPageState: "tasks" }}>
             here       
           </RedirectLink>
           &nbsp;to return to our home page

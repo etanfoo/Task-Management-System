@@ -25,7 +25,7 @@ public class TaskServiceImplementation implements TaskService {
     private final TaskRepository taskRepo;
     private final Util util;
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
-
+    
     private final Integer TASK_NOT_STARTED = 0;
     private final Integer TASK_IN_PROGRESS = 1;
     private final Integer TASK_COMPLETE = 2;
@@ -106,9 +106,7 @@ public class TaskServiceImplementation implements TaskService {
     }
 
     private void updateProfilePoints(Integer prevStatus, Integer status, Profile profileAssignee, Integer points) {
-
-        
-
+    
         Integer currPoints = profileAssignee.getPoints();
         // When the task is complete we add the points to the profile, need to make sure that the 
         // task was not already complete.
@@ -126,6 +124,8 @@ public class TaskServiceImplementation implements TaskService {
                 profileAssignee.setPoints(currPoints - points);
             }
         }
+
+
 
     }
 
