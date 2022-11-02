@@ -1,8 +1,6 @@
 package com.redlions.backend.entity;
 
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -31,16 +28,22 @@ public class Task {
     @Column(name="deadline")
     private Date deadline;
 
+    @Column(name="points")
+    private Integer points;
+
+    @Column(name="status")
+    private Integer status;
+
     @ManyToOne()
     @JoinColumn(name="project_id", nullable=false)
     private Project project;
 
     @ManyToOne()
-    @JoinColumn(name="author_id", nullable=false)
+    @JoinColumn(name="author_id")
     private Profile profileAuthor;
 
     @ManyToOne()
-    @JoinColumn(name="assignee_id", nullable=false)
+    @JoinColumn(name="assignee_id")
     private Profile profileAssignee;
 
     public Task() {
@@ -94,7 +97,6 @@ public class Task {
         this.project = project;
     }
 
-
     public Profile getProfileAuthor() {
         return this.profileAuthor;
     }
@@ -111,6 +113,21 @@ public class Task {
         this.profileAssignee = profileAssignee;
     }
 
+    public Integer getPoints() {
+        return this.points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public Integer getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {
@@ -119,6 +136,11 @@ public class Task {
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", deadline='" + getDeadline() + "'" +
+            ", points='" + getPoints() + "'" +
+            ", project='" + getProject() + "'" +
+            ", profileAuthor='" + getProfileAuthor() + "'" +
+            ", profileAssignee='" + getProfileAssignee() + "'" +
             "}";
     }
+    
 }

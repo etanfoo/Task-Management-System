@@ -3,6 +3,7 @@ package com.redlions.backend.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="project")
@@ -30,7 +33,8 @@ public class Project {
     @Column(name="description")
     private String description;
 
-    @OneToMany(mappedBy="project")
+    @JsonIgnore
+    @OneToMany(mappedBy="project", cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
     @ManyToMany
