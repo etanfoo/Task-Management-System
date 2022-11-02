@@ -110,7 +110,8 @@ public class TaskServiceImplementation implements TaskService {
         
 
         Integer currPoints = profileAssignee.getPoints();
-        // When the task is complete we add the points to the profile
+        // When the task is complete we add the points to the profile, need to make sure that the 
+        // task was not already complete.
         if(status == TASK_COMPLETE && prevStatus != TASK_COMPLETE) {
             profileAssignee.setPoints(currPoints + points);
         }
