@@ -23,12 +23,7 @@ ChartJS.register(
 );
 
 const StatisticsPage = () => {
-  const NONE_FACE = 0
-  const STRESSED = 1
-  const WORRIED = 2
-  const NEUTRAL = 3
-  const COMFORTABLE = 4
-  const HAPPY = 5
+
   const HAPPINESS_TRACKER_BACKGROUND_GREY = 'rgb(201, 203, 207, 0.2)';
   const HAPPINESS_TRACKER_BACKGROUND_RED = 'rgb(255, 99, 132, 0.2)';
   const HAPPINESS_TRACKER_BACKGROUND_ORANGE = 'rgb(255, 159, 64, 0.2)';
