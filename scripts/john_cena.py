@@ -13,9 +13,11 @@ CONNECT_ENDPOINT = f'{BASE_URL}/profile/connect'
 ACCEPT_CONNECT_ENDPOINT = f'{BASE_URL}/profile/accept'
 
 MOCK_USER_DATA_FILE_PATH = 'mock_user_data.json'
+MOCK_PROJECT_DATA_FILE_PATH = 'mock_project_data.json'
 PROFILE_ABOUTME_CHARACTER_LIMIT = 250
+PROJECT_DESCRIPTION_CHARACTER_LIMIT = 900
 
-NUMBER_OF_USERS = 100
+NUMBER_OF_USERS = 50
 NUMBER_OF_CONNECTIONS = 30
 NUMBER_OF_PROJECTS = 15
 
@@ -71,14 +73,17 @@ def create_connections(headers: dict):
     print(f"Success! Sent {NUMBER_OF_CONNECTIONS} POST requests to {ACCEPT_CONNECT_ENDPOINT}.")
 
 def create_projects(headers: dict):
+    with open(MOCK_PROJECT_DATA_FILE_PATH) as f:
+        projects = json.load(f)
+
     for i in range(NUMBER_OF_PROJECTS):
+        project = projects[i]
         payload = { 
-            "profileId": FIRST_USER_ID,
-            "profileIdsToAdd": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+            "profileId": project.get("profileId"),
+            "profileIdsToAdd": project.get("profileIdsToAdd"),
             "project": {
-                "title": f"Epic Project #{i}.",
-                "description": "An epic project description.",
-                "profiles": []
+                "title": project.get("project").get("title"),
+                "description": project.get("project").get("description")[:PROJECT_DESCRIPTION_CHARACTER_LIMIT]
             }
         }
         response = requests.post(f'{PROJECT_ENDPOINT}', json=payload, headers=headers)
