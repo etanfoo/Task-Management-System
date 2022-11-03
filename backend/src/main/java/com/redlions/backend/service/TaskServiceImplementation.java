@@ -29,6 +29,7 @@ public class TaskServiceImplementation implements TaskService {
     private final Integer TASK_NOT_STARTED = 0;
     private final Integer TASK_IN_PROGRESS = 1;
     private final Integer TASK_COMPLETE = 2;
+    private final Integer TASK_BLOCKED = 3;
 
     public Task create(Task task, Long projectId, Long profileId) {
         Profile profile = util.checkProfile(profileId);
@@ -51,7 +52,9 @@ public class TaskServiceImplementation implements TaskService {
             String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-
+        
+        // Initialise the task to not started.
+        task.setStatus(TASK_NOT_STARTED);
         task.setProfileAuthor(profile);
         task.setProject(project);
 
