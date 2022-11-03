@@ -72,13 +72,15 @@ How to connect to database:
 
 * Tasks:
     * Have a title - which must be set when the task is created.
+    * Are assigned an author and an assignee - when the task created the author is set as the assignee, which may be changed by the author to other users in the project that the task is created.
     * Are assigned points - which must also be set when the task is created.
         * The user that is assigned the task is awarded the points when the task is complete.
         * If the task is no longer completed (i.e is moved from the completed status to either in progress or not started), then the user is no longer awarded with those points.
     * Have a description - which must be less than 1000 characters.
     * Have a status - which is set to NOT STARTED when the task is created.
-        * Status in the backend is define as:
+        * The status of a task may only be changed by the task assignee or author
+        * Status in the backend is defined as:
             * 0 - NOT STARTED
             * 1 - IN PROGRESS
             * 2 - COMPLETED
-    * Are assigned an author and an assignee - when the task created the author is set as the assignee, which may be changed by the author to other users in the project that the task is created.
+    
