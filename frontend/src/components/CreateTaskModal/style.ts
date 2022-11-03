@@ -18,12 +18,19 @@ export const ModalContainer = styled('div')`
   
 `;
 
+export const EmptyModal = styled('div')`
+  margin: auto;
+  > h1 {
+    font-weight: normal;
+  };
+`;
+
 export const ModalBody = styled('div')`
   width: 90%;
   margin-inline: auto;
 
   > h1, h2 {
-    align-text: none;
+    // align-text: none;
     font-weight: normal;
     margin-bottom: 0.5rem;
   };
@@ -32,13 +39,32 @@ export const ModalBody = styled('div')`
 export const BottomContainer = styled('div')`
   display: flex;
   flex-direction: row;
+  > :first-of-type {
+    width: 30%;
+    margin-right: 5%
+  };
+  > :nth-of-type(2) {
+    width: 30%;
+    margin-right: 5%;
+  };
+  > :nth-of-type(3) {
+    width: 30%
+  };
 `;
 
-export const DeadlineContainer = styled('div')`
-  // width: 12rem;
-  width: 55%;
-  margin-left: 20%;
-`;
+// export const SelectProjectContainer = styled('div')`
+//   // width: 12rem;
+//   // width: 40%;
+//   margin-left: 5%;
+//   // margin-right: 5%;
+// `;
+
+// export const PointsContainer = styled('div')`
+//   // width: 12rem;
+//   // width: 40%;
+//   // margin-left: 5%;
+//   margin-left: 5%;
+// `;
 
 export const ButtonsContainer = styled('div')`
   display: flex;
