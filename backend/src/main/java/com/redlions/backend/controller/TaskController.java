@@ -45,10 +45,6 @@ public class TaskController {
         Task task = json.task;
         Long taskAssignee = json.taskAssignee;
         Long profileId = json.profileId;
-        System.out.println("the values are:");
-        System.out.println(task);
-        System.out.println(taskAssignee);
-        System.out.println(profileId);
         return taskService.create(task, projectId, profileId, taskAssignee);
     }
 
