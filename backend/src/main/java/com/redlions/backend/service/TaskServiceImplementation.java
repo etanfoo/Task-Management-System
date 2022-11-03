@@ -51,7 +51,9 @@ public class TaskServiceImplementation implements TaskService {
             String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-
+        
+        // Initialise the task to not started.
+        task.setStatus(TASK_NOT_STARTED);
         task.setProfileAuthor(profile);
         task.setProject(project);
 

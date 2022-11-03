@@ -64,3 +64,23 @@ How to connect to database:
 * Currently, if using postman, have to send the body as raw JSON and not x-www.form-urlencoded, as Spring Boot needs this configuration. Currently looking into how to fix
 * Application runs on localhost port 7777 (can be changed in application.properties file).
 * Once started, can view the swagger at `http://localhost:7777/swagger-ui/`.
+
+## Tasks
+* Tasks are contained within projects.
+* Users may be a part of multiple projects, that contain tasks.
+* Users may be assigned multiple tasks from the same, or different projects that they belong to.
+
+* Tasks:
+    * Have a title - which must be set when the task is created.
+    * Are assigned an author and an assignee - when the task created the author is set as the assignee, which may be changed by the author to other users in the project that the task is created.
+    * Are assigned points - which must also be set when the task is created.
+        * The user that is assigned the task is awarded the points when the task is complete.
+        * If the task is no longer completed (i.e is moved from the completed status to either in progress or not started), then the user is no longer awarded with those points.
+    * Have a description - which must be less than 1000 characters.
+    * Have a status - which is set to NOT STARTED when the task is created.
+        * The status of a task may only be changed by the task assignee or author
+        * Status in the backend is defined as:
+            * 0 - NOT STARTED
+            * 1 - IN PROGRESS
+            * 2 - COMPLETED
+    
