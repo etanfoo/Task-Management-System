@@ -26,19 +26,21 @@ ChartJS.register(
 const HappinessTrackerGraph = () => {
   const HAPPINESS_TRACKER_BACKGROUND_RED = "rgb(255, 99, 132, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_ORANGE = "rgb(255, 159, 64, 0.2)";
-  const HAPPINESS_TRACKER_BACKGROUND_PURPOSE = "rgb(153, 102, 255, 0.2)";
+  const HAPPINESS_TRACKER_BACKGROUND_PURPLE = "rgb(153, 102, 255, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_YELLOW = "rgb(255, 205, 86, 0.2)";
   const HAPPINESS_TRACKER_BACKGROUND_GREEN = "rgb(75, 192, 192, 0.2)";
 
   const HAPPINESS_TRACKER_BORDER_RED = "rgb(255, 99, 132)";
   const HAPPINESS_TRACKER_BORDER_ORANGE = "rgb(255, 159, 64)";
-  const HAPPINESS_TRACKER_BORDER_PURPOSE = "rgb(153, 102, 255)";
+  const HAPPINESS_TRACKER_BORDER_PURPLE = "rgb(153, 102, 255)";
   const HAPPINESS_TRACKER_BORDER_YELLOW = "rgb(255, 205, 86)";
   const HAPPINESS_TRACKER_BORDER_GREEN = "rgb(75, 192, 192)";
 
   const EMPTY_HAPPINESS_TRACKER_DATA = [0, 0, 0, 0, 0];
 
   const { projectId } = useParams();
+
+  const [isLoading, setIsLoading] = useState(true);
   const [happinessTrackerData, setHappinessTrackerData] = useState(
     EMPTY_HAPPINESS_TRACKER_DATA
   );
@@ -73,14 +75,14 @@ const HappinessTrackerGraph = () => {
         backgroundColor: [
           HAPPINESS_TRACKER_BACKGROUND_RED,
           HAPPINESS_TRACKER_BACKGROUND_ORANGE,
-          HAPPINESS_TRACKER_BACKGROUND_PURPOSE,
+          HAPPINESS_TRACKER_BACKGROUND_PURPLE,
           HAPPINESS_TRACKER_BACKGROUND_YELLOW,
           HAPPINESS_TRACKER_BACKGROUND_GREEN,
         ],
         borderColor: [
           HAPPINESS_TRACKER_BORDER_RED,
           HAPPINESS_TRACKER_BORDER_ORANGE,
-          HAPPINESS_TRACKER_BORDER_PURPOSE,
+          HAPPINESS_TRACKER_BORDER_PURPLE,
           HAPPINESS_TRACKER_BORDER_YELLOW,
           HAPPINESS_TRACKER_BORDER_GREEN,
         ],
@@ -98,6 +100,7 @@ const HappinessTrackerGraph = () => {
         ++tmpHappinessTrackerData[profile.happiness!];
       });
       setHappinessTrackerData(tmpHappinessTrackerData);
+      setIsLoading(false);
     } catch (err: any) {
       console.log(err);
     }
@@ -107,10 +110,13 @@ const HappinessTrackerGraph = () => {
     loadProject();
   }, []);
 
-
   return (
     <>
-      <Bar options={options} data={data} />
+      {isLoading ? (
+        <div>loading...</div>
+      ) : (
+        <Bar options={options} data={data} />
+      )}
     </>
   );
 };
