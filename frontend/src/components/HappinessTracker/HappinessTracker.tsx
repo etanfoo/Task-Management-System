@@ -14,14 +14,13 @@ import { IProfile } from "../../interfaces/api-response";
 import { EmptyProfile } from "../../constants/profiles";
 
 /**
-   NONE = 0;
-   STRESSED = 1;
-   WORRIED = 2;
-   NEUTRAL = 3;
-   COMFORTABLE = 4;
-   HAPPY = 5;
+   STRESSED = 0;
+   WORRIED = 1;
+   NEUTRAL = 2;
+   COMFORTABLE = 3;
+   HAPPY = 4;
  */
-export type HappinessValue = 0 | 1 | 2 | 3 | 4 | 5;
+export type HappinessValue = null | 0 | 1 | 2 | 3 | 4;
 
 const HappinessTracker = () => {
   const [currentLoggedInProfile, setCurrentLoggedInProfile] =
@@ -62,31 +61,31 @@ const HappinessTracker = () => {
             <img
               src={WorriedFace}
               alt="worried face"
-              id="1"
+              id="0"
               onClick={handleClick}
             />
             <img
               src={StressedFace}
               alt="stressed face"
-              id="2"
+              id="1"
               onClick={handleClick}
             />
             <img
               src={NeturalFace}
               alt="netural face"
-              id="3"
+              id="2"
               onClick={handleClick}
             />
             <img
               src={ComfortableFace}
               alt="comfortable face"
-              id="4"
+              id="3"
               onClick={handleClick}
             />
             <img
               src={HappyFace}
               alt="happy face"
-              id="5"
+              id="4"
               onClick={handleClick}
             />
           </EmotionContainer>
@@ -94,12 +93,11 @@ const HappinessTracker = () => {
             <h3>How are you feeling?</h3>
           </BottomContainer>
         </HappinessTrackerContainer>
-      ) :
-      
-          <BottomContainer>
-      <h3>Thank you.</h3>
-      </BottomContainer>
-      }
+      ) : (
+        <BottomContainer>
+          <h3>Thank you.</h3>
+        </BottomContainer>
+      )}
     </>
   );
 };

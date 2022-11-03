@@ -12,8 +12,7 @@ import { Bar } from "react-chartjs-2";
 import { getProject } from "../../api/project";
 import { useEffect, useState } from "react";
 import { IProfile } from "../../interfaces/api-response";
-import { HappinessValue } from "../../components/HappinessTracker/HappinessTracker";
-import { StatisticsPageContainer } from "./style"
+import { StatisticsPageContainer } from "./style";
 
 ChartJS.register(
   CategoryScale,
@@ -37,14 +36,12 @@ const HappinessTrackerGraph = () => {
   const HAPPINESS_TRACKER_BORDER_YELLOW = "rgb(255, 205, 86)";
   const HAPPINESS_TRACKER_BORDER_GREEN = "rgb(75, 192, 192)";
 
-  const ADJUST_FOR_NO_NONE_VALUE = 1; // we don't represent "NONE_FACE" in our graph
-
-  const EMPTY_HAPPINESS_TRACKER_DATA: HappinessValue[] = [0, 0, 0, 0, 0, 0];
+  const EMPTY_HAPPINESS_TRACKER_DATA = [0, 0, 0, 0, 0];
 
   const { projectId } = useParams();
-  const [happinessTrackerData, setHappinessTrackerData] = useState<
-    HappinessValue[]
-  >(EMPTY_HAPPINESS_TRACKER_DATA);
+  const [happinessTrackerData, setHappinessTrackerData] = useState(
+    EMPTY_HAPPINESS_TRACKER_DATA
+  );
 
   const options = {
     scales: {
@@ -95,17 +92,14 @@ const HappinessTrackerGraph = () => {
   };
 
   const loadProject = async () => {
-    console.log("e")
     try {
       const response = await getProject(projectId!);
 
       let tmpHappinessTrackerData = EMPTY_HAPPINESS_TRACKER_DATA;
       response.profiles.map((profile: IProfile) => {
-        ++tmpHappinessTrackerData[profile.happiness];
+        ++tmpHappinessTrackerData[profile.happiness!];
       });
-      setHappinessTrackerData(
-        tmpHappinessTrackerData.slice(ADJUST_FOR_NO_NONE_VALUE)
-      );
+      setHappinessTrackerData(tmpHappinessTrackerData);
     } catch (err: any) {
       console.log(err);
     }
@@ -126,7 +120,7 @@ const StatisticsPage = () => {
   return (
     <StatisticsPageContainer>
       <HappinessTrackerGraph />
-  </StatisticsPageContainer>
+    </StatisticsPageContainer>
   );
 };
 export default StatisticsPage;
