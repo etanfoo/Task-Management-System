@@ -64,10 +64,8 @@ const HappinessTrackerGraph = () => {
     },
   };
 
-  const labels = ["Stressed", "Worried", "Neutral", "Comfortable", "Happy"];
-
   const data = {
-    labels,
+    labels: ["Stressed", "Worried", "Neutral", "Comfortable", "Happy"],
     datasets: [
       {
         label: "Happiness",
@@ -108,6 +106,7 @@ const HappinessTrackerGraph = () => {
   useEffect(() => {
     loadProject();
   }, []);
+
 
   return (
     <>
