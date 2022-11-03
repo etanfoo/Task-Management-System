@@ -58,6 +58,9 @@ public class TaskServiceImplementation implements TaskService {
             Profile assignee = util.checkProfile(taskAssignee);
             task.setProfileAssignee(assignee);
         }
+        
+        // Initialise the task to not started.
+        task.setStatus(TASK_NOT_STARTED);
         task.setProject(project);
 
         return taskRepo.save(task);
