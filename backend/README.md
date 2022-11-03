@@ -83,4 +83,5 @@ How to connect to database:
             * 0 - NOT STARTED
             * 1 - IN PROGRESS
             * 2 - COMPLETED
+            * 3 - BLOCKED
     
