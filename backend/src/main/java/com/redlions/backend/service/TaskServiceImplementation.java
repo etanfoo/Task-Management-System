@@ -30,10 +30,9 @@ public class TaskServiceImplementation implements TaskService {
     private final Integer TASK_IN_PROGRESS = 1;
     private final Integer TASK_COMPLETE = 2;
 
-    public Task create(Task task, Long projectId, Long profileId) {
-        Profile profile = util.checkProfile(profileId);
+    public Task create(Task task, Long projectId, Long taskAuthor, Long taskAssignee) {
         Project project = util.checkProject(projectId);
-        util.isProfileInProject(profileId, projectId, project);
+        util.isProfileInProject(taskAuthor, projectId, project);
 
         if (task.getTitle() == null) {
             String errorMessage = String.format("Task must contain a title");
@@ -52,7 +51,12 @@ public class TaskServiceImplementation implements TaskService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
-        task.setProfileAuthor(profile);
+        Profile author = util.checkProfile(taskAuthor);
+        task.setProfileAuthor(author);
+        if (taskAssignee != null) {
+            Profile assignee = util.checkProfile(taskAssignee);
+            task.setProfileAssignee(assignee);
+        }
         task.setProject(project);
 
         return taskRepo.save(task);

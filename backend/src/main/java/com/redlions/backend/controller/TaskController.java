@@ -27,6 +27,7 @@ public class TaskController {
     public static class TaskJson {
         public Task task;
         public Long profileId;
+        public Long taskAssignee;
     }
 
     public static class UpdateAssigneeJson {
@@ -42,8 +43,13 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public Task saveTask(@RequestBody TaskJson json, @PathVariable Long projectId) {
         Task task = json.task;
+        Long taskAssignee = json.taskAssignee;
         Long profileId = json.profileId;
-        return taskService.create(task, projectId, profileId);
+        System.out.println("the values are:");
+        System.out.println(task);
+        System.out.println(taskAssignee);
+        System.out.println(profileId);
+        return taskService.create(task, projectId, profileId, taskAssignee);
     }
 
     @PutMapping(value = "/{projectId}/task/{taskId}")
