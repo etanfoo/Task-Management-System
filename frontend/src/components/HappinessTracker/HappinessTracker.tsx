@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   BottomContainer,
   EmotionContainer,
@@ -9,9 +9,7 @@ import ComfortableFace from "./../../assets/comfortable_face.png";
 import NeturalFace from "./../../assets/netural_face.png";
 import WorriedFace from "./../../assets/worried_face.png";
 import StressedFace from "./../../assets/stressed_face.png";
-import { getProfile, putProfileHappiness } from "../../api/profile";
-import { IProfile } from "../../interfaces/api-response";
-import { EmptyProfile } from "../../constants/profiles";
+import { putProfileHappiness } from "../../api/profile";
 
 /**
    STRESSED = 0;
@@ -23,35 +21,21 @@ import { EmptyProfile } from "../../constants/profiles";
 export type HappinessValue = null | 0 | 1 | 2 | 3 | 4;
 
 const HappinessTracker = () => {
-  const [currentLoggedInProfile, setCurrentLoggedInProfile] =
-    useState<IProfile>(EmptyProfile);
   const [showHappinessTracker, setShowHappinessTracker] = useState(true);
 
   const handleClick = async (event: any) => {
     const happinessValue = event.target.id;
 
+    const currentLoggedInProfileId = parseInt(
+      sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
+    );
     try {
-      await putProfileHappiness(currentLoggedInProfile.id, happinessValue);
+      await putProfileHappiness(currentLoggedInProfileId, happinessValue);
     } catch (err: any) {
       console.log(err);
     }
     setShowHappinessTracker(false);
   };
-
-  const fetchCurrentLoggedInUser = async () => {
-    try {
-      const data = await getProfile(
-        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
-      );
-      setCurrentLoggedInProfile(data);
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchCurrentLoggedInUser();
-  }, []);
 
   return (
     <>

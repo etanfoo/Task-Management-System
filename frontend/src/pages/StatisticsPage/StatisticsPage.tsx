@@ -96,9 +96,9 @@ const HappinessTrackerGraph = () => {
       const response = await getProject(projectId!);
 
       let tmpHappinessTrackerData = EMPTY_HAPPINESS_TRACKER_DATA;
-      response.profiles.map((profile: IProfile) => {
-        ++tmpHappinessTrackerData[profile.happiness!];
-      });
+      response.profiles.map(
+        (profile: IProfile) => ++tmpHappinessTrackerData[profile.happiness!]
+      );
       setHappinessTrackerData(tmpHappinessTrackerData);
       setIsLoading(false);
     } catch (err: any) {
@@ -108,6 +108,7 @@ const HappinessTrackerGraph = () => {
 
   useEffect(() => {
     loadProject();
+    // eslint-disable-next-line
   }, []);
 
   return (
