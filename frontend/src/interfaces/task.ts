@@ -1,9 +1,7 @@
 export interface ITasktDetails {
   title: string;
   description: string;
-  projectId: number;
-  deadline: Date;
-  assignee: number;
+  deadline: string;
   points: number;
   status: number;
 };

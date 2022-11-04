@@ -94,7 +94,7 @@ const ProjectPage = () => {
     let sortedTasks: any[] = shownTasks;
     if (taskSortType === "ID") {
       sortedTasks = [...shownTasks].sort(
-        (taskA, taskB) => taskA.taskId.localeCompare(taskB.taskId)
+        (taskA, taskB) => taskA.id.toString().localeCompare(taskB.id.toString())
       );
     } else if (taskSortType === "Title") {
       sortedTasks = [...shownTasks].sort(
@@ -102,7 +102,7 @@ const ProjectPage = () => {
       );        
     } else if (taskSortType === "Status") {
       sortedTasks = [...shownTasks].sort(
-        (taskA, taskB) => taskA.status.localeCompare(taskB.status)
+        (taskA, taskB) => taskA.status.toString().localeCompare(taskB.status.toString())
       );
     } else if (taskSortType === "Deadline") {
       sortedTasks = [...shownTasks].sort(
@@ -213,8 +213,9 @@ const ProjectPage = () => {
                           {/* todo: replace with real data returned from api */}
                           {shownTasks.map((task) => (
                             <TaskCard
-                              key={task.taskId}
-                              taskId={task.taskId}
+                              key={task.id}
+                              taskId={task.id}
+                              projectId={task.projectId}
                               title={task.title}
                               deadline={task.deadline}
                               status={task.status}

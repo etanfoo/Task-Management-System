@@ -115,5 +115,8 @@ export const UserCard = styled('div')`
     font-weight: normal;
     margin-top: 0.6rem;
     margin-left: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   };
 `;

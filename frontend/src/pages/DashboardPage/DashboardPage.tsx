@@ -8,7 +8,7 @@ import TaskCard from "../../components/TaskCard/TaskCard";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
-import { IProject } from "../../interfaces/api-response";
+import { IProject, ITask } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 import { useLocation } from "react-router-dom";
 import FriendsList from "../../components/FriendsList/FriendsList";
@@ -28,10 +28,10 @@ const DashboardPage = () => {
 
   // todo: currently disabling until tasks epic is complete
   // eslint-disable-next-line
-  const [allTasks, setAllTasks] = useState(MockTasks);
+  const [allTasks, setAllTasks] = useState<ITask[]>(MockTasks);
 
   const [shownProjects, setShownProjects] = useState<IProject[]>([]);
-  const [shownTasks, setShownTasks] = useState(allTasks);
+  const [shownTasks, setShownTasks] = useState<ITask[]>(allTasks);
 
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
 
@@ -54,10 +54,10 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (pageState === "tasks") {
-      let sortedTasks: any[] = shownTasks;
+      let sortedTasks: ITask[] = shownTasks;
       if (taskSortType === "ID") {
         sortedTasks = [...shownTasks].sort(
-          (taskA, taskB) => taskA.taskId.localeCompare(taskB.taskId)
+          (taskA, taskB) => taskA.id.toString().localeCompare(taskB.id.toString())
         );
       } else if (taskSortType === "Title") {
         sortedTasks = [...shownTasks].sort(
@@ -65,7 +65,7 @@ const DashboardPage = () => {
         );        
       } else if (taskSortType === "Status") {
         sortedTasks = [...shownTasks].sort(
-          (taskA, taskB) => taskA.status.localeCompare(taskB.status)
+          (taskA, taskB) => taskA.status.toString().localeCompare(taskB.status.toString())
         );
       } else if (taskSortType === "Deadline") {
         sortedTasks = [...shownTasks].sort(
@@ -115,6 +115,7 @@ const DashboardPage = () => {
       <CreateTaskModal 
         isOpen={isCreateTaskModalVisible}
         handleClose={() => {setIsCreateTaskModalVisible(false)}}
+        projectId={null}
       />
       <Header 
         triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
@@ -185,8 +186,9 @@ const DashboardPage = () => {
                     <OverflowContainer>
                       {shownTasks.map((task) => (
                         <TaskCard
-                          key={`task ${task.taskId}`}
-                          taskId={task.taskId}
+                          key={`task ${task.id}`}
+                          projectId={task.projectId}
+                          taskId={task.id}
                           title={task.title}
                           deadline={task.deadline}
                           status={task.status}

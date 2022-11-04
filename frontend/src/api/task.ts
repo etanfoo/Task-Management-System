@@ -1,11 +1,13 @@
 import axios from "axios";
-import { ITask } from "../interfaces/api-response";
+import { ITasktDetails } from "../interfaces/task";
 
 // Change from ITask to =>
-export const postTask = async (task: ITask, projectId: string): Promise<ITask> => {
+export const postTask = async (task: ITasktDetails, projectId: string, profileId: number, profileAssignee: number): Promise<any> => {
   try {
     const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/task`, {
-      task
+      profileAssignee,
+      profileId,
+      task,
     }, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`

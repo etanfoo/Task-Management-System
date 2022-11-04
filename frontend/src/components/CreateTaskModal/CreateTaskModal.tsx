@@ -10,31 +10,58 @@ import { BottomContainer, ButtonsContainer, CancelButton, CreateButton, EmptyMod
 import Slider from '@mui/material/Slider';
 import { getProjects } from "../../api/project";
 import { IProfile, IProject } from "../../interfaces/api-response";
+import { EmptyProject } from "../../constants/projects";
+import { IProjectDetails } from "../../interfaces/project";
+import { EmptyProfile } from "../../constants/profiles";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 type CreateTaskModalProps = {
   isOpen: boolean;
   handleClose: () => void;
+  projectId: string | null;
 }
 
-function valuetext(value: number) {
-  return `${value}`;
-}
+// function valuetext(value: number) {
+  
+//   return `${value}`;
+// }
 
-const CreateTaskModal = ({ isOpen, handleClose }: CreateTaskModalProps) => {
+const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProps) => {
   const navigate = useNavigate();
   const [taskDetails, setTaskDetails] = useState<ITasktDetails>(EmptyTask);
-  // const [taskDetails, setTaskDetails] = useState<ITasktDetails>(EmptyTask);
-  const [userProjects, setUserProjects] = useState<IProject[]>([]);
+  const [userProjects, setUserProjects] = useState<IProjectDetails[]>([]); 
 
-  const[currentProject, setCurrentProject] = useState<string>("");
-  const[projectMembers, setProjectMembers] = useState<IProfile[]>();
-  const[selectedMember, setSelectedMember] = useState<string>("");
+  // const[currentProject, setCurrentProject] = useState<string>("");
+  // const[projectMembers, setProjectMembers] = useState<IProfile[]>([]);
 
+  const[selectedProject, setSelectedProject] = useState<IProjectDetails>(EmptyProject);
+
+  const[selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
+
+  const[currProjectId, setCurrProjectId] = useState<string>("");
+  
+  const[deadline, setDeadline] = useState<string>("");
+
+  const todayDate = new Date().toISOString().slice(0, 10);
+  const [value, setValue] = useState<Dayjs | null>(dayjs(todayDate));
+  //  console.log()
+  // console.log(todayDate)
+  const handleChange = (newValue: Dayjs | null) => {
+    setValue(newValue);
+    if (newValue !== null) setTaskDetails({ ...taskDetails, deadline: newValue.format('YYYY-MM-DD') });
+  };
+
+  if (projectId !== null) setCurrProjectId(projectId);
 
   const createTask = async () => {
-    // const resp = await postTask(taskDetails);
-    // console.log(resp)
-    // navigate(/)
+    // Check deadline is past today
+    console.log(taskDetails)
+    const resp = await postTask(taskDetails, currProjectId, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), selectedMember.id);
+    console.log(resp)
+    // Change return type from any
+    navigate(`/project/${currProjectId}/task/${resp.id}`)
   }
 
   const fetchAllProjects = async () => {
@@ -47,24 +74,42 @@ const CreateTaskModal = ({ isOpen, handleClose }: CreateTaskModalProps) => {
     }
   };
 
-  const clearFields = () => {
-    setSelectedMember("");
-    setCurrentProject("");
-  }
+  // const clearFields = () => {
+  //   setSelectedMember("");
+  //   setCurrentProject("");
+  // }
 
-
+  // const valuetext = (value: number) => {
+  //   return `${value}`;
+  // }
+  
   useEffect(() => {
     // clearFields();
     fetchAllProjects();
   }, []);
 
 
-  const changeProject = (projectTitle: string) => {
+  const changeProject = (projectId: number) => {
     // Clear selected member
-    clearFields();
-    setCurrentProject(projectTitle); 
-    const currentProjectDetails: IProject = userProjects.filter((project: IProject) => project.title === projectTitle)[0];
-    setProjectMembers(currentProjectDetails.profiles);
+    // clearFields();
+    // console.log(projectId)
+    // setCurrentProject(projectTitle); 
+    
+    // Edge case for projects with same name
+    const currentProjectDetails: IProjectDetails = userProjects.filter((project: IProjectDetails) => project.id === projectId)[0];
+
+    setSelectedProject(currentProjectDetails);
+    setCurrProjectId(currentProjectDetails.id.toString());
+    // console.log(userProjects.filter((project: IProject) => project.id === projectId))
+    // setCurrentProject(currentProjectDetails.title); 
+    // setCurrProjectId(currentProjectDetails.id.toString());
+    // setProjectMembers(currentProjectDetails.profiles);
+  }
+
+  const findSelectMember = (profileId: number) => {
+    // const profile = ;
+    // console.log(profile)
+    setSelectedMember(selectedProject.profiles.filter((user: IProfile) => user.id === profileId)[0]);
   }
 
 
@@ -84,57 +129,70 @@ const CreateTaskModal = ({ isOpen, handleClose }: CreateTaskModalProps) => {
             <h2>Task title</h2>
             <TextField 
               sx={{ width: "100%" }}
+              onChange={(e) => setTaskDetails({ ...taskDetails, title: e.target.value })}
             />
             <h2>Summary</h2>
             <TextField 
               multiline
               rows={6}
               sx={{ width: "100%" }}
+              onChange={(e) => setTaskDetails({ ...taskDetails, description: e.target.value })}
             />
             <BottomContainer>
               <div>
                 <h2>Deadline</h2>
-                <DatePicker />
+                {/* <DatePicker deadlineDate={deadline} onChange={(e) => setTaskDetails({ ...taskDetails, description: e.target.value })}/> */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    inputFormat="DD/MM/YYYY"
+                    value={value}
+                    onChange={handleChange}
+                    renderInput={(params) => <TextField {...params} sx={{ width: "100%" }}/>}
+                  />
+                </LocalizationProvider>
               </div>
               <div>
                 <h2>Project</h2>
                 <Select
                   // label="Your tasks"
-                  value={currentProject}
-                  onChange={(e: SelectChangeEvent) => changeProject(e.target.value)}
+                  defaultValue=""
+                  value={selectedProject.id.toString()}
+                  onChange={(e: SelectChangeEvent) => { changeProject(parseInt(e.target.value)) }}
                   sx={{ width: "100%" }}
+                  // name={project.title}
                 >
                   {userProjects.map((project)=> (
-                    <MenuItem value={project.title}>{project.title}</MenuItem>
+                    <MenuItem value={project.id} key={`${project.id} ${project.title}`}>{project.title}</MenuItem>
                   ))}
                 </Select>
               </div>
               <div>
                 <h2>Points</h2>
                 <Slider
-                  aria-label="Temperature"
+                  // aria-label="Temperature"
                   defaultValue={1}
-                  getAriaValueText={valuetext}
+                  // getAriaValueText={valuetext}
                   valueLabelDisplay="auto"
                   step={1}
-                  // marks
+                  marks
                   min={1}
                   max={10}
-                  sx={{ width: "98%" }}
+                  sx={{ width: "96%" }}
+                  style={{ marginTop: '0.5rem', marginLeft: '0.5rem' }}
+                  value={taskDetails.points}
+                  onChange={(e, val) => setTaskDetails({ ...taskDetails, points: val as number})}
                 />
               </div>
-              
             </BottomContainer>
             <h2>Assignee</h2>
-
             <Select
               // label="Your tasks"
-              value={selectedMember}
-              onChange={(e: SelectChangeEvent) => setSelectedMember(e.target.value)}
+              value={selectedMember.id.toString()}
+              onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}
               sx={{ width: "30%" }}
             >
-              {projectMembers?.map((user)=> (
-                <MenuItem value={user.name}>
+              {selectedProject.profiles.map((user)=> (
+                <MenuItem value={user.id}>
                   <UserCard>
                     <StyledAvatar>{getInitials(`${user.name}`)}</StyledAvatar>
                     <h3>{user.name}</h3>

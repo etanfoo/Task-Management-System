@@ -30,7 +30,7 @@ const Router = () => (
       <Route path='/signup' element={ <SignUpPage /> } />
       <Route element={ <AuthenticatedRoutes /> }>
         <Route path='/profile/:profileId' element={ <ProfilePage /> } />
-        <Route path='/task/:taskId' element={ <TaskPage /> } />
+        <Route path='/project/:projectId/task/:taskId' element={ <TaskPage /> } />
         <Route path='/dashboard' element={ <DashboardPage /> } />
         <Route path='/project/create' element={ <CreateProjectPage /> } />
         <Route path='/project/:projectId' element={ <ProjectPage /> } />

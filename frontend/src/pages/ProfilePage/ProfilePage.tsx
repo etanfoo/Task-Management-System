@@ -169,8 +169,9 @@ const ProfilePage = () => {
                     {/* todo: replace with real data returned from api */}
                     {MockTasks.map((task) => (
                       <TaskCard
-                        key={task.taskId}
-                        taskId={task.taskId}
+                        key={task.id}
+                        taskId={task.id}
+                        projectId={task.projectId}
                         title={task.title}
                         deadline={task.deadline}
                         status={task.status}

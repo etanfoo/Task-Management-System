@@ -28,9 +28,12 @@ export interface IProject {
 
 // Add more fields
 export interface ITask {
+  id: number;
   title: string;
   description: string;
   projectId: number;
-  deadline: Date;
-  assignee: number;
+  deadline: string;
+  profileAssignee: number;
+  points: number;
+  status: number;
 };
