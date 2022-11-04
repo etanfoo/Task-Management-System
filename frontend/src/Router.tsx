@@ -15,6 +15,7 @@ import CreateProjectPage from "./pages/CreateProject/CreateProject";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ProjectPage from "./pages/ProjectPage/ProjectPage";
 import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
+import InfoPage from "./pages/InfoPage/InfoPage";
 
 const AuthenticatedRoutes = () => {
   const token = sessionStorage.getItem(process.env.REACT_APP_TOKEN!);
@@ -27,6 +28,7 @@ const Router = () => (
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
+      <Route path="/info" element={<InfoPage />} />
       <Route element={<AuthenticatedRoutes />}>
         <Route path="/profile/:profileId" element={<ProfilePage />} />
         <Route
