@@ -6,7 +6,7 @@ export const EmptyProfile: IProfile = {
   name: "First Last",
   email: "",
   points: -1,
-  happiness: -1,
+  happiness: null,
   profilePicture: "",
   busyness: -1,
   aboutMe: "",

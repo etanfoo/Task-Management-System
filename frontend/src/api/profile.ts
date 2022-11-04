@@ -1,4 +1,5 @@
 import axios from "axios";
+import { HappinessValue } from "../components/HappinessTracker/HappinessTracker";
 import { IProfile } from "../interfaces/api-response";
 
 export const getProfile = async (profileId: number): Promise<IProfile> => {
@@ -25,6 +26,23 @@ export const putProfile = async (
       name,
       profilePicture,
       aboutMe
+    }, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+      }
+    });
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const putProfileHappiness = async (
+  profileId: number,
+  happiness: HappinessValue
+) => {
+  try {
+    await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/profile/${profileId}`, {
+      happiness
     }, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`

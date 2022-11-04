@@ -27,6 +27,7 @@ public class TaskController {
     public static class TaskJson {
         public Task task;
         public Long profileId;
+        public Long profileAssignee;
     }
 
     public static class UpdateAssigneeJson {
@@ -42,24 +43,18 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public Task saveTask(@RequestBody TaskJson json, @PathVariable Long projectId) {
         Task task = json.task;
+        Long profileAssignee = json.profileAssignee;
         Long profileId = json.profileId;
-        return taskService.create(task, projectId, profileId);
+        return taskService.create(task, projectId, profileId, profileAssignee);
     }
 
     @PutMapping(value = "/{projectId}/task/{taskId}")
     @ResponseStatus(HttpStatus.OK)
     public Task updateTask(@RequestBody TaskJson json, @PathVariable Long projectId, @PathVariable Long taskId) {
         Task task = json.task;
+        Long profileAssignee = json.profileAssignee;
         Long profileId = json.profileId;
-        return taskService.update(task, projectId, profileId, taskId);
-    }
-
-    @PutMapping(value = "/{projectId}/task/{taskId}/updateAssignee")
-    @ResponseStatus(HttpStatus.OK)
-    public Task updateAssignee(@RequestBody UpdateAssigneeJson json, @PathVariable Long projectId, @PathVariable Long taskId) {
-        Long profileId = json.profileId;
-        Long newAssigneeId = json.newAssigneeId;
-        return taskService.updateAssignee(taskId, profileId, newAssigneeId);
+        return taskService.update(task, projectId, profileId, taskId, profileAssignee);
     }
 
     @GetMapping(value = "/{projectId}/task/{taskId}")

@@ -1,3 +1,5 @@
+import { HappinessValue } from "../components/HappinessTracker/HappinessTracker";
+
 export interface IAuthResponse {
   access_token: string;
   profile_id: number;
@@ -8,7 +10,7 @@ export interface IProfile {
   name: string;
   email: string;
   points: number;
-  happiness: number;
+  happiness: HappinessValue;
   profilePicture: string;
   busyness: number;
   aboutMe: string;
