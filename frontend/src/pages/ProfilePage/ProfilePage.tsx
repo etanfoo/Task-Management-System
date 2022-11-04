@@ -1,5 +1,5 @@
 import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle } from "./style";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IProfile } from "../../interfaces/api-response";
@@ -18,7 +18,6 @@ import { IUpdatedProfileDetails } from "../../interfaces/profile";
 import { getConnections } from "../../api/connect";
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
   const { profileId } = useParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -142,7 +141,14 @@ const ProfilePage = () => {
                       {pageState === 'view'
                         ? (
                           <>
-                            <img src={InfoIcon} onClick={() => navigate('/info')} alt='info icon' />
+                            <img
+                              src={InfoIcon} 
+                              onClick={() => window.open(
+                                `${window.location.origin}/info`,
+                                '_blank',
+                              )}
+                              alt='info icon'
+                            />
                             <img src={EditIcon} onClick={() => setPageState('edit')} alt='edit icon' />
                           </>
                         ) : (
