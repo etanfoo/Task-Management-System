@@ -11,7 +11,7 @@ export const EmptyProjectEdit: IProjectDetails = {
 export const EmptyProjectView: IProject = {
   title: "",
   description: "",
-  id: 0,
+  id: -1,
   profiles: [],
   tasks: []
 };

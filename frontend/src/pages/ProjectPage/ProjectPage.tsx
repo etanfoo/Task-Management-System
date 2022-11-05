@@ -35,8 +35,8 @@ const ProjectPage = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [taskSortType, setTaskSortType] = useState<string>("ID");
   // eslint-disable-next-line
-  const [allTasks, setAllTasks] = useState<ITask[]>([]);
-  const [shownTasks, setShownTasks] = useState<ITask[]>([]);
+  const [allTasks, setAllTasks] = useState<ITask[]>(MockTasks);
+  const [shownTasks, setShownTasks] = useState<ITask[]>(allTasks);
 
   const loadProject = async () => {
     try {
@@ -218,7 +218,7 @@ const ProjectPage = () => {
                             <TaskCard
                               key={task.id}
                               taskId={task.id}
-                              projectId={task.projectId}
+                              projectId={task.project.id}
                               title={task.title}
                               deadline={task.deadline}
                               status={task.status}

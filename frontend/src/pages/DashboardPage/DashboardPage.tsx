@@ -203,7 +203,7 @@ const DashboardPage = () => {
                       {shownTasks.map((task) => (
                         <TaskCard
                           key={`task ${task.id}`}
-                          projectId={task.projectId}
+                          projectId={task.project.id}
                           taskId={task.id}
                           title={task.title}
                           deadline={task.deadline}

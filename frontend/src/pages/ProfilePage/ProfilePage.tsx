@@ -191,7 +191,7 @@ const ProfilePage = () => {
                           <TaskCard
                             key={task.id}
                             taskId={task.id}
-                            projectId={task.projectId}
+                            projectId={task.project.id}
                             title={task.title}
                             deadline={task.deadline}
                             status={task.status}

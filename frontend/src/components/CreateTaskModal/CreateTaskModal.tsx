@@ -2,7 +2,7 @@ import { Divider, MenuItem, Modal, Select, SelectChangeEvent, TextField } from "
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postTask } from "../../api/task";
-import { EmptyTask } from "../../constants/tasks";
+import { EmptyTaskEdit } from "../../constants/tasks";
 import { getInitials } from "../../helpers";
 import { ITasktDetails } from "../../interfaces/task";
 import DatePicker from "./DatePicker/DatePicker";
@@ -30,7 +30,7 @@ type CreateTaskModalProps = {
 
 const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProps) => {
   const navigate = useNavigate();
-  const [taskDetails, setTaskDetails] = useState<ITasktDetails>(EmptyTask);
+  const [taskDetails, setTaskDetails] = useState<ITasktDetails>(EmptyTaskEdit);
   const [userProjects, setUserProjects] = useState<IProject[]>([]); 
 
   // const[currentProject, setCurrentProject] = useState<string>("");
@@ -42,10 +42,10 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
 
   const[currProjectId, setCurrProjectId] = useState<string>("");
   
-  const[deadline, setDeadline] = useState<string>("");
+  // const[deadline, setDeadline] = useState<string>("");
 
-  const todayDate = new Date().toISOString().slice(0, 10);
-  const [value, setValue] = useState<Dayjs | null>(dayjs(todayDate));
+  // const todayDate = new Date().toISOString().slice(0, 10);
+  const [value, setValue] = useState<Dayjs | null>(null);
   //  console.log()
   // console.log(todayDate)
   const handleChange = (newValue: Dayjs | null) => {
@@ -157,14 +157,14 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
                 <h2>Project</h2>
                 <Select
                   // label="Your tasks"
-                  defaultValue=""
-                  value={selectedProject.id.toString()}
+                  defaultValue="1"
+                  value={selectedProject.id < 1 ? "" : selectedProject.id.toString()}
                   onChange={(e: SelectChangeEvent) => { changeProject(parseInt(e.target.value)) }}
                   sx={{ width: "100%" }}
                   // name={project.title}
                 >
                   {userProjects.map((project)=> (
-                    <MenuItem value={project.id} key={`${project.id} ${project.title}`}>{project.title}</MenuItem>
+                    <MenuItem value={project.id} key={project.id}>{project.title}</MenuItem>
                   ))}
                 </Select>
               </div>
@@ -189,12 +189,13 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
             <h2>Assignee</h2>
             <Select
               // label="Your tasks"
-              value={selectedMember.id.toString()}
+              defaultValue="1"
+              value={selectedMember.id < 1 ? "" : selectedMember.id.toString()}
               onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}
               sx={{ width: "30%" }}
             >
               {selectedProject.profiles.map((user)=> (
-                <MenuItem value={user.id}>
+                <MenuItem value={user.id} key={user.id}>
                   <UserCard>
                     <StyledAvatar>{getInitials(`${user.name}`)}</StyledAvatar>
                     <h3>{user.name}</h3>

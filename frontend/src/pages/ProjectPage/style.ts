@@ -148,7 +148,7 @@ export const LabelContainer = styled('div')`
   };
   
   > :nth-of-type(4) {
-    width: 23%;
+    width: 20%;
   };
 `;
 

@@ -31,7 +31,7 @@ export interface ITask {
   id: number;
   title: string;
   description: string;
-  projectId: number;
+  project: IProject;
   deadline: string;
   profileAssignee: number;
   points: number;

@@ -20,11 +20,24 @@ export const postTask = async (task: ITasktDetails, projectId: string, profileId
   }
 };
 
-export const putTask = async (profileId: number): Promise<any> => {
+// export const putTask = async (profileId: number): Promise<any> => {
+//   try {
+//     const { data } = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/project/${profileId}/task/${profileId}`, {
+//       profileId
+//     }, {
+//       headers: {
+//         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+//       }
+//     });
+//     return data;
+//   } catch (err: any) {
+//     throw err;
+//   }
+// }
+
+export const getTasks = async (profileId: number): Promise<ITask[]> => {
   try {
-    const { data } = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/project/${profileId}/task/${profileId}`, {
-      profileId
-    }, {
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile/${profileId}/associatedTasks`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
       }
@@ -33,11 +46,12 @@ export const putTask = async (profileId: number): Promise<any> => {
   } catch (err: any) {
     throw err;
   }
-}
+};
 
-export const getTasks = async (profileId: number): Promise<ITask[]> => {
+export const getTask = async (projectId: number, taskId: number): Promise<ITask> => {
+  // console.log(projectId, taskId)
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile/${profileId}/associatedTasks`, {
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/task/${taskId}`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
       }
