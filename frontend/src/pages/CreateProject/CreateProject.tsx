@@ -2,7 +2,7 @@ import { CreateProjectPageContainer, BottomContainer, SummaryContainer, TopConta
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { TextField } from "@mui/material";
-import { EmptyProject } from "../../constants/projects";
+import { EmptyProjectEdit } from "../../constants/projects";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import { useEffect, useState } from "react";
 import { IProjectDetails } from "../../interfaces/project";
@@ -18,7 +18,7 @@ const CreateProjectPage = () => {
   const navigate = useNavigate();
 
   const [error, setError] = useState<string>("");
-  const [projectDetail, setProjectDetails] = useState<IProjectDetails>(EmptyProject);
+  const [projectDetail, setProjectDetails] = useState<IProjectDetails>(EmptyProjectEdit);
   const [friends, setFriends] = useState<IProfile[]>([]);
   const [addedMembers, setAddedMembers] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);

@@ -13,6 +13,8 @@ import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequest
 import { useLocation } from "react-router-dom";
 import FriendsList from "../../components/FriendsList/FriendsList";
 import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
+// import { userTasks } from "../../helpers";
+import { getTasks } from "../../api/task";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -27,11 +29,11 @@ const DashboardPage = () => {
   const [allProjects, setAllProjects] = useState<IProject[]>([]);
 
   // todo: currently disabling until tasks epic is complete
-  // eslint-disable-next-line
-  const [allTasks, setAllTasks] = useState<ITask[]>(MockTasks);
+
+  const [allTasks, setAllTasks] = useState<ITask[]>([]);
 
   const [shownProjects, setShownProjects] = useState<IProject[]>([]);
-  const [shownTasks, setShownTasks] = useState<ITask[]>(allTasks);
+  const [shownTasks, setShownTasks] = useState<ITask[]>([]);
 
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
 
@@ -48,7 +50,21 @@ const DashboardPage = () => {
     }
   };
 
+  const fetchAllTasks = async () => {
+    // const a = ;
+    // setAllTasks(userTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)));
+    try {
+      const resp = await getTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      console.log(resp)
+      setAllTasks(resp);
+      setShownTasks(resp);
+    } catch (err:any) { 
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
+    fetchAllTasks();
     fetchAllProjects();
   }, []);
 

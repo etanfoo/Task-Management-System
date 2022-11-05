@@ -3,7 +3,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import ProjectSidebar from "./ProjectSidebar/ProjectSidebar";
 import { useParams } from "react-router-dom";
-import { EmptyProject } from "../../constants/projects";
+import { EmptyProjectEdit } from "../../constants/projects";
 import { useEffect, useState } from "react";
 import { IProjectDetails } from "../../interfaces/project";
 import { getProject, putProject } from "../../api/project";
@@ -15,7 +15,7 @@ import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import DeleteIcon from "../../assets/delete.png";
 import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
-import { IProfile } from "../../interfaces/api-response";
+import { IProfile, ITask } from "../../interfaces/api-response";
 import { search } from "../../helpers";
 import { getConnections } from "../../api/connect";
 import { Palette } from "../../components/Palette";
@@ -23,8 +23,8 @@ import { Palette } from "../../components/Palette";
 const ProjectPage = () => {
   const { projectId } = useParams();
 
-  const [projectDetails, setProjectDetails] = useState<IProjectDetails>(EmptyProject);
-  const [updatedProjectDetails, setUpdatedProjectDetails] = useState<IProjectDetails>(EmptyProject);
+  const [projectDetails, setProjectDetails] = useState<IProjectDetails>(EmptyProjectEdit);
+  const [updatedProjectDetails, setUpdatedProjectDetails] = useState<IProjectDetails>(EmptyProjectEdit);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
   const [isDelete, setIsDelete] = useState<boolean>(false); 
@@ -35,14 +35,17 @@ const ProjectPage = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [taskSortType, setTaskSortType] = useState<string>("ID");
   // eslint-disable-next-line
-  const [allTasks, setAllTasks] = useState(MockTasks);
-  const [shownTasks, setShownTasks] = useState(allTasks);
+  const [allTasks, setAllTasks] = useState<ITask[]>([]);
+  const [shownTasks, setShownTasks] = useState<ITask[]>([]);
 
   const loadProject = async () => {
     try {
       const resp = await getProject(projectId!);
       setProjectDetails(resp);
       setCurrentMembers(resp.profiles);
+      console.log(resp)
+      // setAllTasks(resp.tasks);
+      // setShownTasks(resp.tasks);
       const connections = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       // Filters a user's connections with current members of this project 
       setPotentialMembers(connections.filter(profileA => !resp.profiles.some(profileB => profileA.id === profileB.id)));
@@ -65,7 +68,7 @@ const ProjectPage = () => {
 
   const cancelEditProject = () => {
     setPageState('view');
-    setUpdatedProjectDetails(EmptyProject);
+    setUpdatedProjectDetails(EmptyProjectEdit);
   };
 
   const updateProject = async () => {

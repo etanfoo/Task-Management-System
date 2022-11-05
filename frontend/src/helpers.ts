@@ -1,3 +1,4 @@
+import { getTasks } from "./api/task";
 import { IProfile } from "./interfaces/api-response";
 
 // todo: check file type
@@ -36,3 +37,11 @@ export const search = (profiles: IProfile[], searchMember: string) => {
       profile.email.toLowerCase().includes(lowercaseSearchMember)
   );
 };
+
+// export const userTasks = async (profileId: number) => {
+//   try {
+//     return await getTasks(profileId)
+//   } catch (err:any) { 
+//     console.log(err);
+//   }
+// };

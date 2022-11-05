@@ -10,7 +10,7 @@ import { BottomContainer, ButtonsContainer, CancelButton, CreateButton, EmptyMod
 import Slider from '@mui/material/Slider';
 import { getProjects } from "../../api/project";
 import { IProfile, IProject } from "../../interfaces/api-response";
-import { EmptyProject } from "../../constants/projects";
+import { EmptyProjectView } from "../../constants/projects";
 import { IProjectDetails } from "../../interfaces/project";
 import { EmptyProfile } from "../../constants/profiles";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -31,12 +31,12 @@ type CreateTaskModalProps = {
 const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProps) => {
   const navigate = useNavigate();
   const [taskDetails, setTaskDetails] = useState<ITasktDetails>(EmptyTask);
-  const [userProjects, setUserProjects] = useState<IProjectDetails[]>([]); 
+  const [userProjects, setUserProjects] = useState<IProject[]>([]); 
 
   // const[currentProject, setCurrentProject] = useState<string>("");
   // const[projectMembers, setProjectMembers] = useState<IProfile[]>([]);
 
-  const[selectedProject, setSelectedProject] = useState<IProjectDetails>(EmptyProject);
+  const[selectedProject, setSelectedProject] = useState<IProject>(EmptyProjectView);
 
   const[selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
 
@@ -58,7 +58,9 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
   const createTask = async () => {
     // Check deadline is past today
     console.log(taskDetails)
-    const resp = await postTask(taskDetails, currProjectId, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), selectedMember.id);
+    let resp;
+    if (selectedMember.id === -1) resp = await postTask(taskDetails, currProjectId, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), null);
+    else resp = await postTask(taskDetails, currProjectId, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), selectedMember.id);
     console.log(resp)
     // Change return type from any
     navigate(`/project/${currProjectId}/task/${resp.id}`)
@@ -96,7 +98,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
     // setCurrentProject(projectTitle); 
     
     // Edge case for projects with same name
-    const currentProjectDetails: IProjectDetails = userProjects.filter((project: IProjectDetails) => project.id === projectId)[0];
+    const currentProjectDetails: IProject = userProjects.filter((project: IProject) => project.id === projectId)[0];
 
     setSelectedProject(currentProjectDetails);
     setCurrProjectId(currentProjectDetails.id.toString());
