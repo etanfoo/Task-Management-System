@@ -16,6 +16,7 @@ import { MockTasks } from "../../constants/tasks";
 import { toBase64, getInitials } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
 import { getConnections } from "../../api/connect";
+import { Palette } from "../../components/Palette";
 
 const ProfilePage = () => {
   const { profileId } = useParams();
@@ -78,7 +79,21 @@ const ProfilePage = () => {
       console.log(err);
       setIsLoading(false);
     }
-  }
+  };
+
+  const getBorderColor = () => {
+    if (profileDetails.points <= 100) {
+      return undefined;
+    } else if (profileDetails.points <= 200) {
+      return Palette.bronze;
+    } else if (profileDetails.points <= 300) {
+      return Palette.gray;
+    } else if (profileDetails.points <= 400) {
+      return Palette.gold;
+    } else {
+      return Palette.diamond; 
+    }
+  };
 
   useEffect(() => {
     loadProfile();
@@ -93,7 +108,7 @@ const ProfilePage = () => {
         : (
             <ProfilePageContainer>
               <Header />
-              <TopContainer>
+              <TopContainer borderColor={getBorderColor()}>
                 {pageState === 'view'
                   ? (
                     profileDetails.profilePicture

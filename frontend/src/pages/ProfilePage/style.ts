@@ -16,7 +16,7 @@ export const ProfilePageContainer = styled('div')`
 
 type TopContainerProps = {
   borderColor?: string;
-}
+};
 
 export const TopContainer = styled('div')<TopContainerProps>`
   display: flex;
@@ -27,42 +27,44 @@ export const TopContainer = styled('div')<TopContainerProps>`
   width: 80%;
   align-items: center;
   margin-bottom: 2rem;
-
   overflow: hidden;
   position: relative;
 
-  &:before {
-    content: "";
-    background-image: conic-gradient(
-      ${Palette.mainTeal} 100deg, transparent 120deg
-    );
-    z-index: -2;
-    left: -25%;
-    width: 150%;
-    height: 100%;
-    position: absolute;
-    animation: rotate 5s linear infinite;
-  }
-
-  &:after {
-    position: absolute;
-    width: 99.25%;
-    height: 95%;
-    border-radius: 0.5rem;
-    background: white;
-    z-index: -1;
-    content: "";
-  }
-
-  @keyframes rotate {
-    0% {
-      transform: rotate(0deg);
+  // if borderColor is provided show border animation
+  ${(props: TopContainerProps) => (props.borderColor) && `
+    &:before {
+      content: "";
+      background-image: conic-gradient(
+        ${props.borderColor} 100deg, transparent 120deg
+      );
+      z-index: -2;
+      left: -25%;
+      width: 150%;
+      height: 100%;
+      position: absolute;
+      animation: rotate 5s linear infinite;
     }
 
-    100% {
-      transform: rotate(360deg);
+    &:after {
+      position: absolute;
+      width: 99.25%;
+      height: 95%;
+      border-radius: 0.5rem;
+      background: white;
+      z-index: -1;
+      content: "";
     }
-  }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  `}
 
   > img {
     margin-left: 1rem;
