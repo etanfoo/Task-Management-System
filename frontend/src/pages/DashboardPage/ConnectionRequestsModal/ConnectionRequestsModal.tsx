@@ -18,7 +18,6 @@ const ConnectionRequestsModal = ({ isOpen, handleClose }: ConnectionRequestsModa
       const requests = await getRequestedConnections(
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
       );
-      console.log(requests);
       setRequestConnections(requests);
     } catch (err: any) {
       // todo: do some error handling

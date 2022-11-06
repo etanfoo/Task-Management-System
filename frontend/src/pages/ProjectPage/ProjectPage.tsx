@@ -3,27 +3,27 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import ProjectSidebar from "./ProjectSidebar/ProjectSidebar";
 import { useParams } from "react-router-dom";
-import { EmptyProjectEdit } from "../../constants/projects";
+import { EmptyProjectEdit, EmptyProjectView } from "../../constants/projects";
 import { useEffect, useState } from "react";
 import { IProjectDetails } from "../../interfaces/project";
 import { getProject, putProject } from "../../api/project";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
-import { MockTasks } from "../../constants/tasks";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import { InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import DeleteIcon from "../../assets/delete.png";
 import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
-import { IProfile, ITask } from "../../interfaces/api-response";
+import { IProfile, IProject, ITask } from "../../interfaces/api-response";
 import { search } from "../../helpers";
 import { getConnections } from "../../api/connect";
 import { Palette } from "../../components/Palette";
+import { getProjectTasks } from "../../api/task";
 
 const ProjectPage = () => {
   const { projectId } = useParams();
-
-  const [projectDetails, setProjectDetails] = useState<IProjectDetails>(EmptyProjectEdit);
+  // Make sure IProject and IProjectDetails
+  const [projectDetails, setProjectDetails] = useState<IProject>(EmptyProjectView);
   const [updatedProjectDetails, setUpdatedProjectDetails] = useState<IProjectDetails>(EmptyProjectEdit);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
@@ -35,8 +35,8 @@ const ProjectPage = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [taskSortType, setTaskSortType] = useState<string>("ID");
   // eslint-disable-next-line
-  const [allTasks, setAllTasks] = useState<ITask[]>(MockTasks);
-  const [shownTasks, setShownTasks] = useState<ITask[]>(allTasks);
+  const [allTasks, setAllTasks] = useState<ITask[]>([]);
+  const [shownTasks, setShownTasks] = useState<ITask[]>([]);
 
   const loadProject = async () => {
     try {
@@ -56,8 +56,20 @@ const ProjectPage = () => {
     }
   }
 
+  const loadTasks = async () => {
+    try {
+      const resp = await getProjectTasks(parseInt(projectId!));
+      setAllTasks(resp);
+      setShownTasks(resp);
+    } catch(err: any) {
+      console.log(err);
+    }
+  }
+
+
   useEffect(() => {
     loadProject();
+    loadTasks();
     // eslint-disable-next-line
   }, [projectId])
 

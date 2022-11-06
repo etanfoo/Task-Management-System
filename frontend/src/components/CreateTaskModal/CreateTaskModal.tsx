@@ -5,16 +5,14 @@ import { postTask } from "../../api/task";
 import { EmptyTaskEdit } from "../../constants/tasks";
 import { getInitials } from "../../helpers";
 import { ITasktDetails } from "../../interfaces/task";
-import DatePicker from "./DatePicker/DatePicker";
 import { BottomContainer, ButtonsContainer, CancelButton, CreateButton, EmptyModal, ModalBody, ModalContainer, StyledAvatar, UserCard } from "./style";
 import Slider from '@mui/material/Slider';
 import { getProjects } from "../../api/project";
 import { IProfile, IProject } from "../../interfaces/api-response";
 import { EmptyProjectView } from "../../constants/projects";
-import { IProjectDetails } from "../../interfaces/project";
 import { EmptyProfile } from "../../constants/profiles";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 type CreateTaskModalProps = {
@@ -23,31 +21,16 @@ type CreateTaskModalProps = {
   projectId: string | null;
 }
 
-// function valuetext(value: number) {
-  
-//   return `${value}`;
-// }
-
 const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProps) => {
   const navigate = useNavigate();
+
   const [taskDetails, setTaskDetails] = useState<ITasktDetails>(EmptyTaskEdit);
   const [userProjects, setUserProjects] = useState<IProject[]>([]); 
-
-  // const[currentProject, setCurrentProject] = useState<string>("");
-  // const[projectMembers, setProjectMembers] = useState<IProfile[]>([]);
-
-  const[selectedProject, setSelectedProject] = useState<IProject>(EmptyProjectView);
-
-  const[selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
-
-  const[currProjectId, setCurrProjectId] = useState<string>("");
-  
-  // const[deadline, setDeadline] = useState<string>("");
-
-  // const todayDate = new Date().toISOString().slice(0, 10);
+  const [selectedProject, setSelectedProject] = useState<IProject>(EmptyProjectView);
+  const [selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
+  const [currProjectId, setCurrProjectId] = useState<string>("");
   const [value, setValue] = useState<Dayjs | null>(null);
-  //  console.log()
-  // console.log(todayDate)
+
   const handleChange = (newValue: Dayjs | null) => {
     setValue(newValue);
     if (newValue !== null) setTaskDetails({ ...taskDetails, deadline: newValue.format('YYYY-MM-DD') });
@@ -59,8 +42,8 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
     // Check deadline is past today
     console.log(taskDetails)
     let resp;
-    if (selectedMember.id === -1) resp = await postTask(taskDetails, currProjectId, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), null);
-    else resp = await postTask(taskDetails, currProjectId, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), selectedMember.id);
+    if (selectedMember.id === -1) resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), null);
+    else resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), selectedMember.id);
     console.log(resp)
     // Change return type from any
     navigate(`/project/${currProjectId}/task/${resp.id}`)
@@ -75,42 +58,21 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
       console.log(err);
     }
   };
-
-  // const clearFields = () => {
-  //   setSelectedMember("");
-  //   setCurrentProject("");
-  // }
-
-  // const valuetext = (value: number) => {
-  //   return `${value}`;
-  // }
   
   useEffect(() => {
-    // clearFields();
     fetchAllProjects();
   }, []);
 
 
   const changeProject = (projectId: number) => {
-    // Clear selected member
-    // clearFields();
-    // console.log(projectId)
-    // setCurrentProject(projectTitle); 
-    
     // Edge case for projects with same name
     const currentProjectDetails: IProject = userProjects.filter((project: IProject) => project.id === projectId)[0];
 
     setSelectedProject(currentProjectDetails);
     setCurrProjectId(currentProjectDetails.id.toString());
-    // console.log(userProjects.filter((project: IProject) => project.id === projectId))
-    // setCurrentProject(currentProjectDetails.title); 
-    // setCurrProjectId(currentProjectDetails.id.toString());
-    // setProjectMembers(currentProjectDetails.profiles);
   }
 
   const findSelectMember = (profileId: number) => {
-    // const profile = ;
-    // console.log(profile)
     setSelectedMember(selectedProject.profiles.filter((user: IProfile) => user.id === profileId)[0]);
   }
 
@@ -143,7 +105,6 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
             <BottomContainer>
               <div>
                 <h2>Deadline</h2>
-                {/* <DatePicker deadlineDate={deadline} onChange={(e) => setTaskDetails({ ...taskDetails, description: e.target.value })}/> */}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopDatePicker
                     inputFormat="DD/MM/YYYY"
@@ -161,7 +122,6 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
                   value={selectedProject.id < 1 ? "" : selectedProject.id.toString()}
                   onChange={(e: SelectChangeEvent) => { changeProject(parseInt(e.target.value)) }}
                   sx={{ width: "100%" }}
-                  // name={project.title}
                 >
                   {userProjects.map((project)=> (
                     <MenuItem value={project.id} key={project.id}>{project.title}</MenuItem>
@@ -173,7 +133,6 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
                 <Slider
                   // aria-label="Temperature"
                   defaultValue={1}
-                  // getAriaValueText={valuetext}
                   valueLabelDisplay="auto"
                   step={1}
                   marks
@@ -188,7 +147,6 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
             </BottomContainer>
             <h2>Assignee</h2>
             <Select
-              // label="Your tasks"
               defaultValue="1"
               value={selectedMember.id < 1 ? "" : selectedMember.id.toString()}
               onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}
@@ -208,7 +166,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
               <CreateButton variant='contained' onClick={createTask}>Create</CreateButton>
             </ButtonsContainer>
           </ModalBody>
-      </ModalContainer>
+        </ModalContainer>
       }
     </Modal>
   );

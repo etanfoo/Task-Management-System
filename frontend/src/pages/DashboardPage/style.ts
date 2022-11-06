@@ -13,22 +13,22 @@ export const DashboardPageContainer = styled('div')`
   text-align: center;
 `;
 
-export const ImageContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+// export const ImageContainer = styled('div')`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-around;
 
-  > img {
-    width: 3.125rem;
-    height: 3.125rem;
-    cursor: pointer;
+//   > img {
+//     width: 3.125rem;
+//     height: 3.125rem;
+//     cursor: pointer;
 
-    transition: transform .2s;
-    &:hover {
-      transform: scale(1.10);
-    };  
-  }
-`;
+//     transition: transform .2s;
+//     &:hover {
+//       transform: scale(1.10);
+//     };  
+//   }
+// `;
 
 export const BodyContainer = styled('div')`
   display: flex;

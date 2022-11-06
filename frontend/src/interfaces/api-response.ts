@@ -33,7 +33,8 @@ export interface ITask {
   description: string;
   project: IProject;
   deadline: string;
-  profileAssignee: number;
   points: number;
   status: number;
+  profileAssignee: IProfile;
+  profileAuthor: IProfile;
 };

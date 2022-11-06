@@ -30,7 +30,7 @@ const CreateProjectPage = () => {
       return;
     }
     try {
-      const resp = await postProject(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!, projectDetail, addedMembers);
+      const resp = await postProject(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), projectDetail, addedMembers);
       navigate(`/project/${resp.id}`);
     } catch (err: any) {
       if (err.response.status === 400) setError("Summary must be less than or equal to 1000 characters.");

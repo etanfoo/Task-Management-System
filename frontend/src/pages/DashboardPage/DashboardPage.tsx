@@ -3,7 +3,6 @@ import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ProjectsLabelContainer } from "./style";
-import { MockTasks } from "../../constants/tasks";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
@@ -13,8 +12,7 @@ import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequest
 import { useLocation } from "react-router-dom";
 import FriendsList from "../../components/FriendsList/FriendsList";
 import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
-// import { userTasks } from "../../helpers";
-import { getTasks } from "../../api/task";
+import { getUserTasks } from "../../api/task";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -51,11 +49,8 @@ const DashboardPage = () => {
   };
 
   const fetchAllTasks = async () => {
-    // const a = ;
-    // setAllTasks(userTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)));
     try {
-      const resp = await getTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      console.log(resp)
+      const resp = await getUserTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       setAllTasks(resp);
       setShownTasks(resp);
     } catch (err:any) { 

@@ -41,14 +41,14 @@ const TaskCard = ({ projectId, taskId, title, deadline, status}: TaskCardProps) 
       return 'black';
     }
   };
+  
   let formattedDeadline;
   if (deadline !== null) {
     formattedDeadline = deadline.split("-");  
     formattedDeadline.reverse();
     formattedDeadline = formattedDeadline.join("/");
-    console.log(formattedDeadline)
   }
-  console.log(projectId)
+
   return (
     <TaskCardContainer onClick={() => navigate(`/project/${projectId}/task/${taskId}`)}>
       <p>{taskId}</p>

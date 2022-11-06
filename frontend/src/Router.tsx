@@ -29,6 +29,7 @@ const Router = () => (
       <Route path='/' element={ <LandingPage /> } />
       <Route path='/login' element={ <LoginPage /> } />
       <Route path='/signup' element={ <SignUpPage /> } />
+      <Route path="/info" element={ <InfoPage /> } />
       <Route element={ <AuthenticatedRoutes /> }>
         <Route path='/profile/:profileId' element={ <ProfilePage /> } />
         <Route path='/project/:projectId/task/:taskId' element={ <TaskPage /> } />
@@ -37,11 +38,11 @@ const Router = () => (
         <Route path='/project/:projectId' element={ <ProjectPage /> } />
         <Route
           path="/project/:projectId/statistics"
-          element={<StatisticsPage />}
+          element={ <StatisticsPage /> }
         />
-        <Route path="/friends" element={<FriendsPage />} />
+        <Route path="/friends" element={ <FriendsPage /> } />
       </Route>
-      <Route path="*" element={<PageNotFound />} />
+      <Route path="*" element={ <PageNotFound /> } />
     </Routes>
   </BrowserRouter>
 );
