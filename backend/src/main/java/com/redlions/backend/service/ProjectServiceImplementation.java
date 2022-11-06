@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.redlions.backend.entity.Profile;
 import com.redlions.backend.entity.Project;
+import com.redlions.backend.entity.Task;
 import com.redlions.backend.repository.ProjectRepository;
 import com.redlions.backend.util.Util;
 
@@ -120,5 +121,12 @@ public class ProjectServiceImplementation implements ProjectService {
         Profile profile = util.checkProfile(profileId);
         Set<Project> projectsSet = profile.getProjects();
         return projectsSet.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<Task> getProjectTasks(Long projectId) {
+        util.checkProject(projectId);
+        Project project = util.checkProject(projectId);
+        return project.getTasks();
     }
 }

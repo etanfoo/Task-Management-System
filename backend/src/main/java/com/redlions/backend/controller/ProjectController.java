@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redlions.backend.entity.Project;
+import com.redlions.backend.entity.Task;
 import com.redlions.backend.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
@@ -99,5 +100,11 @@ public class ProjectController {
         Long profileId = json.profileId;
         Long profileIdToRemove = json.profileIdToRemove;
         projectService.removeProfileFromProject(id, profileId, profileIdToRemove);    
+    }
+
+    @GetMapping(value = "/{id}/allTasks")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Task> getProjectTasks(@PathVariable Long id) {
+        return projectService.getProjectTasks(id);
     }
 }
