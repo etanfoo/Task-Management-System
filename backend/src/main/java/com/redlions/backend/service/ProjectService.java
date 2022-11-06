@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redlions.backend.entity.Project;
+import com.redlions.backend.entity.Task;
 
 public interface ProjectService {
     Project create(Project project, Long profileId, Set<Long> profileIdsToAdd);
@@ -13,4 +14,5 @@ public interface ProjectService {
     void removeProfilesFromProject(Long projectId, Long profileId, Set<Long> profileIds);
     void removeProfileFromProject(Long projectId, Long profileId, Long profileIdToRemove);
     List<Project> getAssociatedProjects(Long profileId);
+    Set<Task> getProjectTasks(Long projectId);
 }
