@@ -1,9 +1,6 @@
 package com.redlions.backend.service;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -171,18 +168,5 @@ public class TaskServiceImplementation implements TaskService {
         project.getTasks().remove(task);
         util.isProfileAuthorOfTask(profileId, taskId);
         taskRepo.delete(task);
-    }
-
-    public List<Task> getAssociatedTasks(Long profileId) {
-        Profile profile = util.checkProfile(profileId);
-        List<Task> allTasks = new ArrayList<Task>();
-        Set<Project> projectsSet = profile.getProjects();
-        for (Project project: projectsSet) {
-            Set<Task> projectTasks = project.getTasks();
-            for (Task task: projectTasks) {
-                allTasks.add(task);
-            }
-        }
-        return allTasks;
     }
 }
