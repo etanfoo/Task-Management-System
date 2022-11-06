@@ -16,6 +16,7 @@ import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ProjectPage from "./pages/ProjectPage/ProjectPage";
 import TaskPage from "./pages/TaskPage/TaskPage";
 import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
+import InfoPage from "./pages/InfoPage/InfoPage";
 
 const AuthenticatedRoutes = () => {
   const token = sessionStorage.getItem(process.env.REACT_APP_TOKEN!);
