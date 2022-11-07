@@ -26,6 +26,12 @@ public class ProjectServiceImplementation implements ProjectService {
     private final Util util;
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
 
+
+    /**
+     * create a project and save it to database
+     * profileId passed through is automatically added to the project
+     * throws an error if project does not contain a title or description is too long
+     */
     @Override
     public Project create(Project project, Long profileId, Set<Long> profileIdsToAdd) {
         Profile profile = util.checkProfile(profileId);
@@ -49,6 +55,10 @@ public class ProjectServiceImplementation implements ProjectService {
         return projectRepo.save(project);
     }
     
+    /**
+     * update an existing project given a project id 
+     * throws error if description is too long
+     */
     @Override
     public Project update(Project project, Long projectId, Long profileId, Set<Long> profileIdsToAdd) {
         util.checkProfile(profileId);
@@ -71,7 +81,6 @@ public class ProjectServiceImplementation implements ProjectService {
             }
         }
 
-        
         Set<Profile> newProfiles = util.getProfilesFromIds(profileIdsToAdd);
         for (Profile currProfile: newProfiles) {
             projectInDb.addProfile(currProfile);
@@ -80,11 +89,17 @@ public class ProjectServiceImplementation implements ProjectService {
         return projectRepo.save(projectInDb);
     }
 
+    /**
+     * returns project information given a project id
+     */
     @Override
     public Project getProject(Long id) {
         return util.checkProject(id);
     }
 
+    /**
+     * deletes a project given a project id
+     */
     @Override
     public void delete(Long projectId, Long profileId) {
         util.checkProfile(profileId);
@@ -93,6 +108,9 @@ public class ProjectServiceImplementation implements ProjectService {
         projectRepo.delete(project);
     }
 
+    /**
+     * removes multiple profiles from a project given a set of profile id's
+     */
     @Override
     public void removeProfilesFromProject(Long projectId, Long profileId, Set<Long> profileIds) {
         util.checkProfile(profileId);
@@ -105,6 +123,9 @@ public class ProjectServiceImplementation implements ProjectService {
         }
     }
 
+    /**
+     * removes single profile from a project given a profile id
+     */
     @Override
     public void removeProfileFromProject(Long projectId, Long profileId, Long profileIdToRemove) {
         util.checkProfile(profileId);
@@ -112,10 +133,12 @@ public class ProjectServiceImplementation implements ProjectService {
         util.isProfileInProject(profileId, projectId, projectInDb);
 
         Profile profileToRemove = util.checkProfile(profileIdToRemove);
-        System.out.println(profileToRemove);
         projectInDb.removeProfile(profileToRemove);
     }
 
+    /**
+     * returns projects associated with a profile given a profile id
+     */
     @Override
     public List<Project> getAssociatedProjects(Long profileId) {
         Profile profile = util.checkProfile(profileId);
@@ -123,6 +146,9 @@ public class ProjectServiceImplementation implements ProjectService {
         return projectsSet.stream().collect(Collectors.toList());
     }
 
+    /**
+     * returns all tasks associated with a project
+     */
     @Override
     public Set<Task> getProjectTasks(Long projectId) {
         util.checkProject(projectId);

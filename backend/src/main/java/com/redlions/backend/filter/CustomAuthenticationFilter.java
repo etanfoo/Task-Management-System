@@ -31,6 +31,7 @@ import lombok.Data;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
+    
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager, ProfileRepository profileRepository) {
         this.authenticationManager = authenticationManager;
         this.profileRepository = profileRepository;
@@ -48,7 +49,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 sb.append(line);
             }
             String parsedReq = sb.toString();
-            System.out.println((parsedReq));
             if (parsedReq != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 AuthReq authReq = mapper.readValue(parsedReq, AuthReq.class);
@@ -56,19 +56,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             return authenticationManager.authenticate(authenticationToken);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw new InternalAuthenticationServiceException("Failed to parse authentication request body");
         }
         return null;
-        // This only works for postman x-www-form-urlencoded 
-
-        // String email = request.getParameter("email");
-        // String password = request.getParameter("password");
-        
-        // log.info("Email is : {}", email);
-        // log.info("Password is : {}", password);
-        // UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-        // return authenticationManager.authenticate(authenticationToken);
     }
 
     @Data

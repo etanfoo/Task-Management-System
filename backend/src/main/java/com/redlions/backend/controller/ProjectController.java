@@ -49,6 +49,11 @@ public class ProjectController {
         public Long profileIdToRemove;
     }
 
+    /**
+     * post mapping to add a new project
+     * @param projectJson
+     * @return
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public Project saveProject(@RequestBody ProjectJson projectJson) {
@@ -58,6 +63,11 @@ public class ProjectController {
         return projectService.create(project, profileId, profileIdsToAdd);
     }
 
+    /**
+     * put mapping to update a project's info
+     * @param projectJson
+     * @param id
+     */
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@RequestBody ProjectJson projectJson, @PathVariable Long id) {
@@ -67,12 +77,22 @@ public class ProjectController {
         projectService.update(project, id, profileId, profileIdsToAdd);
     }
 
+    /**
+     * get mapping to return a single project given a project id
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Project findById(@PathVariable Long id) {
         return projectService.getProject(id);
     }
 
+    /**
+     * delete mapping to delete a project given a project id
+     * @param json
+     * @param id
+     */
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteById(@RequestBody deleteProjectJson json, @PathVariable Long id) {
@@ -80,12 +100,22 @@ public class ProjectController {
         projectService.delete(id, profileId);
     }
 
+    /**
+     * get mapping to return all associated projects for a profile
+     * @param profileId
+     * @return
+     */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Project> getAssociatedProjects(@RequestParam(value="profileId") Long profileId) {
         return projectService.getAssociatedProjects(profileId);
     }
 
+    /**
+     * delete mapping to remove multiple profiles from a given project
+     * @param json
+     * @param id
+     */
     @DeleteMapping(value = "/{id}/removeProfiles")
     @ResponseStatus(HttpStatus.OK)
     public void removeProfilesFromProject(@RequestBody removeProfilesFromProject json, @PathVariable Long id) {
@@ -94,6 +124,11 @@ public class ProjectController {
         projectService.removeProfilesFromProject(id, profileId, profileIdsToRemove);    
     }
 
+    /**
+     * delete mapping to remove a single profile from a given project
+     * @param json
+     * @param id
+     */
     @DeleteMapping(value = "/{id}/removeProfile")
     @ResponseStatus(HttpStatus.OK)
     public void removeProfileFromProject(@RequestBody removeProfileFromProject json, @PathVariable Long id) {
@@ -102,6 +137,11 @@ public class ProjectController {
         projectService.removeProfileFromProject(id, profileId, profileIdToRemove);    
     }
 
+    /**
+     * get mapping to return all tasks associated with a project
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}/allTasks")
     @ResponseStatus(HttpStatus.OK)
     public Set<Task> getProjectTasks(@PathVariable Long id) {
