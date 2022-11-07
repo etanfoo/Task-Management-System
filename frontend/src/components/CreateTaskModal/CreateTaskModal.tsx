@@ -39,7 +39,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
   if (projectId !== null) setCurrProjectId(projectId);
 
   const createTask = async () => {
-    // Check deadline is past today
+    // todo: Check deadline is past today
     console.log(taskDetails)
     let resp;
     if (selectedMember.id === -1) resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), null);
