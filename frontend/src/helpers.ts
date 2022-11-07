@@ -36,3 +36,7 @@ export const search = (profiles: IProfile[], searchMember: string) => {
       profile.email.toLowerCase().includes(lowercaseSearchMember)
   );
 };
+
+export const formatDate = (date: string) => {
+  return date.split("-").reverse().join("/"); 
+}

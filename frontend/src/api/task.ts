@@ -75,3 +75,20 @@ export const getProjectTasks = async (projectId: number): Promise<ITask[]> => {
     throw err;
   }
 };
+
+export const deleteTask = async (taskId: number, projectId: number, profileId: number): Promise<string> => {
+  console.log(taskId, projectId)
+  try {
+    const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId.toString()}/task/${taskId.toString()}`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+      }, 
+      data: {
+        profileId
+      }
+    });
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+};

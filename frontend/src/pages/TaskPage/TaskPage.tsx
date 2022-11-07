@@ -1,4 +1,4 @@
-import { InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { InputLabel, MenuItem, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getTask } from "../../api/task";
@@ -6,16 +6,19 @@ import Footer from "../../components/Footer/Footer";
 import FriendsList from "../../components/FriendsList/FriendsList";
 import Header from "../../components/Header/Header";
 import { EmptyTaskEdit, EmptyTaskView } from "../../constants/tasks";
-import { getInitials } from "../../helpers";
+import { formatDate, getInitials } from "../../helpers";
 import { IProfile, ITask } from "../../interfaces/api-response";
 // import { ITask } from "../../interfaces/api-response";
 import { ITasktDetails } from "../../interfaces/task";
-import { BodyContainer, CancelButton, DescriptionContainer, IconContainer, MainContainer, StyledAvatar, TaskContainer, TaskMembers, TaskPageContainer, UpdateButton, UserAvatar } from "./style"
+import { BodyContainer, CancelButton, DeadlineContainer, DescriptionContainer, IconContainerEdit, IconContainerView, MainContainer, StyledAvatar, StyledSelect, StyledSlider, TaskContainer, TaskMembers, TaskPageContainer, TitleContainerEdit, TitleContainerView, TopContainer, UpdateButton, UserAvatar, UserAvatarEdit, UserCard } from "./style"
 import EditIcon from "../../assets/edit.png";
 import DeleteIcon from "../../assets/delete.png";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
-import { UserCard } from "../../components/CreateTaskModal/style";
 import { EmptyProfile } from "../../constants/profiles";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
 
 const TaskPage = () => {
   const { projectId, taskId } = useParams();
@@ -29,6 +32,14 @@ const TaskPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [possibleAssignees, setPossibleAssignees] = useState<IProfile[]>([]);
   const [selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
+  const [isDelete, setIsDelete] = useState<boolean>(false); 
+
+  const [value, setValue] = useState<Dayjs | null>(null);
+
+  const handleChange = (newValue: Dayjs | null) => {
+    setValue(newValue);
+    if (newValue !== null) setUpdatedTaskDetails({ ...taskDetails, deadline: newValue.format('YYYY-MM-DD') });
+  };
 
   const loadTask = async () => {
     try {
@@ -52,8 +63,9 @@ const TaskPage = () => {
 
   const cancelEditTask = () => {
     setPageState("view");
+    setUpdatedTaskDetails(EmptyTaskEdit);
   }
-
+  // Display project as well
   return(
     <>
     {
@@ -61,47 +73,68 @@ const TaskPage = () => {
       ? <LoadingOverlay isOpen={isLoading}/>
       :
       <TaskPageContainer>
+      <DeleteOverlay isOpen={isDelete} content="task" contentId={taskId!} closeCallback={() => setIsDelete(false)} memberId={null} secondaryContentId={parseInt(projectId!)}/>
       <Header />
       <BodyContainer>
         <FriendsList />
         <MainContainer>
           <TaskContainer>
-            {
-                isMember
-              ?
-                <IconContainer>
-                  {pageState === 'view'
-                    ? 
-                      <>
-                        <img src={EditIcon} alt='edit icon' onClick={() => setPageState('edit')}/>
-                        <img src={DeleteIcon} alt='edit icon' />
-                      </>
-                    :
-                    <>
-                      <CancelButton variant='contained' onClick={cancelEditTask} >Cancel</CancelButton>
-                      <UpdateButton variant='contained'>Update</UpdateButton>
-                    </>
-                  }
-                </IconContainer>
-              :
-                null
-            }
             {pageState === 'view'
               ? 
                 <>
-                  <h1>{taskDetails.title} [{taskDetails.points}]</h1>
-                  <h3>Deadline: {taskDetails.deadline ? taskDetails.deadline : "No current deadline"}</h3>
+                  <TitleContainerView>
+                    <h1>{taskDetails.title} [{taskDetails.points}]</h1>
+                    {
+                        isMember
+                      ?
+                        <IconContainerView>
+                          <>
+                            <img src={EditIcon} alt='edit icon' onClick={() => setPageState('edit')}/>
+                            <img src={DeleteIcon} alt='delete icon' onClick={() => setIsDelete(true)}/>
+                          </>
+                        </IconContainerView>
+                      :
+                        null
+                    }
+                  </TitleContainerView>
+                  <h3>Deadline: {taskDetails.deadline ? formatDate(taskDetails.deadline) : "No current deadline"}</h3>
                 </>
               :
-                <>
-                  <TextField 
-                    placeholder={taskDetails.title}
-                  />
-                  {/* Change to datepicker */}
-                  <TextField 
-                    placeholder={taskDetails.deadline ? taskDetails.deadline : "No current deadline"}
-                  />
-                </>
+                <TopContainer>
+                  <TitleContainerEdit>
+                    <TextField 
+                      placeholder={taskDetails.title}
+                      sx={{ width: "40%" }}
+                    />
+                    <h3>Points:</h3>
+                    <StyledSlider
+                      defaultValue={taskDetails.points}
+                      valueLabelDisplay="auto"
+                      step={1}
+                      marks
+                      min={1}
+                      max={10}
+                      sx={{ width: "25%" }}
+                      value={updatedTaskDetails.points}
+                      onChange={(e, val) => setUpdatedTaskDetails({ ...updatedTaskDetails, points: val as number})}
+                    />
+                    <IconContainerEdit>
+                      <CancelButton variant='contained' onClick={cancelEditTask} >Cancel</CancelButton>
+                      <UpdateButton variant='contained'>Update</UpdateButton>
+                    </IconContainerEdit>
+                  </TitleContainerEdit>
+                  <DeadlineContainer>
+                    <h3>Deadline:</h3>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DesktopDatePicker
+                        inputFormat="DD/MM/YYYY"
+                        value={value}
+                        onChange={handleChange}
+                        renderInput={(params) => <TextField {...params} sx={{ width: "17%" }}/>}
+                      />
+                    </LocalizationProvider>
+                  </DeadlineContainer>
+                </TopContainer>
             }
             
             {/* Look at project */}
@@ -111,8 +144,10 @@ const TaskPage = () => {
             <Select
               // label="Your tasks"
               value={taskDetails.status.toString()}
+              // Have own useState? maybe one for edit (view uses useEffect?)
               onChange={(e: SelectChangeEvent) => setTaskDetails({...taskDetails, status: parseInt(e.target.value)})}
-              sx={{ width: "15%" }}
+              sx={{ width: "16.06vw" }}
+              style={{ height: 50 }}
             >
               <MenuItem value={0}>Not Started</MenuItem>
               <MenuItem value={1}>In Progress</MenuItem>
@@ -137,42 +172,50 @@ const TaskPage = () => {
                 <div>Assignee:</div>
                 {pageState === 'view'
                   ? 
-                  <>
-                    {!!taskDetails.profileAssignee.profilePicture
-                      ? (
-                        <UserAvatar src={taskDetails.profileAssignee.profilePicture} alt='assignee avatar' />
-                      ) : (
-                        <StyledAvatar>
-                          {getInitials(taskDetails.profileAssignee.name)}
-                        </StyledAvatar>
-                      )
-                    }
-                    {
-                        taskDetails.profileAssignee 
-                      ?
-                        <div>{taskDetails.profileAssignee.name}</div>
-                      :
-                        <div>Unassigned</div>
-                    }
-                  </>
+                    <>
+                      {!!taskDetails.profileAssignee.profilePicture
+                        ? (
+                          <UserAvatar src={taskDetails.profileAssignee.profilePicture} alt='assignee avatar' />
+                        ) : (
+                          <StyledAvatar>
+                            {getInitials(taskDetails.profileAssignee.name)}
+                          </StyledAvatar>
+                        )
+                      }
+                      {
+                          taskDetails.profileAssignee 
+                        ?
+                          <div>{taskDetails.profileAssignee.name}</div>
+                        :
+                          <div>Unassigned</div>
+                      }
+                    </>
                   :
-                  <Select
+                  <StyledSelect
                     defaultValue="1"
                     value={selectedMember.id < 1 ? "" : selectedMember.id.toString()}
                     // onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}
                     sx={{ width: "30%" }}
+                    // size='small'
                   >
                     {possibleAssignees.map((user)=> (
                       <MenuItem value={user.id} key={user.id}>
                         <UserCard>
-                          <StyledAvatar>{getInitials(`${user.name}`)}</StyledAvatar>
+                          {!!user.profilePicture
+                            ? (
+                              <UserAvatarEdit src={user.profilePicture} alt='assignee avatar' />
+                            ) : (
+                              <StyledAvatar>
+                                {getInitials(user.name)}
+                              </StyledAvatar>
+                            )
+                          }
                           <h3>{user.name}</h3>
                         </UserCard>
                       </MenuItem>
                     ))}
-                  </Select>
+                  </StyledSelect>
                 }
-         
               </h3>
             </TaskMembers>
             <DescriptionContainer>

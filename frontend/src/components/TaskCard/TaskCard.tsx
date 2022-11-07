@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../../helpers";
 import { Palette } from "../Palette";
 import { TaskCardContainer } from "./style";
 
@@ -41,19 +42,14 @@ const TaskCard = ({ projectId, taskId, title, deadline, status}: TaskCardProps) 
       return 'black';
     }
   };
-  
-  let formattedDeadline;
-  if (deadline !== null) {
-    formattedDeadline = deadline.split("-");  
-    formattedDeadline.reverse();
-    formattedDeadline = formattedDeadline.join("/");
-  }
+
+  if (deadline !== null) deadline = formatDate(deadline);
 
   return (
     <TaskCardContainer onClick={() => navigate(`/project/${projectId}/task/${taskId}`)}>
       <p>{taskId}</p>
       <p>{title}</p>
-      <p>{formattedDeadline}</p>
+      <p>{deadline}</p>
       {/* todo: do we want to have this editable? i.e. a <select> component */}
       <p
         style={{ backgroundColor: fetchStatusColor(), color: "white", borderRadius: "1rem", textAlign: "center"}}

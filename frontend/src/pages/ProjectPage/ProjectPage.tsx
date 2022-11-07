@@ -143,7 +143,7 @@ const ProjectPage = () => {
         ? <LoadingOverlay isOpen={isLoading}/>
         : (
           <>
-            <DeleteOverlay isOpen={isDelete} content="project" contentId={projectId!} closeCallback={() => setIsDelete(false)} memberId={0}/>
+            <DeleteOverlay isOpen={isDelete} content="project" contentId={projectId!} closeCallback={() => setIsDelete(false)} memberId={null} secondaryContentId={null}/>
             <Header />
             <ProjectPageContainer>
               <ProjectSidebar id={projectId!} />
@@ -164,7 +164,7 @@ const ProjectPage = () => {
                       ? (
                         <>
                           <img src={EditIcon} onClick={() => setPageState('edit')} alt='edit icon' />
-                          <img src={DeleteIcon} onClick={() => setIsDelete(true)} alt='edit icon' />
+                          <img src={DeleteIcon} onClick={() => setIsDelete(true)} alt='delete icon' />
                         </>
                       ) : (
                         <>
