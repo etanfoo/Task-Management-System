@@ -29,6 +29,10 @@ public class TaskServiceImplementation implements TaskService {
     private final Integer TASK_COMPLETE = 2;
     private final Integer TASK_BLOCKED = 3;
 
+    /**
+     * creates a task and save it to database
+     * throws error if task does not contain a title, points or description is too long
+     */
     public Task create(Task task, Long projectId, Long profileAuthor, Long profileAssignee) {
         Project project = util.checkProject(projectId);
         util.isProfileInProject(profileAuthor, projectId, project);
@@ -64,6 +68,10 @@ public class TaskServiceImplementation implements TaskService {
         return taskRepo.save(task);
     }
 
+    /**
+     * updates an existing task
+     * throws error if task description is too long
+     */
     public Task update(Task task, Long projectId, Long profileId, Long taskId, Long profileAssignee) {
         util.checkProfile(profileId);
         Project projectInDb = util.checkProject(projectId);
@@ -71,6 +79,7 @@ public class TaskServiceImplementation implements TaskService {
         Task taskInDb = util.checkTask(taskId);
         util.isTaskInProject(projectId, taskId);
 
+        // checking if task is passed in case only updating profile and not passing in task
         if (task != null) {
             String title = task.getTitle();
             if (title != null) {
@@ -97,12 +106,12 @@ public class TaskServiceImplementation implements TaskService {
     
             Integer status = task.getStatus();
             
-            if(status != null) {
+            if (status != null) {
                 Long assigneeId = taskInDb.getProfileAssignee().getId();
                 Long authorId = taskInDb.getProfileAuthor().getId();
     
                 // Only the assignee and the author are able to change the status of the task
-                if(profileId == assigneeId || profileId == authorId) {
+                if (profileId == assigneeId || profileId == authorId) {
                     // Get the status from the task in the db
                     Integer prevStatus = taskInDb.getStatus();
                     // Set it to the new status
@@ -125,36 +134,44 @@ public class TaskServiceImplementation implements TaskService {
         return taskRepo.save(taskInDb);
     }
 
+    /**
+     * function to update profile points
+     * @param prevStatus
+     * @param status
+     * @param profileAssignee
+     * @param points
+     */
     private void updateProfilePoints(Integer prevStatus, Integer status, Profile profileAssignee, Integer points) {
-    
         Integer currPoints = profileAssignee.getPoints();
         // When the task is complete we add the points to the profile, need to make sure that the 
         // task was not already complete.
-        if(status == TASK_COMPLETE && prevStatus != TASK_COMPLETE) {
+        if (status == TASK_COMPLETE && prevStatus != TASK_COMPLETE) {
             profileAssignee.setPoints(currPoints + points);
         }
         
         // If the task is moved from complete to in progress or not started we remove the points from the profile
-        if(prevStatus == TASK_COMPLETE && status != TASK_COMPLETE) {
-
+        if (prevStatus == TASK_COMPLETE && status != TASK_COMPLETE) {
             // Set the points to 0 if they're going to go into the negative (somehow)
-            if(currPoints < points) {
+            if (currPoints < points) {
                 profileAssignee.setPoints(0);
             } else {
                 profileAssignee.setPoints(currPoints - points);
             }
         }
-
-
-
     }
 
+    /**
+     * returns a task information given a task id
+     */
     public Task getTask(Long projectId, Long taskId) {
         util.checkProject(projectId);
         util.isTaskInProject(projectId, taskId);
         return util.checkTask(taskId);
     }
 
+    /**
+     * deletes a task given a task id
+     */
     public void delete(Long profileId, Long projectId, Long taskId) {
         util.checkProfile(profileId);
 

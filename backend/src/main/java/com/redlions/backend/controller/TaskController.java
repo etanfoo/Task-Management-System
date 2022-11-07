@@ -39,6 +39,12 @@ public class TaskController {
         public Long profileId;
     }
 
+    /**
+     * post mapping to add a new task
+     * @param json
+     * @param projectId
+     * @return
+     */
     @PostMapping(value = "/{projectId}/task")
     @ResponseStatus(HttpStatus.OK)
     public Task saveTask(@RequestBody TaskJson json, @PathVariable Long projectId) {
@@ -48,6 +54,13 @@ public class TaskController {
         return taskService.create(task, projectId, profileId, profileAssignee);
     }
 
+    /**
+     * put mapping to update a task's info
+     * @param json
+     * @param projectId
+     * @param taskId
+     * @return
+     */
     @PutMapping(value = "/{projectId}/task/{taskId}")
     @ResponseStatus(HttpStatus.OK)
     public Task updateTask(@RequestBody TaskJson json, @PathVariable Long projectId, @PathVariable Long taskId) {
@@ -57,12 +70,24 @@ public class TaskController {
         return taskService.update(task, projectId, profileId, taskId, profileAssignee);
     }
 
+    /**
+     * get mapping to return a single task info given a task id
+     * @param projectId
+     * @param taskId
+     * @return
+     */
     @GetMapping(value = "/{projectId}/task/{taskId}")
     @ResponseStatus(HttpStatus.OK)
     public Task findById(@PathVariable Long projectId, @PathVariable Long taskId) {
         return taskService.getTask(projectId, taskId);
     }
 
+    /**
+     * delete mapping to delete a single task given a task id
+     * @param json
+     * @param projectId
+     * @param taskId
+     */
     @DeleteMapping(value = "/{projectId}/task/{taskId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteById(@RequestBody deleteTaskJson json, @PathVariable Long projectId, @PathVariable Long taskId) {
