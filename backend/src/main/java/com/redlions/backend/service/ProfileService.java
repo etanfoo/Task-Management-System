@@ -17,5 +17,5 @@ public interface ProfileService {
     HashMap<String,Long> rejectConnection(Long user_id, Long target_id);
     List<Profile> getAcceptedConnections(Long id);
     List<Profile> getRequestedConnections(Long id);
-    List<Task> getAssociatedTasks(Long id);
+    List<Task> getAssignedTasks(Long id);
 }

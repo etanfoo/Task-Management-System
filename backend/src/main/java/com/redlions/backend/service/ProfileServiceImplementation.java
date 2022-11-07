@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.redlions.backend.entity.Profile;
-import com.redlions.backend.entity.Project;
 import com.redlions.backend.entity.Task;
 import com.redlions.backend.repository.ProfileRepository;
 import com.redlions.backend.util.Util;
@@ -190,17 +189,11 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
      * returns all tasks assigned to a profile
      */
     @Override
-    public List<Task> getAssociatedTasks(Long id) {
+    public List<Task> getAssignedTasks(Long id) {
         Profile profile = util.checkProfile(id);
-        List<Task> allTasks = new ArrayList<Task>();
-        Set<Project> projectsSet = profile.getProjects();
-        for (Project project : projectsSet) {
-            Set<Task> projectTasks = project.getTasks();
-            for (Task task : projectTasks) {
-                allTasks.add(task);
-            }
-        }
-        return allTasks;
+        List<Task> taskList = new ArrayList<Task>();
+        taskList.addAll(profile.getAssignedTasks());
+        return taskList;
     }
 
     /**

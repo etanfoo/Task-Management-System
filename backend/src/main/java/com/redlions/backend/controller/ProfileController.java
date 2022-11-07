@@ -143,9 +143,9 @@ public class ProfileController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}/associatedTasks")
+    @GetMapping("/{id}/assignedTasks")
     @ResponseStatus(HttpStatus.OK)
-    public List<Task> getAssociatedTasks(@PathVariable Long id) {
-        return profileService.getAssociatedTasks(id);
+    public List<Task> getAssignedTasks(@PathVariable Long id) {
+        return profileService.getAssignedTasks(id);
     }
 }
