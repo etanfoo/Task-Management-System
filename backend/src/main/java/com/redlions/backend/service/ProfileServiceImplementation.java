@@ -197,6 +197,17 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     }
 
     /**
+     * returns all tasks that a profile is an author of
+     */
+    @Override
+    public List<Task> getAuthoredTasks(Long id) {
+        Profile profile = util.checkProfile(id);
+        List<Task> taskList = new ArrayList<Task>();
+        taskList.addAll(profile.getAuthoredTasks());
+        return taskList;
+    }
+
+    /**
      * function to check if a password is valid
      * @param password
      * @return true if valid and false if invalid

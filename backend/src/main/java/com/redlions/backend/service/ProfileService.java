@@ -18,4 +18,5 @@ public interface ProfileService {
     List<Profile> getAcceptedConnections(Long id);
     List<Profile> getRequestedConnections(Long id);
     List<Task> getAssignedTasks(Long id);
+    List<Task> getAuthoredTasks(Long id);
 }
