@@ -1,4 +1,4 @@
-import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle } from "./style";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle, BadgeContainer } from "./style";
 import { useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -17,6 +17,11 @@ import { toBase64, getInitials } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
 import { getConnections } from "../../api/connect";
 import { Palette } from "../../components/Palette";
+import BronzeIcon from "../../assets/bronze.png";
+import SilverIcon from "../../assets/silver.png";
+import GoldIcon from "../../assets/gold.png";
+import DiamondIcon from "../../assets/diamond.png";
+
 
 const ProfilePage = () => {
   const { profileId } = useParams();
@@ -82,16 +87,30 @@ const ProfilePage = () => {
   };
 
   const getBorderColor = () => {
-    if (profileDetails.points <= 100) {
+    if (profileDetails.points < 100) {
       return undefined;
-    } else if (profileDetails.points <= 200) {
+    } else if (profileDetails.points < 200) {
       return Palette.bronze;
-    } else if (profileDetails.points <= 300) {
+    } else if (profileDetails.points < 300) {
       return Palette.gray;
-    } else if (profileDetails.points <= 400) {
+    } else if (profileDetails.points < 400) {
       return Palette.gold;
     } else {
       return Palette.diamond; 
+    }
+  };
+
+  const getTierBadge = () => {
+    if (profileDetails.points < 100) {
+      return undefined;
+    } else if (profileDetails.points < 200) {
+      return BronzeIcon;
+    } else if (profileDetails.points < 300) {
+      return SilverIcon;
+    } else if (profileDetails.points < 400) {
+      return GoldIcon;
+    } else {
+      return DiamondIcon; 
     }
   };
 
@@ -140,7 +159,14 @@ const ProfilePage = () => {
                 <DetailsContainer>
                   {pageState === 'view'
                     ? (
-                      <h1>{`${profileDetails?.name} (Busyness - 20%)`}</h1>
+                      <BadgeContainer>
+                        <h1>{`${profileDetails?.name}`}</h1>
+                        {
+                          profileDetails.points >= 100 ? (
+                            <img src={getTierBadge()} alt="badge" />
+                          ) : null
+                        }
+                      </BadgeContainer>
                     ) : (
                         <TextField
                           placeholder={profileDetails.name}

@@ -115,14 +115,26 @@ export const DetailsContainer = styled('div')`
   display: flex;
   flex-direction: column;
   text-align: left;
-  > h1 {
-    font-weight: normal;
-    margin-bottom: 0;
-  };
-
+  
   > p {
     margin-top: 0.5rem;
     color: ${Palette.thGray};
+  };
+`;
+  
+export const BadgeContainer = styled('div')`
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+
+  > h1 {
+    font-weight: normal;
+  };
+
+  > img {
+    width: 3rem;
+    height: 3rem;
+    margin-left: 0.5rem;
   };
 `;
 
