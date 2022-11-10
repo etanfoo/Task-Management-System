@@ -39,13 +39,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     private final int ABOUT_ME_SECTION_CHARACTER_LIMIT = 300;
     private final Util util;
     private final int MIN_PASSWORD_LENGTH = 6;
-    private final Integer NO_FACE_PROVIDED = null;
-    private final int STRESSED_FACE = 0;
-    private final int WORRIED_FACE = 1;
-    private final int NEUTRAL_FACE = 2;
-    private final int COMFORTABLE_FACE = 3;
-    private final int HAPPY_FACE = 4;
-
+    
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Profile profile = profileRepo.findByEmail(email);
@@ -84,7 +78,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
         if (!isValidHappiness(profile.getHappiness())) {
             String errorMessage = String.format("\"Happiness\" value must be %d, %d, %d, %d, %d or %d",
-                    NO_FACE_PROVIDED, STRESSED_FACE, WORRIED_FACE, NEUTRAL_FACE, COMFORTABLE_FACE, HAPPY_FACE);
+                    util.NO_FACE_PROVIDED, util.STRESSED_FACE, util.WORRIED_FACE, util.NEUTRAL_FACE, util.COMFORTABLE_FACE, util.HAPPY_FACE);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
@@ -96,6 +90,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         log.info("Saving new profile {} to database", email);
         // encrypting password to not save plain text in db
         profile.setPassword(passwordEncoder.encode(password));
+        profile.setBusyness(0.0);
         return profileRepo.save(profile);
     }
 
@@ -137,7 +132,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         } else {
             String errorMessage = String.format(
                     "\"Happiness\" value must be %d (NO_FACE_PROVIDED), %d (STRESSED_FACE), %d (WORRIED_FACE), %d (NEUTRAL_FACE), %d (COMFORTABLE_FACE) or %d (HAPPY_FACE)",
-                    NO_FACE_PROVIDED, STRESSED_FACE, WORRIED_FACE, NEUTRAL_FACE, COMFORTABLE_FACE, HAPPY_FACE);
+                    util.NO_FACE_PROVIDED, util.STRESSED_FACE, util.WORRIED_FACE, util.NEUTRAL_FACE, util.COMFORTABLE_FACE, util.HAPPY_FACE);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
@@ -270,12 +265,12 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
      * @return true if valid false if invalid
      */
     private boolean isValidHappiness(Integer happiness) {
-        return happiness == NO_FACE_PROVIDED
-                || happiness == STRESSED_FACE
-                || happiness == WORRIED_FACE
-                || happiness == NEUTRAL_FACE
-                || happiness == COMFORTABLE_FACE
-                || happiness == HAPPY_FACE;
+        return happiness == util.NO_FACE_PROVIDED
+                || happiness == util.STRESSED_FACE
+                || happiness == util.WORRIED_FACE
+                || happiness == util.NEUTRAL_FACE
+                || happiness == util.COMFORTABLE_FACE
+                || happiness == util.HAPPY_FACE;
     }
 
     /**

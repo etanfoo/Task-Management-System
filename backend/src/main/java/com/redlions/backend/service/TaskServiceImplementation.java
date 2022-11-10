@@ -26,11 +26,6 @@ public class TaskServiceImplementation implements TaskService {
     private final Util util;
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
     
-    // private final Integer TASK_NOT_STARTED = 0;
-    // private final Integer TASK_IN_PROGRESS = 1;
-    // private final Integer TASK_COMPLETE = 2;
-    // private final Integer TASK_BLOCKED = 3;
-
     /**
      * creates a task and save it to database
      * throws error if task does not contain a title, points or description is too long
@@ -208,7 +203,7 @@ public class TaskServiceImplementation implements TaskService {
         for (Task task : tasks) {
             double taskBusyness = 0f;
             // Only tasks that are in progress or not started contribute to busyness
-            if(task.getStatus() == TASK_IN_PROGRESS || task.getStatus() == TASK_NOT_STARTED) {
+            if(task.getStatus() == util.TASK_IN_PROGRESS || task.getStatus() == util.TASK_NOT_STARTED) {
                 Date currDate = new Date();
                 // Time difference between the current date and the deadline of the task in hours
                 long diff = (currDate.getTime() - task.getDeadline().getTime() / (1000 * 60 * 60)) % 24;
@@ -223,9 +218,9 @@ public class TaskServiceImplementation implements TaskService {
                 }
 
                 // A task in progress is worth less towards busyness than one that isn't started
-                if(task.getStatus() == TASK_NOT_STARTED) {
+                if(task.getStatus() == util.TASK_NOT_STARTED) {
                     taskBusyness += 5f;
-                } else if (task.getStatus() == TASK_IN_PROGRESS) {
+                } else if (task.getStatus() == util.TASK_IN_PROGRESS) {
                     taskBusyness += 2f;
                 }
 

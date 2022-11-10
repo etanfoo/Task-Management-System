@@ -50,7 +50,7 @@ public class Profile {
     private String aboutMe;
 
     @Column(name="busyness")
-    private double busyness;
+    private Double busyness;
 
     @JsonIgnore
     @ManyToMany(mappedBy="profiles")
@@ -91,7 +91,7 @@ public class Profile {
 
     }
 
-    public Profile(Long id, String name, String email, String password, Integer points, Integer happiness, String aboutMe, String profilePicture, Float busyness) {
+    public Profile(Long id, String name, String email, String password, Integer points, Integer happiness, String aboutMe, String profilePicture, Double busyness) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -200,11 +200,11 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
-    public double getBusyness() {
+    public Double getBusyness() {
         return busyness;
     }
 
-    public void setBusyness(double busyness) {
+    public void setBusyness(Double busyness) {
         this.busyness = busyness;
     }
 

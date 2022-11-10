@@ -165,56 +165,46 @@ public class ProjectServiceImplementation implements ProjectService {
         Project project = util.checkProject(projectId);
         Map<String, Object> statistics = new HashMap<String, Object>();
 
-        Map<String, Integer> tasks = new HashMap<String, Integer>();
-        tasks.put("completed", 0);
-        tasks.put("not_started", 0);
-        tasks.put("in_progress", 0);
-        tasks.put("blocked", 0);
+        Map<Integer, Integer> tasks = new HashMap<Integer, Integer>();
+        tasks.put(util.TASK_COMPLETE, 0);
+        tasks.put(util.TASK_NOT_STARTED, 0);
+        tasks.put(util.TASK_IN_PROGRESS, 0);
+        tasks.put(util.TASK_BLOCKED, 0);
 
-        Map<String, Integer> happiness = new HashMap<String, Integer>();
-        happiness.put("no_face", 0);
-        happiness.put("stressed", 0);
-        happiness.put("worried", 0);
-        happiness.put("neutral", 0);
-        happiness.put("comfortable", 0);
-        happiness.put("happy", 0);
-
-        Map<String, Float> busyness = new HashMap<String, Float>();
-        busyness.put("0-10", 0f);
-        busyness.put("10-20", 0f);
-        busyness.put("20-30", 0f);
-        busyness.put("30-40", 0f);
-        busyness.put("40-50", 0f);
-        busyness.put("50-60", 0f);
-        busyness.put("60-70", 0f);
-        busyness.put("70-80", 0f);
-        busyness.put("80-90", 0f);
-        busyness.put("90-100", 0f);
-        busyness.put("100+", 0f);
+        Map<Integer, Integer> happiness = new HashMap<Integer, Integer>();
+        happiness.put(util.NO_FACE_PROVIDED, 0);
+        happiness.put(util.STRESSED_FACE, 0);
+        happiness.put(util.WORRIED_FACE, 0);
+        happiness.put(util.NEUTRAL_FACE, 0);
+        happiness.put(util.COMFORTABLE_FACE, 0);
+        happiness.put(util.HAPPY_FACE, 0);
+    
+        Map<String, Double> busyness = new HashMap<String, Double>();
+        busyness.put("0-10", 0.0);
+        busyness.put("10-20", 0.0);
+        busyness.put("20-30", 0.0);
+        busyness.put("30-40", 0.0);
+        busyness.put("40-50", 0.0);
+        busyness.put("50-60", 0.0);
+        busyness.put("60-70", 0.0);
+        busyness.put("70-80", 0.0);
+        busyness.put("80-90", 0.0);
+        busyness.put("90-100", 0.0);
+        busyness.put("100+", 0.0);
 
         // tallying up tasks
         for (Task task: project.getTasks()) {
             Integer status = task.getStatus();
-            if (status == util.TASK_COMPLETE) {
-                tasks.put("completed", tasks.get("completed") + 1);
-            } else if (status == util.TASK_NOT_STARTED) {
-                tasks.put("not_started", tasks.get("not_started") + 1);
-            } else if (status == util.TASK_IN_PROGRESS) {
-                tasks.put("in_progress", tasks.get("in_progress") + 1);
-            } else if (status == util.TASK_BLOCKED) {
-                tasks.put("blocked", tasks.get("blocked") + 1);
-            } else {
-                String errorMessage = String.format("Task with task id %d does not have a correct status", task.getId());
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-            }
+            tasks.put(status, tasks.get(status) + 1);
         }
 
         // tallying up profile happiness and busyness
         for (Profile profile: project.getProfiles()) {
             Integer happinessLevel = profile.getHappiness();
-            Float busynessLevel = profile.getBusyness();
-            System.out.println(happinessLevel);
-            System.out.println(busynessLevel);
+            double busynessLevel = profile.getBusyness();
+
+            happiness.put(happinessLevel, happiness.get(happinessLevel) + 1);
+
             if (busynessLevel <= 10) {
                 busyness.put("0-10", busyness.get("0-10") + 1);
             } else if (busynessLevel <= 20) {
