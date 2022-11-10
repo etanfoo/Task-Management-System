@@ -6,6 +6,13 @@ export interface ITasktDetails {
   deadline: string;
   points: number;
   status: number;
-  profileAssignee: number;
+  // profileAssignee: number;
   // profileAuthor: IProfile;
 };
+
+export interface TaskStatus {
+  0: string;
+  1: string;
+  2: string;
+  3: string;
+}

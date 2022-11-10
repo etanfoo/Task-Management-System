@@ -1,5 +1,5 @@
 import { ITask } from "../interfaces/api-response";
-import { ITasktDetails } from "../interfaces/task";
+import { ITasktDetails, TaskStatus } from "../interfaces/task";
 import { EmptyProfile } from "./profiles";
 import { EmptyProjectView } from "./projects";
 
@@ -7,9 +7,9 @@ export const EmptyTaskEdit: ITasktDetails = {
   title: "",
   description: "",
   points: -1, 
-  status: -1,
+  status: 0,
   deadline: "",
-  profileAssignee: -1,
+  // profileAssignee: -1,
   // profileAuthor: EmptyProfile,
 };
 
@@ -24,6 +24,13 @@ export const EmptyTaskView: ITask = {
   profileAuthor: EmptyProfile,
   project: EmptyProjectView,
 };
+
+export const taskStatus: TaskStatus = {
+  0: "Not Started",
+  1: "In Progress",
+  2: "Completed",
+  3: "Blocked"
+}
 
 // export const MockTasks: ITask[] = [
 //   {

@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { formatDate } from "../../helpers";
+import { taskStatus } from "../../constants/tasks";
+import { fetchStatusColor, formatDate } from "../../helpers";
+import { TaskStatus } from "../../interfaces/task";
 import { Palette } from "../Palette";
 import { TaskCardContainer } from "./style";
 
@@ -12,36 +14,8 @@ type TaskCardProps = {
   status: number;
 }
 
-type TaskStatusProps = {
-  0: string;
-  1: string;
-  2: string;
-  3: string;
-}
-
-const taskStatus: TaskStatusProps = {
-  0: "Not Started",
-  1: "In Progress",
-  2: "Completed",
-  3: "Blocked"
-}
-
 const TaskCard = ({ projectId, taskId, title, deadline, status}: TaskCardProps) => {
   const navigate = useNavigate();
-
-  const fetchStatusColor = () => {
-    if (status === 0) {
-      return Palette.thGray;
-    } else if (status === 1) {
-      return Palette.progressBlue;
-    } else if (status === 2) {
-      return Palette.errorRed;
-    } else if (status === 3) {
-      return Palette.successGreen;
-    } else {
-      return 'black';
-    }
-  };
 
   if (deadline !== null) deadline = formatDate(deadline);
 
@@ -52,8 +26,8 @@ const TaskCard = ({ projectId, taskId, title, deadline, status}: TaskCardProps) 
       <p>{deadline}</p>
       {/* todo: do we want to have this editable? i.e. a <select> component */}
       <p
-        style={{ backgroundColor: fetchStatusColor(), color: "white", borderRadius: "1rem", textAlign: "center"}}
-      >{taskStatus[status as keyof TaskStatusProps]}</p>
+        style={{ backgroundColor: fetchStatusColor(status), color: "white", borderRadius: "1rem", textAlign: "center"}}
+      >{taskStatus[status as keyof TaskStatus]}</p>
     </TaskCardContainer>
   );
 };

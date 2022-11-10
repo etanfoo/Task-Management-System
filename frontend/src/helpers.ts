@@ -1,3 +1,4 @@
+import { Palette } from "./components/Palette";
 import { IProfile } from "./interfaces/api-response";
 
 // todo: check file type
@@ -44,3 +45,17 @@ export const formatDate = (date: string) => {
 export const findSelectedMember = (profileId: number, profiles: IProfile[]) => {
   return profiles.filter((user: IProfile) => user.id === profileId)[0];
 }
+
+export const fetchStatusColor = (status: number) => {
+  if (status === 0) {
+    return Palette.thGray;
+  } else if (status === 1) {
+    return Palette.progressBlue;
+  } else if (status === 2) {
+    return Palette.errorRed;
+  } else if (status === 3) {
+    return Palette.successGreen;
+  } else {
+    return 'black';
+  }
+};

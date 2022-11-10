@@ -6,11 +6,12 @@ import { ITasktDetails } from "../interfaces/task";
 export const postTask = async (task: ITasktDetails, projectId: number, profileId: number, profileAssignee: number | null): Promise<ITask> => {
   console.log(profileAssignee)
   console.log(profileId)
+  console.log(task)
   try {
     const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/task`, {
       profileAssignee,
       profileId,
-      task,
+      task
     }, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
@@ -22,11 +23,13 @@ export const postTask = async (task: ITasktDetails, projectId: number, profileId
   }
 };
 
-export const putTask = async (projectId: number, taskId: number, task: ITasktDetails, profileAssignee: number | null): Promise<ITask> => {
+export const putTask = async (projectId: number, taskId: number, task: ITasktDetails, profileAssignee: number | null, profileId: number): Promise<ITask> => {
+  console.log(task)
   try {
     const { data } = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/task/${taskId}`, {
-      task,
-      profileAssignee
+      profileAssignee,
+      profileId,
+      task
     }, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`

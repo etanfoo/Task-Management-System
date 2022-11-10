@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postTask } from "../../api/task";
 import { EmptyTaskEdit } from "../../constants/tasks";
-import { getInitials } from "../../helpers";
+import { findSelectedMember, getInitials } from "../../helpers";
 import { ITasktDetails } from "../../interfaces/task";
 import { BottomContainer, ButtonsContainer, CancelButton, CreateButton, EmptyModal, ModalBody, ModalContainer, StyledAvatar, UserCard } from "./style";
 import Slider from '@mui/material/Slider';
@@ -73,13 +73,13 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
     setCurrProjectId(currentProjectDetails.id.toString());
   }
 
-  const findSelectMember = (profileId: number) => {
-    setSelectedMember(selectedProject.profiles.filter((user: IProfile) => user.id === profileId)[0]);
-  }
-
-  // const changeMember = (profileId: number) => {
-  //   setSelectedMember(findSelectedMember(profileId, selectedProject.profiles));
+  // const findSelectMember = (profileId: number) => {
+  //   setSelectedMember(selectedProject.profiles.filter((user: IProfile) => user.id === profileId)[0]);
   // }
+
+  const changeMember = (profileId: number) => {
+    setSelectedMember(findSelectedMember(profileId, selectedProject.profiles));
+  }
 
 
   return(
@@ -154,7 +154,8 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
             <Select
               defaultValue="1"
               value={selectedMember.id < 1 ? "" : selectedMember.id.toString()}
-              onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}
+              // onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}
+              onChange={(e: SelectChangeEvent) => changeMember(parseInt(e.target.value))}
               sx={{ width: "30%" }}
             >
               {selectedProject.profiles.map((user)=> (

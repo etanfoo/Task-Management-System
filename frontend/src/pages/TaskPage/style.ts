@@ -96,10 +96,10 @@ export const StyledAvatar = styled(Avatar)`
   background-color: ${Palette.mainTeal};
 `;
 
-export const StyledSelect = styled(Select)`
-  height: 60px;
-  margin-left: 0.5rem;
-`;
+// export const StyledSelect = styled(Select)`
+//   height: 60px;
+//   margin-left: 0.5rem;
+// `;
 
 export const UserCard = styled('div')`
   display: flex;
