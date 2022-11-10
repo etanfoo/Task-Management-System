@@ -148,15 +148,4 @@ public class ProfileController {
     public List<Task> getAssignedTasks(@PathVariable Long id) {
         return profileService.getAssignedTasks(id);
     }
-
-    /**
-     * get mapping to return all authored task for a single profile
-     * @param id
-     * @return
-     */
-    @GetMapping("/{id}/authoredTasks")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Task> getAuthoredTasks(@PathVariable Long id) {
-        return profileService.getAuthoredTasks(id);
-    }
 }
