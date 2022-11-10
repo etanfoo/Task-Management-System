@@ -1,6 +1,8 @@
 package com.redlions.backend.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -151,8 +153,96 @@ public class ProjectServiceImplementation implements ProjectService {
      */
     @Override
     public Set<Task> getProjectTasks(Long projectId) {
-        util.checkProject(projectId);
         Project project = util.checkProject(projectId);
         return project.getTasks();
+    }
+
+    /**
+     * return all statistics for a given project
+     */
+    @Override
+    public Object getProjectStatistics(Long projectId) {
+        Project project = util.checkProject(projectId);
+        Map<String, Object> statistics = new HashMap<String, Object>();
+
+        Map<String, Integer> tasks = new HashMap<String, Integer>();
+        tasks.put("completed", 0);
+        tasks.put("not_started", 0);
+        tasks.put("in_progress", 0);
+        tasks.put("blocked", 0);
+
+        Map<String, Integer> happiness = new HashMap<String, Integer>();
+        happiness.put("no_face", 0);
+        happiness.put("stressed", 0);
+        happiness.put("worried", 0);
+        happiness.put("neutral", 0);
+        happiness.put("comfortable", 0);
+        happiness.put("happy", 0);
+
+        Map<String, Float> busyness = new HashMap<String, Float>();
+        busyness.put("0-10", 0f);
+        busyness.put("10-20", 0f);
+        busyness.put("20-30", 0f);
+        busyness.put("30-40", 0f);
+        busyness.put("40-50", 0f);
+        busyness.put("50-60", 0f);
+        busyness.put("60-70", 0f);
+        busyness.put("70-80", 0f);
+        busyness.put("80-90", 0f);
+        busyness.put("90-100", 0f);
+        busyness.put("100+", 0f);
+
+        // tallying up tasks
+        for (Task task: project.getTasks()) {
+            Integer status = task.getStatus();
+            if (status == util.TASK_COMPLETE) {
+                tasks.put("completed", tasks.get("completed") + 1);
+            } else if (status == util.TASK_NOT_STARTED) {
+                tasks.put("not_started", tasks.get("not_started") + 1);
+            } else if (status == util.TASK_IN_PROGRESS) {
+                tasks.put("in_progress", tasks.get("in_progress") + 1);
+            } else if (status == util.TASK_BLOCKED) {
+                tasks.put("blocked", tasks.get("blocked") + 1);
+            } else {
+                String errorMessage = String.format("Task with task id %d does not have a correct status", task.getId());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            }
+        }
+
+        // tallying up profile happiness and busyness
+        for (Profile profile: project.getProfiles()) {
+            Integer happinessLevel = profile.getHappiness();
+            Float busynessLevel = profile.getBusyness();
+            System.out.println(happinessLevel);
+            System.out.println(busynessLevel);
+            if (busynessLevel <= 10) {
+                busyness.put("0-10", busyness.get("0-10") + 1);
+            } else if (busynessLevel <= 20) {
+                busyness.put("10-20", busyness.get("10-20") + 1);
+            } else if (busynessLevel <= 30) {
+                busyness.put("20-30", busyness.get("20-30") + 1);
+            } else if (busynessLevel <= 40) {
+                busyness.put("30-40", busyness.get("30-40") + 1);
+            } else if (busynessLevel <= 50) {
+                busyness.put("40-50", busyness.get("40-50") + 1);
+            } else if (busynessLevel <= 60) {
+                busyness.put("50-60", busyness.get("50-60") + 1);
+            } else if (busynessLevel <= 70) {
+                busyness.put("60-70", busyness.get("60-70") + 1);
+            } else if (busynessLevel <= 80) {
+                busyness.put("70-80", busyness.get("70-80") + 1);
+            } else if (busynessLevel <= 90) {
+                busyness.put("80-90", busyness.get("80-90") + 1);
+            } else if (busynessLevel <= 100) {
+                busyness.put("90-100", busyness.get("90-100") + 1);
+            } else {
+                busyness.put("100+", busyness.get("100+") + 1);
+            }
+        }
+
+        statistics.put("tasks", tasks);
+        statistics.put("happiness", happiness);
+        statistics.put("busyness", busyness);
+        return statistics;
     }
 }

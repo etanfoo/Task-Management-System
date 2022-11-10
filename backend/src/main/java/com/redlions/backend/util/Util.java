@@ -22,6 +22,10 @@ public class Util {
     private final ProfileRepository profileRepo;
     private final ProjectRepository projectRepo;
     private final TaskRepository taskRepo;
+    public final Integer TASK_NOT_STARTED = 0;
+    public final Integer TASK_IN_PROGRESS = 1;
+    public final Integer TASK_COMPLETE = 2;
+    public final Integer TASK_BLOCKED = 3;
 
     /**
      * checks if profile with corresponding id exists
