@@ -12,7 +12,7 @@ import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequest
 import { useLocation } from "react-router-dom";
 import FriendsList from "../../components/FriendsList/FriendsList";
 import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
-import { getUserTasks } from "../../api/task";
+import { getAssignedTasks, getAuthoredTasks } from "../../api/task";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -26,7 +26,10 @@ const DashboardPage = () => {
   const [allProjects, setAllProjects] = useState<IProject[]>([]);
   const [shownProjects, setShownProjects] = useState<IProject[]>([]);
   const [allTasks, setAllTasks] = useState<ITask[]>([]);
-  const [shownTasks, setShownTasks] = useState<ITask[]>([]);
+  const [shownAssignedTasks, setShownAssignedTasks] = useState<ITask[]>([]);
+  const [shownAuthoredTasks, setShownAuthoredTasks] = useState<ITask[]>([]);
+  const [assignedTasks, setAssignedTasks] = useState<ITask[]>([]);
+  const [authoredTasks, setAuthoredTasks] = useState<ITask[]>([]);
 
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
 
@@ -45,9 +48,17 @@ const DashboardPage = () => {
 
   const fetchAllTasks = async () => {
     try {
-      const resp = await getUserTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      setAllTasks(resp);
-      setShownTasks(resp);
+      const respAssigned = await getAssignedTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      setAssignedTasks(respAssigned);
+      const respAuthored = await getAuthoredTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      setAuthoredTasks(respAuthored);
+      const userTasks = respAssigned.concat(respAuthored);
+      setAllTasks(userTasks);
+
+      setShownAssignedTasks(respAssigned);
+      setShownAuthoredTasks(respAuthored);
+
+      // setShownTasks(userTasks);
     } catch (err:any) { 
       console.log(err);
     }
@@ -59,27 +70,54 @@ const DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    if (pageState === "tasks") {
-      let sortedTasks: ITask[] = shownTasks;
-      if (taskSortType === "ID") {
-        sortedTasks = [...shownTasks].sort(
-          (taskA, taskB) => taskA.id.toString().localeCompare(taskB.id.toString())
-        );
-      } else if (taskSortType === "Title") {
-        sortedTasks = [...shownTasks].sort(
-          (taskA, taskB) => taskA.title.localeCompare(taskB.title)
-        );        
-      } else if (taskSortType === "Status") {
-        sortedTasks = [...shownTasks].sort(
-          (taskA, taskB) => taskA.status.toString().localeCompare(taskB.status.toString())
-        );
-      } else if (taskSortType === "Deadline") {
-        sortedTasks = [...shownTasks].sort(
-          // todo: figure out how deadline is store - date or string?
-          (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
-        );
+    if (pageState.includes("tasks")) {
+
+      let sortedTasks: ITask[] = shownAssignedTasks;
+      if (pageState === "assigned tasks") {
+        if (taskSortType === "ID") {
+          sortedTasks = [...shownAssignedTasks].sort(
+            (taskA, taskB) => taskA.id.toString().localeCompare(taskB.id.toString())
+          );
+        } else if (taskSortType === "Title") {
+          sortedTasks = [...shownAssignedTasks].sort(
+            (taskA, taskB) => taskA.title.localeCompare(taskB.title)
+          );        
+        } else if (taskSortType === "Status") {
+          sortedTasks = [...shownAssignedTasks].sort(
+            (taskA, taskB) => taskA.status.toString().localeCompare(taskB.status.toString())
+          );
+        } else if (taskSortType === "Deadline") {
+          sortedTasks = [...shownAssignedTasks].sort(
+            // todo: figure out how deadline is store - date or string?
+            (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
+          );
+        }
+        setShownAssignedTasks(sortedTasks);
+      } else {
+        sortedTasks = shownAuthoredTasks;
+        if (taskSortType === "ID") {
+          sortedTasks = [...shownAuthoredTasks].sort(
+            (taskA, taskB) => taskA.id.toString().localeCompare(taskB.id.toString())
+          );
+        } else if (taskSortType === "Title") {
+          sortedTasks = [...shownAuthoredTasks].sort(
+            (taskA, taskB) => taskA.title.localeCompare(taskB.title)
+          );        
+        } else if (taskSortType === "Status") {
+          sortedTasks = [...shownAuthoredTasks].sort(
+            (taskA, taskB) => taskA.status.toString().localeCompare(taskB.status.toString())
+          );
+        } else if (taskSortType === "Deadline") {
+          sortedTasks = [...shownAuthoredTasks].sort(
+            // todo: figure out how deadline is store - date or string?
+            (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
+          );
+        }
+        setShownAuthoredTasks(sortedTasks);
       }
-      setShownTasks(sortedTasks);
+      // setShownTasks(assignedTasks);
+      // else setShownTasks(authoredTasks);
+      // setShownTasks(sortedTasks);
     } else {
       let sortedProjects: any[] = shownProjects;
       if (projectSortType === "Name") {
@@ -97,10 +135,17 @@ const DashboardPage = () => {
   }, [taskSortType, projectSortType]);
 
   useEffect(() => {
-    if (pageState === "tasks") {
-      setShownTasks(allTasks.filter((task) => 
+    if (pageState.includes("tasks")) {
+      if (pageState === "assigned tasks") {
+        setShownAssignedTasks(assignedTasks.filter((task) => 
         task.title.toLowerCase().includes(searchQuery)
       ));
+      } else {
+        setShownAuthoredTasks(authoredTasks.filter((task) => 
+        task.title.toLowerCase().includes(searchQuery)
+      ));
+      }
+      
       setTaskSortType("ID");
     } else {
       setShownProjects(allProjects.filter((project) => 
@@ -133,7 +178,7 @@ const DashboardPage = () => {
         <RightContainer>
           <StyledTextField
             fullWidth
-            label={`Search for a ${pageState === "tasks" ? "task..." : "project..."}`}
+            label={`Search for a ${pageState.includes("tasks") ? "task..." : "project..."}`}
             onChange={(e) => setSearchQuery(e.target.value.toLocaleLowerCase())}
           />
           <SelectContainer>
@@ -144,13 +189,14 @@ const DashboardPage = () => {
                 value={pageState}
                 onChange={(e: SelectChangeEvent) => setPageState(e.target.value)}
               >
-                <MenuItem value={"tasks"}>Your tasks</MenuItem>
+                <MenuItem value={"assigned tasks"}>Your assigned tasks</MenuItem>
+                <MenuItem value={"authored tasks"}>Your authored tasks</MenuItem>
                 <MenuItem value={"projects"}>Your projects</MenuItem>
               </Select>
             </StyledForm>
             <StyledForm>
               <InputLabel>Sort by</InputLabel>
-              {pageState === "tasks"
+              {pageState.includes("tasks")
                 ? (
                   <Select
                     label="Sort by"
@@ -176,9 +222,9 @@ const DashboardPage = () => {
             </StyledForm>
           </SelectContainer>
           <TasksContainer>
-            {pageState === "tasks"
+            {pageState.includes("tasks")
               ? (
-                shownTasks.length === 0
+                allTasks.length === 0
                 ? (
                   <p>Nothing to see here...</p>
                 ) : (
@@ -189,18 +235,35 @@ const DashboardPage = () => {
                       <p style={{ color: taskSortType === "Deadline" ? "black" : Palette.thGray }}>Deadline</p>
                       <p style={{ color: taskSortType === "Status" ? "black" : Palette.thGray }}>Status</p>
                     </TasksLabelContainer>
-                    <OverflowContainer>
-                      {shownTasks.map((task) => (
-                        <TaskCard
-                          key={`task ${task.id}`}
-                          projectId={task.project.id}
-                          taskId={task.id}
-                          title={task.title}
-                          deadline={task.deadline}
-                          status={task.status}
-                        />
-                      ))}
-                    </OverflowContainer>
+                    {
+                      pageState === "assigned tasks"
+                      ?
+                        <OverflowContainer>
+                          {assignedTasks.map((task) => (
+                            <TaskCard
+                              key={`task ${task.id}`}
+                              projectId={task.project.id}
+                              taskId={task.id}
+                              title={task.title}
+                              deadline={task.deadline}
+                              status={task.status}
+                            />
+                          ))}
+                        </OverflowContainer>
+                      :
+                        <OverflowContainer>
+                          {authoredTasks.map((task) => (
+                            <TaskCard
+                              key={`task ${task.id}`}
+                              projectId={task.project.id}
+                              taskId={task.id}
+                              title={task.title}
+                              deadline={task.deadline}
+                              status={task.status}
+                            />
+                          ))}
+                        </OverflowContainer>
+                    }
                   </>
                 )
               ): (

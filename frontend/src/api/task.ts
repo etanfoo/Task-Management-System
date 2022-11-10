@@ -41,9 +41,23 @@ export const putTask = async (projectId: number, taskId: number, task: ITasktDet
   }
 }
 
-export const getUserTasks = async (profileId: number): Promise<ITask[]> => {
+export const getAssignedTasks = async (profileId: number): Promise<ITask[]> => {
   try {
     const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile/${profileId}/assignedTasks`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+      }
+    });
+    console.log(data)
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const getAuthoredTasks = async (profileId: number): Promise<ITask[]> => {
+  try {
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile/${profileId}/authoredTasks`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
       }

@@ -28,7 +28,7 @@ const DeleteOverlay = ({ isOpen, content, contentId, closeCallback, memberId, se
         window.location.reload();
       } else {
         await deleteTask(parseInt(contentId), secondaryContentId!, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-        navigate("/dashboard", { state: { initialPageState: "tasks" } });
+        navigate("/dashboard", { state: { initialPageState: "authored tasks" } });
       }
     } catch (err: any) {
       console.log(err);

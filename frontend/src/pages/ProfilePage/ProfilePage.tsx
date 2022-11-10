@@ -15,7 +15,7 @@ import { EmptyProfile, EmptyUpdatedProfileDetails } from "../../constants/profil
 import { toBase64, getInitials } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
 import { getConnections } from "../../api/connect";
-import { getUserTasks } from "../../api/task";
+import { getAssignedTasks } from "../../api/task";
 
 const ProfilePage = () => {
   const { profileId } = useParams();
@@ -83,7 +83,7 @@ const ProfilePage = () => {
 
   const fetchUserTasks = async () => {
     try {
-      const resp = await getUserTasks(parseInt(profileId!));
+      const resp = await getAssignedTasks(parseInt(profileId!));
       console.log(resp)
       setUserTasks(resp);
     } catch (err:any) { 

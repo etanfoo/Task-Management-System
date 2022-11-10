@@ -18,11 +18,12 @@ const ProjectSidebar = ({ id }: projectIdProps) => {
         <h2>My Project</h2>
       </ProjectButton> 
       <ButtonBorder />
-      <ProjectButton to="/dashboard" state={{ initialPageState: "tasks" }}>
+      <ProjectButton to="/dashboard" state={{ initialPageState: "assigned tasks" }}>
         <img src={TaskIcon} alt='My tasks' />
         <h2>My Tasks</h2>
       </ProjectButton>
       <ButtonBorder />
+      {/* todo: link to create task modal */}
       <ProjectButton to="/dashboard" state={{ initialPageState: "tasks" }}>
         <img src={CreateIcon} alt='Create task' />
         <h2>Create Task</h2>

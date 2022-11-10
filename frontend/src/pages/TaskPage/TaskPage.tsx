@@ -34,7 +34,6 @@ const TaskPage = () => {
   const [possibleAssignees, setPossibleAssignees] = useState<IProfile[]>([]);
   const [selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
   const [isDelete, setIsDelete] = useState<boolean>(false); 
-  const [status, setStatus] = useState<number>(0);
   // CHange to deadline?
   const [value, setValue] = useState<Dayjs | null>(null);
 
@@ -53,9 +52,8 @@ const TaskPage = () => {
       setSelectedMember(resp.profileAssignee);
       setUpdatedTaskDetails({ ...updatedTaskDetails, points: resp.points})
       setUpdatedTaskDetails({ ...updatedTaskDetails, status: resp.status})
-      setStatus(resp.status);
-      const profileId = parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
 
+      const profileId = parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
       if (resp.profileAuthor.id === profileId || resp.profileAssignee.id === profileId) setIsMember(true);
       setIsLoading(false);
     } catch (err: any) {
@@ -73,17 +71,19 @@ const TaskPage = () => {
     setPageState("view");
     setUpdatedTaskDetails(EmptyTaskEdit);
   }
-  // Display project as well
 
   const updateTask = async () => {
     // console.log(updatedTaskDetails)
     // setUpdatedTaskDetails({ ...updatedTaskDetails, status: status})
     // console.log(selectedMember)
+
+    // Check if all fields are empty (might be wrong)
     if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && updatedTaskDetails.status === taskDetails.status && updatedTaskDetails.points === taskDetails.points && (selectedMember === null || taskDetails.profileAssignee  === null || selectedMember.id === taskDetails.profileAssignee.id) && updatedTaskDetails.description === "") {
       setPageState("view");
       return;
     } 
 
+    // Check if user provided new inputs, if not replace with previous task details
     updatedTaskDetails.title = (!!updatedTaskDetails.title ? updatedTaskDetails.title : taskDetails.title);
     updatedTaskDetails.deadline = (!!updatedTaskDetails.deadline ? updatedTaskDetails.deadline : taskDetails.deadline);
     updatedTaskDetails.description = (!!updatedTaskDetails.description ? updatedTaskDetails.description : taskDetails.description);
@@ -92,10 +92,12 @@ const TaskPage = () => {
     
 
     try {
-      // No previous assignee and no member was selected to be assignee
+      // No previous assignee and no member was selected to be assignee (might be wrong)
       if (selectedMember.id === -1 && taskDetails.profileAssignee === null) await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       else await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      // window.location.reload();
+
+      // Can comment out to stop refreshing
+      window.location.reload();
     } catch (err: any) {
       console.log(err);
     }
@@ -105,15 +107,13 @@ const TaskPage = () => {
     setSelectedMember(findSelectedMember(profileId, possibleAssignees));
   }
 
-  const updateStatus = (status_num: number) => {
-    console.log(status_num)
-    setUpdatedTaskDetails({...updatedTaskDetails, status: status_num});
+  // Not working 
+  const updateStatus = (status: number) => {
+    console.log(status)
+    // status isnt updating (plan was to update useState then call updateTask)
+    setUpdatedTaskDetails({...updatedTaskDetails, status: status});
     updateTask();
   }
-
-  // useEffect(() => {
-  //   updateTask();
-  // }, [status])
 
   return(
     <>
