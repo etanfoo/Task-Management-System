@@ -1,7 +1,7 @@
 import { InputLabel, MenuItem, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getTask } from "../../api/task";
+import { getTask, putTask } from "../../api/task";
 import Footer from "../../components/Footer/Footer";
 import FriendsList from "../../components/FriendsList/FriendsList";
 import Header from "../../components/Header/Header";
@@ -27,6 +27,7 @@ const TaskPage = () => {
   const [taskDetails, setTaskDetails] = useState<ITask>(EmptyTaskView);
   // Make sure empty fields can be detected (for user that didnt input)
   const [updatedTaskDetails, setUpdatedTaskDetails] = useState<ITasktDetails>(EmptyTaskEdit);
+
   const [isMember, setIsMember] = useState<boolean>(false);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,20 +35,23 @@ const TaskPage = () => {
   const [selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
   const [isDelete, setIsDelete] = useState<boolean>(false); 
 
+  // CHange to deadline?
   const [value, setValue] = useState<Dayjs | null>(null);
 
   const handleChange = (newValue: Dayjs | null) => {
     setValue(newValue);
-    if (newValue !== null) setUpdatedTaskDetails({ ...taskDetails, deadline: newValue.format('YYYY-MM-DD') });
+    if (newValue !== null) setUpdatedTaskDetails({ ...updatedTaskDetails, deadline: newValue.format('YYYY-MM-DD') });
   };
 
   const loadTask = async () => {
+    // console.log(projectId, taskId);
     try {
       const resp = await getTask(parseInt(projectId!), parseInt(taskId!));
       console.log(resp)
       setTaskDetails(resp);
       setPossibleAssignees(resp.project.profiles);
       setSelectedMember(resp.profileAssignee);
+      setUpdatedTaskDetails({ ...updatedTaskDetails, points: resp.points})
       const profileId = parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
       if (resp.profileAssignee.id === profileId || resp.profileAuthor.id === profileId) setIsMember(true);
       setIsLoading(false);
@@ -66,6 +70,16 @@ const TaskPage = () => {
     setUpdatedTaskDetails(EmptyTaskEdit);
   }
   // Display project as well
+
+  const updateTask = async () => {
+    try {
+      await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id);
+      window.location.reload();
+    } catch (err: any) {
+      console.log(err);
+    }
+  }
+
   return(
     <>
     {
@@ -105,10 +119,12 @@ const TaskPage = () => {
                     <TextField 
                       placeholder={taskDetails.title}
                       sx={{ width: "40%" }}
+                      onChange={(e) => setUpdatedTaskDetails({ ...updatedTaskDetails, title: e.target.value})}
                     />
                     <h3>Points:</h3>
+                    {/* Value not saving */}
                     <StyledSlider
-                      defaultValue={taskDetails.points}
+                      defaultValue={updatedTaskDetails.points}
                       valueLabelDisplay="auto"
                       step={1}
                       marks
@@ -120,7 +136,7 @@ const TaskPage = () => {
                     />
                     <IconContainerEdit>
                       <CancelButton variant='contained' onClick={cancelEditTask} >Cancel</CancelButton>
-                      <UpdateButton variant='contained'>Update</UpdateButton>
+                      <UpdateButton variant='contained' onClick={updateTask}>Update</UpdateButton>
                     </IconContainerEdit>
                   </TitleContainerEdit>
                   <DeadlineContainer>
@@ -194,6 +210,7 @@ const TaskPage = () => {
                   <StyledSelect
                     defaultValue="1"
                     value={selectedMember.id < 1 ? "" : selectedMember.id.toString()}
+                    // MAKE NEW FUNCITNO??
                     // onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}
                     sx={{ width: "30%" }}
                     // size='small'
@@ -228,8 +245,9 @@ const TaskPage = () => {
                     sx={{ width: "100%" }}
                     multiline
                     rows={6}
+                    onChange={(e) => setUpdatedTaskDetails({ ...updatedTaskDetails, description: e.target.value})}
                   />
-              }
+              } 
             </DescriptionContainer>
           </TaskContainer>
           {/* </StyledForm> */}

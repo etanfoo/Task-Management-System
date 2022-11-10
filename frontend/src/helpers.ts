@@ -40,3 +40,7 @@ export const search = (profiles: IProfile[], searchMember: string) => {
 export const formatDate = (date: string) => {
   return date.split("-").reverse().join("/"); 
 }
+
+export const findSelectedMember = (profileId: number, profiles: IProfile[]) => {
+  return profiles.filter((user: IProfile) => user.id === profileId)[0];
+}

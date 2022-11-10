@@ -6,10 +6,10 @@ import { EmptyProjectView } from "./projects";
 export const EmptyTaskEdit: ITasktDetails = {
   title: "",
   description: "",
-  points: 1, 
-  status: 0,
+  points: -1, 
+  status: -1,
   deadline: "",
-  // profileAssignee: EmptyProfile,
+  profileAssignee: -1,
   // profileAuthor: EmptyProfile,
 };
 
