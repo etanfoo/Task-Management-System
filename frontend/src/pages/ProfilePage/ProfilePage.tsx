@@ -24,6 +24,11 @@ import DiamondIcon from "../../assets/diamond.png";
 
 
 const ProfilePage = () => {
+  const BRONZE_POINTS = 100;
+  const SILVER_POINTS = 200;
+  const GOLD_POINTS = 300;
+  const DIAMOND_POINTS = 400;
+
   const { profileId } = useParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -87,13 +92,13 @@ const ProfilePage = () => {
   };
 
   const getBorderColor = () => {
-    if (profileDetails.points < 100) {
+    if (profileDetails.points < BRONZE_POINTS) {
       return undefined;
-    } else if (profileDetails.points < 200) {
+    } else if (profileDetails.points < SILVER_POINTS) {
       return Palette.bronze;
-    } else if (profileDetails.points < 300) {
+    } else if (profileDetails.points < GOLD_POINTS) {
       return Palette.gray;
-    } else if (profileDetails.points < 400) {
+    } else if (profileDetails.points < DIAMOND_POINTS) {
       return Palette.gold;
     } else {
       return Palette.diamond; 
@@ -101,13 +106,13 @@ const ProfilePage = () => {
   };
 
   const getTierBadge = () => {
-    if (profileDetails.points < 100) {
+    if (profileDetails.points < BRONZE_POINTS) {
       return undefined;
-    } else if (profileDetails.points < 200) {
+    } else if (profileDetails.points < SILVER_POINTS) {
       return BronzeIcon;
-    } else if (profileDetails.points < 300) {
+    } else if (profileDetails.points < GOLD_POINTS) {
       return SilverIcon;
-    } else if (profileDetails.points < 400) {
+    } else if (profileDetails.points < DIAMOND_POINTS) {
       return GoldIcon;
     } else {
       return DiamondIcon; 
