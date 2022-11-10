@@ -50,7 +50,7 @@ public class Profile {
     private String aboutMe;
 
     @Column(name="busyness")
-    private Float busyness;
+    private double busyness;
 
     @JsonIgnore
     @ManyToMany(mappedBy="profiles")
@@ -200,11 +200,11 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
-    public Float getBusyness() {
+    public double getBusyness() {
         return busyness;
     }
 
-    public void setBusyness(Float busyness) {
+    public void setBusyness(double busyness) {
         this.busyness = busyness;
     }
 

@@ -1,6 +1,8 @@
 package com.redlions.backend.service;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -59,6 +61,9 @@ public class TaskServiceImplementation implements TaskService {
         if (profileAssignee != null) {
             Profile assignee = util.checkProfile(profileAssignee);
             task.setProfileAssignee(assignee);
+
+            // Update assignee busyness
+            calculateBusyness(assignee.getId());
         }
         
         // Initialise the task to not started.
@@ -111,7 +116,7 @@ public class TaskServiceImplementation implements TaskService {
                 Long authorId = taskInDb.getProfileAuthor().getId();
     
                 // Only the assignee and the author are able to change the status of the task
-                if (profileId == assigneeId || profileId == authorId) {
+                if (profileId.equals(assigneeId) || profileId.equals(authorId)) {
                     // Get the status from the task in the db
                     Integer prevStatus = taskInDb.getStatus();
                     // Set it to the new status
@@ -129,6 +134,8 @@ public class TaskServiceImplementation implements TaskService {
         if (profileAssignee != null) {
             Profile assignee = util.checkProfile(profileAssignee);
             taskInDb.setProfileAssignee(assignee);
+            // Update assignee busyness
+            calculateBusyness(assignee.getId());
         }
 
         return taskRepo.save(taskInDb);
@@ -185,5 +192,58 @@ public class TaskServiceImplementation implements TaskService {
         project.getTasks().remove(task);
         util.isProfileAuthorOfTask(profileId, taskId);
         taskRepo.delete(task);
+    }
+
+
+    /**
+     * calculates the busyness of the user depending on the properties of each task they are assigned to
+     * @param profileId
+     * @throws ParseException
+     */
+    public void calculateBusyness(Long profileId) {
+        Profile profile = util.checkProfile(profileId);
+        Set<Task> tasks = profile.getAssignedTasks();
+        // Cumulative busyness
+        double busyness = 0f;
+        for (Task task : tasks) {
+            double taskBusyness = 0f;
+            // Only tasks that are in progress or not started contribute to busyness
+            if(task.getStatus() == TASK_IN_PROGRESS || task.getStatus() == TASK_NOT_STARTED) {
+                Date currDate = new Date();
+                // Time difference between the current date and the deadline of the task in hours
+                long diff = (currDate.getTime() - task.getDeadline().getTime() / (1000 * 60 * 60)) % 24;
+                
+                // If the difference is less that 24 hours, it is worth more towards busyness
+                if (diff < 24) {
+                    taskBusyness += 10f;
+                } else if (diff < 48) {
+                    taskBusyness += 5f;
+                } else {
+                    taskBusyness += 2f;
+                }
+
+                // A task in progress is worth less towards busyness than one that isn't started
+                if(task.getStatus() == TASK_NOT_STARTED) {
+                    taskBusyness += 5f;
+                } else if (task.getStatus() == TASK_IN_PROGRESS) {
+                    taskBusyness += 2f;
+                }
+
+                Integer points = task.getPoints();
+                // The more points a task is worth the more it is worth towards busyness
+                if (points < 4) {
+                    taskBusyness += 2f;
+                } else if (points >= 4 && points < 7) {
+                    taskBusyness += 5f;
+                } else if (points >= 7 && points <= 10) {
+                    taskBusyness += 10f;
+                }
+
+
+
+            }
+            busyness += taskBusyness;
+        }
+        profile.setBusyness(busyness);
     }
 }

@@ -83,7 +83,7 @@ public class Util {
         Set<Profile> profiles = projectInDb.getProfiles();
         boolean found = false;
         for (Profile p: profiles) {
-            if (p.getId() == profileId) {
+            if (p.getId().equals(profileId)) {
                 found = true;
             }
         }
@@ -104,7 +104,7 @@ public class Util {
         Set<Task> tasks = project.getTasks();
         boolean found = false;
         for (Task t: tasks) {
-            if (t.getId() == taskId) {
+            if (t.getId().equals(taskId)) {
                 found = true;
             }
         }
