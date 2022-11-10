@@ -111,7 +111,7 @@ public class TaskServiceImplementation implements TaskService {
                 Long authorId = taskInDb.getProfileAuthor().getId();
     
                 // Only the assignee and the author are able to change the status of the task
-                if (profileId == assigneeId || profileId == authorId) {
+                if (profileId.equals(assigneeId) || profileId.equals(authorId)) {
                     // Get the status from the task in the db
                     Integer prevStatus = taskInDb.getStatus();
                     // Set it to the new status
