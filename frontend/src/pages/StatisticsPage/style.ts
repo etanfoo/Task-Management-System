@@ -17,12 +17,13 @@ export const SectionContainer = styled('div')`
   margin-bottom: 1rem;
   > h2 {
     font-weight: normal;
+    font-size: 2rem;
   }
 `; 
 
 export const GraphWrapper = styled('div')`
+  margin-top: 1.5rem;
   align-self: center;
   position: relative;
-  height: 20rem;
-  width: 20rem;
+  width: 30rem;
 `;
