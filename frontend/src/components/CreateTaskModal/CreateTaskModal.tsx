@@ -41,7 +41,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
 
   const createTask = async () => {
     // todo: Check deadline is past today
-    console.log(taskDetails)
+    // console.log(taskDetails)
     let resp;
     if (selectedMember.id === -1) resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), null);
     else resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), selectedMember.id);
@@ -76,6 +76,10 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
   const findSelectMember = (profileId: number) => {
     setSelectedMember(selectedProject.profiles.filter((user: IProfile) => user.id === profileId)[0]);
   }
+
+  // const changeMember = (profileId: number) => {
+  //   setSelectedMember(findSelectedMember(profileId, selectedProject.profiles));
+  // }
 
 
   return(

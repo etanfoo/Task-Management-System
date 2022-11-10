@@ -1,4 +1,4 @@
-import { IProfile } from "./api-response";
+// import { IProfile } from "./api-response";
 
 export interface ITasktDetails {
   title: string;
@@ -6,6 +6,6 @@ export interface ITasktDetails {
   deadline: string;
   points: number;
   status: number;
-  // profileAssignee: number;
+  profileAssignee: number;
   // profileAuthor: IProfile;
 };

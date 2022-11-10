@@ -23,14 +23,9 @@ const DashboardPage = () => {
 
   const [taskSortType, setTaskSortType] = useState<string>("ID");
   const [projectSortType, setProjectSortType] = useState<string>("Name");
-
   const [allProjects, setAllProjects] = useState<IProject[]>([]);
-
-  // todo: currently disabling until tasks epic is complete
-
-  const [allTasks, setAllTasks] = useState<ITask[]>([]);
-
   const [shownProjects, setShownProjects] = useState<IProject[]>([]);
+  const [allTasks, setAllTasks] = useState<ITask[]>([]);
   const [shownTasks, setShownTasks] = useState<ITask[]>([]);
 
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);

@@ -60,6 +60,7 @@ const ProjectPage = () => {
     try {
       const resp = await getProjectTasks(parseInt(projectId!));
       setAllTasks(resp);
+      console.log(resp)
       setShownTasks(resp);
     } catch(err: any) {
       console.log(err);
