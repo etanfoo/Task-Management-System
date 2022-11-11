@@ -13,7 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getProjectStatistics } from "../../api/project";
 import { useParams } from "react-router-dom";
 
@@ -29,7 +29,10 @@ ChartJS.register(
 
 const StatisticsPage = () => {
   const { projectId } = useParams();
-  // const [projectData, setProjectData] = useState({});
+  const [happinessData, setHappinessData] = useState<number[]>([]);
+  const [busynessData, setBusynessData] = useState<number[]>([]);
+  const [taskStatusData, setTaskStatusData] = useState<number[]>([]);
+  
   // const [isLoading, setIsLoading] = useState(true);
   const CHART_BACKGROUND_RED = "rgb(255, 99, 132, 0.2)";
   const CHART_BACKGROUND_YELLOW = "rgb(255, 205, 86, 0.2)";
@@ -54,14 +57,15 @@ const StatisticsPage = () => {
     },
   };
 
-  const happinessTrackerData = {
-    labels: ['Stressed', 'Worried', 'Neutral', 'Comfortable', 'Happy'],
+  const happinessGraphData = {
+    labels: ['N/A', 'Stressed', 'Worried', 'Neutral', 'Comfortable', 'Happy'],
     datasets: [
       {
         // todo: replace mock with api data
-        data: [12, 19, 3, 2, 3],
+        data: happinessData,
         backgroundColor: [
           CHART_BACKGROUND_RED,
+          CHART_BACKGROUND_ORANGE,
           CHART_BACKGROUND_BLUE,
           CHART_BACKGROUND_YELLOW,
           CHART_BACKGROUND_GREEN,
@@ -69,6 +73,7 @@ const StatisticsPage = () => {
         ],
         borderColor: [
           CHART_BORDER_RED,
+          CHART_BORDER_ORANGE,
           CHART_BORDER_BLUE,
           CHART_BORDER_YELLOW,
           CHART_BORDER_GREEN,
@@ -79,13 +84,11 @@ const StatisticsPage = () => {
     ],
   };
 
-  const busynessData = {
+  const busynessGraphData = {
     labels: ["0-19", "20-39", "40-59", "60-79", "80-99+"],
     datasets: [
       {
-        label: "Happiness",
-        // todo: replace mock data with api data
-        data: [12, 2, 6, 10, 7],
+        data: busynessData,
         backgroundColor: [
           CHART_BACKGROUND_YELLOW,
           CHART_BACKGROUND_ORANGE,
@@ -105,11 +108,11 @@ const StatisticsPage = () => {
     ],
   };
 
-  const taskStatusData = {
+  const taskStatusGraphData = {
     labels: ['Not started', 'In progress', 'Completed', 'Blocked'],
     datasets: [
       {
-        data: [12, 20, 45, 2],
+        data: taskStatusData,
         backgroundColor: [
           CHART_BACKGROUND_YELLOW,
           CHART_BACKGROUND_BLUE,
@@ -130,7 +133,9 @@ const StatisticsPage = () => {
   const fetchProjectStatistics = async () => {
     try {
       const stats = await getProjectStatistics(projectId!);
-      console.log(stats);
+      setHappinessData(Object.values(stats.happiness));
+      setBusynessData(Object.values(stats.busyness));
+      setTaskStatusData(Object.values(stats.tasks));
     } catch (err: any) {
       // todo: error handling
       console.log(err);
@@ -150,14 +155,14 @@ const StatisticsPage = () => {
         <h2>Happiness tracker</h2>
         <Divider />
         <GraphWrapper>
-          <Pie data={happinessTrackerData} />  
+          <Pie data={happinessGraphData} />  
         </GraphWrapper>
       </SectionContainer>
       <SectionContainer>
         <h2>Collective busyness</h2>
         <Divider />
           <GraphWrapper>
-            <Bar options={options} data={busynessData} />
+            <Bar options={options} data={busynessGraphData} />
           </GraphWrapper>
       </SectionContainer>
       <SectionContainer>
@@ -166,7 +171,7 @@ const StatisticsPage = () => {
         <GraphWrapper>
           <Bar
             options={{...options, indexAxis: 'y' as const}}
-            data={taskStatusData}
+            data={taskStatusGraphData}
           />
         </GraphWrapper>
       </SectionContainer>
