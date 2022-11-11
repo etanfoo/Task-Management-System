@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -146,5 +147,17 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.OK)
     public Set<Task> getProjectTasks(@PathVariable Long id) {
         return projectService.getProjectTasks(id);
+    }
+
+    /**
+     * get mapping to return statistics for a given project
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/{id}/statistics")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> getProjectStatistics(@PathVariable Long id) {
+        Object response = projectService.getProjectStatistics(id);
+        return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 }
