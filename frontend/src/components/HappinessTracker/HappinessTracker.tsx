@@ -21,10 +21,15 @@ import { putProfileHappiness } from "../../api/profile";
 export type HappinessValue = null | 0 | 1 | 2 | 3 | 4;
 
 const HappinessTracker = () => {
-  const [showHappinessTracker, setShowHappinessTracker] = useState(true);
+  const [showHappinessTracker, setShowIsHappinessTracker] = useState(
+    sessionStorage.getItem("showHappinessTracker")! === "true" ? true : false
+  );
 
   const handleClick = async (event: any) => {
     const happinessValue = event.target.id;
+
+    sessionStorage.setItem("showHappinessTracker", "false");
+    setShowIsHappinessTracker(false);
 
     const currentLoggedInProfileId = parseInt(
       sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
@@ -34,7 +39,6 @@ const HappinessTracker = () => {
     } catch (err: any) {
       console.log(err);
     }
-    setShowHappinessTracker(false);
   };
 
   return (
@@ -77,11 +81,7 @@ const HappinessTracker = () => {
             <h3>How are you feeling?</h3>
           </BottomContainer>
         </HappinessTrackerContainer>
-      ) : (
-        <BottomContainer>
-          <h3>Thank you.</h3>
-        </BottomContainer>
-      )}
+      ) : null}
     </>
   );
 };
