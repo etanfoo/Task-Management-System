@@ -14,17 +14,60 @@ export const ProfilePageContainer = styled('div')`
   text-align: center;
 `;
 
-export const TopContainer = styled('div')`
+type TopContainerProps = {
+  borderColor?: string;
+};
+
+export const TopContainer = styled('div')<TopContainerProps>`
   display: flex;
   flex-direction: row;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 1rem 0.5rem 1rem 0.25rem;
   width: 80%;
   align-items: center;
   margin-bottom: 2rem;
+  overflow: hidden;
+  position: relative;
+
+  // if borderColor is provided show border animation
+  ${(props: TopContainerProps) => (props.borderColor) && `
+    &:before {
+      content: "";
+      background-image: conic-gradient(
+        ${props.borderColor} 100deg, transparent 120deg
+      );
+      z-index: -2;
+      left: -25%;
+      width: 150%;
+      height: 100%;
+      position: absolute;
+      animation: rotate 5s linear infinite;
+    }
+
+    &:after {
+      position: absolute;
+      width: 99.25%;
+      height: 95%;
+      border-radius: 0.5rem;
+      background: white;
+      z-index: -1;
+      content: "";
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  `}
 
   > img {
+    margin-left: 1rem;
     width: 6.25rem;
     height: 6.25rem;
     margin-right: 1rem;
@@ -33,6 +76,7 @@ export const TopContainer = styled('div')`
 `;
 
 export const StyledAvatar = styled(Avatar)`
+  margin-left: 1rem;
   margin-right: 1rem;
   background-color: ${Palette.mainTeal};
   height: 6.25rem;
@@ -41,6 +85,7 @@ export const StyledAvatar = styled(Avatar)`
 `;
   
   export const EmptyAvatar = styled(Avatar)`
+  margin-left: 1rem;
   height: 6.25rem;
   width: 6.25rem;
   margin-right: 1rem;
@@ -70,14 +115,26 @@ export const DetailsContainer = styled('div')`
   display: flex;
   flex-direction: column;
   text-align: left;
-  > h1 {
-    font-weight: normal;
-    margin-bottom: 0;
-  };
-
+  
   > p {
     margin-top: 0.5rem;
     color: ${Palette.thGray};
+  };
+`;
+  
+export const BadgeContainer = styled('div')`
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+
+  > h1 {
+    font-weight: normal;
+  };
+
+  > img {
+    width: 3rem;
+    height: 3rem;
+    margin-left: 0.5rem;
   };
 `;
 

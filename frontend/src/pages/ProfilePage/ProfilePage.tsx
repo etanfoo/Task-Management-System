@@ -1,4 +1,4 @@
-import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle } from "./style";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle, BadgeContainer } from "./style";
 import { useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -16,8 +16,19 @@ import { MockTasks } from "../../constants/tasks";
 import { toBase64, getInitials } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
 import { getConnections } from "../../api/connect";
+import { Palette } from "../../components/Palette";
+import BronzeIcon from "../../assets/bronze.png";
+import SilverIcon from "../../assets/silver.png";
+import GoldIcon from "../../assets/gold.png";
+import DiamondIcon from "../../assets/diamond.png";
+
 
 const ProfilePage = () => {
+  const BRONZE_POINTS = 100;
+  const SILVER_POINTS = 200;
+  const GOLD_POINTS = 300;
+  const DIAMOND_POINTS = 400;
+
   const { profileId } = useParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -78,7 +89,35 @@ const ProfilePage = () => {
       console.log(err);
       setIsLoading(false);
     }
-  }
+  };
+
+  const getBorderColor = () => {
+    if (profileDetails.points < BRONZE_POINTS) {
+      return undefined;
+    } else if (profileDetails.points < SILVER_POINTS) {
+      return Palette.bronze;
+    } else if (profileDetails.points < GOLD_POINTS) {
+      return Palette.gray;
+    } else if (profileDetails.points < DIAMOND_POINTS) {
+      return Palette.gold;
+    } else {
+      return Palette.diamond; 
+    }
+  };
+
+  const getTierBadge = () => {
+    if (profileDetails.points < BRONZE_POINTS) {
+      return undefined;
+    } else if (profileDetails.points < SILVER_POINTS) {
+      return BronzeIcon;
+    } else if (profileDetails.points < GOLD_POINTS) {
+      return SilverIcon;
+    } else if (profileDetails.points < DIAMOND_POINTS) {
+      return GoldIcon;
+    } else {
+      return DiamondIcon; 
+    }
+  };
 
   useEffect(() => {
     loadProfile();
@@ -93,7 +132,7 @@ const ProfilePage = () => {
         : (
             <ProfilePageContainer>
               <Header />
-              <TopContainer>
+              <TopContainer borderColor={getBorderColor()}>
                 {pageState === 'view'
                   ? (
                     profileDetails.profilePicture
@@ -125,7 +164,14 @@ const ProfilePage = () => {
                 <DetailsContainer>
                   {pageState === 'view'
                     ? (
-                      <h1>{`${profileDetails?.name} (Busyness - 20%)`}</h1>
+                      <BadgeContainer>
+                        <h1>{`${profileDetails?.name}`}</h1>
+                        {
+                          profileDetails.points >= 100 ? (
+                            <img src={getTierBadge()} alt="badge" />
+                          ) : null
+                        }
+                      </BadgeContainer>
                     ) : (
                         <TextField
                           placeholder={profileDetails.name}

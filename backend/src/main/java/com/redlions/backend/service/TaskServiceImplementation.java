@@ -26,11 +26,6 @@ public class TaskServiceImplementation implements TaskService {
     private final Util util;
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
     
-    private final Integer TASK_NOT_STARTED = 0;
-    private final Integer TASK_IN_PROGRESS = 1;
-    private final Integer TASK_COMPLETE = 2;
-    private final Integer TASK_BLOCKED = 3;
-
     /**
      * creates a task and save it to database
      * throws error if task does not contain a title, points or description is too long
@@ -65,7 +60,7 @@ public class TaskServiceImplementation implements TaskService {
         }        
         
         // Initialise the task to not started.
-        task.setStatus(TASK_NOT_STARTED);
+        task.setStatus(util.TASK_NOT_STARTED);
         task.setProject(project);
         
         return taskRepo.save(task);
@@ -148,12 +143,12 @@ public class TaskServiceImplementation implements TaskService {
         Integer currPoints = profileAssignee.getPoints();
         // When the task is complete we add the points to the profile, need to make sure that the 
         // task was not already complete.
-        if (status == TASK_COMPLETE && prevStatus != TASK_COMPLETE) {
+        if (status == util.TASK_COMPLETE && prevStatus != util.TASK_COMPLETE) {
             profileAssignee.setPoints(currPoints + points);
         }
         
         // If the task is moved from complete to in progress or not started we remove the points from the profile
-        if (prevStatus == TASK_COMPLETE && status != TASK_COMPLETE) {
+        if (prevStatus == util.TASK_COMPLETE && status != util.TASK_COMPLETE) {
             // Set the points to 0 if they're going to go into the negative (somehow)
             if (currPoints < points) {
                 profileAssignee.setPoints(0);

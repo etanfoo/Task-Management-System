@@ -9,5 +9,8 @@ export const Palette = {
   successGreen: "#00875A",
   progressBlue: "#0747A6",
   errorRed: "#f44336",
-  offGray: "#dee2e6"
+  offGray: "#dee2e6",
+  diamond: "#009C89",
+  gold: "#FFD700",
+  bronze: "#CD7F32",
 };

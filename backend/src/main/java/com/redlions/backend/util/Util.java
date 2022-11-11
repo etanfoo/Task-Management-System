@@ -26,6 +26,12 @@ public class Util {
     public final Integer TASK_IN_PROGRESS = 1;
     public final Integer TASK_COMPLETE = 2;
     public final Integer TASK_BLOCKED = 3;
+    public final Integer NO_FACE_PROVIDED = -1;
+    public final int STRESSED_FACE = 0;
+    public final int WORRIED_FACE = 1;
+    public final int NEUTRAL_FACE = 2;
+    public final int COMFORTABLE_FACE = 3;
+    public final int HAPPY_FACE = 4;
 
     /**
      * checks if profile with corresponding id exists
