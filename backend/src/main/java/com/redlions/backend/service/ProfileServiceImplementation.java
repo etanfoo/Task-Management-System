@@ -2,7 +2,6 @@ package com.redlions.backend.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -169,7 +168,8 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             String errorMessage = String.format("User with id %d does not exist.", id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-        updateBusyness(profile);
+        // updating busyness before we retrieve profile info
+        util.updateBusyness(profile);
         return profile;
     }
 
@@ -414,56 +414,5 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         Profile profile = util.checkProfile(id);
         Set<Profile> profileSet = profile.getRequestedConnections();
         return profileSet.stream().collect(Collectors.toList());
-    }
-
-    /**
-     * calculates the busyness of the user depending on the properties of each task they are assigned to
-     * @param profile
-     */
-    private void updateBusyness(Profile profile) {
-        Set<Task> tasks = profile.getAssignedTasks();
-        // Cumulative busyness
-        double busyness = 0f;
-        for (Task task : tasks) {
-            double taskBusyness = 0f;
-            // Only tasks that are in progress or not started contribute to busyness
-            if(task.getStatus() == util.TASK_IN_PROGRESS || task.getStatus() == util.TASK_NOT_STARTED) {
-                if(task.getDeadline() != null) {
-                    
-                   Date currDate = new Date();
-                    // Time difference between the current date and the deadline of the task in hours
-                    long diff = (currDate.getTime() - task.getDeadline().getTime() / (1000 * 60 * 60)) % 24;
-                    
-                    // If the difference is less that 24 hours, it is worth more towards busyness
-                    if (diff < 24) {
-                        taskBusyness += 10f;
-                    } else if (diff < 48) {
-                        taskBusyness += 5f;
-                    } else {
-                        taskBusyness += 2f;
-                    } 
-                }
-                
-                // A task in progress is worth less towards busyness than one that isn't started
-                if(task.getStatus() == util.TASK_NOT_STARTED) {
-                    taskBusyness += 5f;
-                } else if (task.getStatus() == util.TASK_IN_PROGRESS) {
-                    taskBusyness += 2f;
-                }
-
-                Integer points = task.getPoints();
-                // The more points a task is worth the more it is worth towards busyness
-                if (points < 4) {
-                    taskBusyness += 2f;
-                } else if (points >= 4 && points < 7) {
-                    taskBusyness += 5f;
-                } else if (points >= 7 && points <= 10) {
-                    taskBusyness += 10f;
-                }
-
-            }
-            busyness += taskBusyness;
-        }
-        profile.setBusyness(busyness);
     }
 }

@@ -76,6 +76,7 @@ public class TaskServiceImplementation implements TaskService {
         util.isProfileInProject(profileId, projectId, projectInDb);
         Task taskInDb = util.checkTask(taskId);
         util.isTaskInProject(projectId, taskId);
+
         // checking if task is passed in case only updating profile and not passing in task
         if (task != null) {
             String title = task.getTitle();

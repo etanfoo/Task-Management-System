@@ -200,6 +200,8 @@ public class ProjectServiceImplementation implements ProjectService {
 
         // tallying up profile happiness and busyness
         for (Profile profile: project.getProfiles()) {
+            // updating busyness before retrieving it
+            util.updateBusyness(profile);
             Integer happinessLevel = profile.getHappiness();
             double busynessLevel = profile.getBusyness();
 
