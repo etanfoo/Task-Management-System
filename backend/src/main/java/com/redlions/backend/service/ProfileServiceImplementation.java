@@ -97,9 +97,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         log.info("Saving new profile {} to database", email);
         // encrypting password to not save plain text in db
         profile.setPassword(passwordEncoder.encode(password));
-        
-        // Set inital points to 0 instead of NULL
-        profile.setPoints(0);
+
         return profileRepo.save(profile);
     }
 
