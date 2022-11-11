@@ -137,7 +137,11 @@ const DashboardPage = () => {
             ? (
               <>
                 <h2>Your friends</h2>
-                <FriendsContainer>
+                <FriendsContainer
+                  style={{
+                    height: sessionStorage.getItem("showHappinessTracker")! === "true" ? '' : '85%'
+                  }}
+                >
                   {connections.map((connection) => (
                     <FriendsCard
                       key={connection.id}
@@ -151,7 +155,12 @@ const DashboardPage = () => {
                     />
                   ))}
                 </FriendsContainer>
-                <Divider sx={{ margin: '1rem 0' }} />
+                {
+                  sessionStorage.getItem("showHappinessTracker")! === "true"
+                    ? (
+                      <Divider sx={{ margin: '1rem 0' }} />
+                    ) : null
+                }
               </>
             ) : null
           }
