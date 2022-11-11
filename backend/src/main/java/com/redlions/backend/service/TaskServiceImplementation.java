@@ -187,13 +187,15 @@ public class TaskServiceImplementation implements TaskService {
         project.getTasks().remove(task);
         util.isProfileAuthorOfTask(profileId, taskId);
         taskRepo.delete(task);
+
+        // Recalculate busyness after the task has been deleted
+        calculateBusyness(task.getProfileAssignee().getId());
     }
 
 
     /**
      * calculates the busyness of the user depending on the properties of each task they are assigned to
      * @param profileId
-     * @throws ParseException
      */
     public void calculateBusyness(Long profileId) {
         Profile profile = util.checkProfile(profileId);
@@ -233,8 +235,6 @@ public class TaskServiceImplementation implements TaskService {
                 } else if (points >= 7 && points <= 10) {
                     taskBusyness += 10f;
                 }
-
-
 
             }
             busyness += taskBusyness;
