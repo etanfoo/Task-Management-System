@@ -37,7 +37,7 @@ public class Profile {
     private String password;
 
     @Column(name="points")
-    private Integer points;
+    private Integer points = 0;
 
     @Column(name="happiness")
     private Integer happiness;
@@ -50,7 +50,7 @@ public class Profile {
     private String aboutMe;
 
     @Column(name="busyness")
-    private Double busyness;
+    private Double busyness = 0.0;
 
     @JsonIgnore
     @ManyToMany(mappedBy="profiles")

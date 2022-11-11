@@ -90,7 +90,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         log.info("Saving new profile {} to database", email);
         // encrypting password to not save plain text in db
         profile.setPassword(passwordEncoder.encode(password));
-        profile.setBusyness(0.0);
+        
         return profileRepo.save(profile);
     }
 
@@ -168,6 +168,8 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             String errorMessage = String.format("User with id %d does not exist.", id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
+        // updating busyness before we retrieve profile info
+        util.updateBusyness(profile);
         return profile;
     }
 
