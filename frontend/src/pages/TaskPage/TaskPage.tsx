@@ -35,6 +35,7 @@ const TaskPage = () => {
   const [selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
   const [isDelete, setIsDelete] = useState<boolean>(false); 
   const [status, setStatus] = useState<number>(0);
+  const [points, setPoints] = useState<number>(0);
   // CHange to deadline?
   const [value, setValue] = useState<Dayjs | null>(null);
 
@@ -51,9 +52,15 @@ const TaskPage = () => {
       setTaskDetails(resp);
       setPossibleAssignees(resp.project.profiles);
       setSelectedMember(resp.profileAssignee);
-      setUpdatedTaskDetails({ ...updatedTaskDetails, points: resp.points})
-      setUpdatedTaskDetails({ ...updatedTaskDetails, status: resp.status})
+      console.log(resp.points)
+      //These not working
+      setUpdatedTaskDetails({...updatedTaskDetails, points: resp.points})
+      setUpdatedTaskDetails({...updatedTaskDetails, status: resp.status})
       setStatus(resp.status);
+      setPoints(resp.points);
+      // setValue(resp.deadline);
+
+      console.log(updatedTaskDetails);
       const profileId = parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
 
       if (resp.profileAuthor.id === profileId || resp.profileAssignee.id === profileId) setIsMember(true);
@@ -72,6 +79,8 @@ const TaskPage = () => {
   const cancelEditTask = () => {
     setPageState("view");
     setUpdatedTaskDetails(EmptyTaskEdit);
+    setTaskDetails({...taskDetails, points: points});
+    setTaskDetails({...taskDetails, status: status});
   }
   // Display project as well
 
@@ -79,7 +88,7 @@ const TaskPage = () => {
     // console.log(updatedTaskDetails)
     // setUpdatedTaskDetails({ ...updatedTaskDetails, status: status})
     // console.log(selectedMember)
-    if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && updatedTaskDetails.status === taskDetails.status && updatedTaskDetails.points === taskDetails.points && (selectedMember === null || taskDetails.profileAssignee  === null || selectedMember.id === taskDetails.profileAssignee.id) && updatedTaskDetails.description === "") {
+    if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && status === taskDetails.status && points === taskDetails.points && (selectedMember === null || taskDetails.profileAssignee  === null || selectedMember.id === taskDetails.profileAssignee.id) && updatedTaskDetails.description === "") {
       setPageState("view");
       return;
     } 
@@ -87,15 +96,18 @@ const TaskPage = () => {
     updatedTaskDetails.title = (!!updatedTaskDetails.title ? updatedTaskDetails.title : taskDetails.title);
     updatedTaskDetails.deadline = (!!updatedTaskDetails.deadline ? updatedTaskDetails.deadline : taskDetails.deadline);
     updatedTaskDetails.description = (!!updatedTaskDetails.description ? updatedTaskDetails.description : taskDetails.description);
-    updatedTaskDetails.points = (updatedTaskDetails.points !== -1 ? updatedTaskDetails.points : taskDetails.points);
+    updatedTaskDetails.points = (points !== taskDetails.points  ? taskDetails.points: points);
+    console.log(updatedTaskDetails.status)
+    console.log(taskDetails.status)
+
     updatedTaskDetails.status = (updatedTaskDetails.status !== taskDetails.status ? updatedTaskDetails.status : taskDetails.status);
     
 
     try {
       // No previous assignee and no member was selected to be assignee
-      if (selectedMember.id === -1 && taskDetails.profileAssignee === null) await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      if (selectedMember === null && taskDetails.profileAssignee === null) await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       else await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      // window.location.reload();
+      window.location.reload();
     } catch (err: any) {
       console.log(err);
     }
@@ -108,12 +120,25 @@ const TaskPage = () => {
   const updateStatus = (status_num: number) => {
     console.log(status_num)
     setUpdatedTaskDetails({...updatedTaskDetails, status: status_num});
-    updateTask();
+    if (pageState === "view") {
+      updateTask();
+      alert("test")
+    } 
   }
 
   // useEffect(() => {
   //   updateTask();
   // }, [status])
+
+  /*
+    - UseStates not populated during loadTask
+    - Unable to move task to completed? (403)
+    - Date not showing up in edit mode
+    - Unable to edit progress in view mode
+    - Check when no assignee
+    - Project page links to create task modal
+    - Add error checks for both create and task page
+  */
 
   return(
     <>
@@ -160,15 +185,15 @@ const TaskPage = () => {
                           <h3>Points:</h3>
                           {/* Value not saving */}
                           <StyledSlider
-                            defaultValue={updatedTaskDetails.points}
+                            defaultValue={taskDetails.points}
                             valueLabelDisplay="auto"
                             step={1}
                             marks
                             min={1}
                             max={10}
                             sx={{ width: "25%" }}
-                            value={updatedTaskDetails.points}
-                            onChange={(e, val) => setUpdatedTaskDetails({ ...updatedTaskDetails, points: val as number})}
+                            value={taskDetails.points}
+                            onChange={(e, val) => setTaskDetails({ ...taskDetails, points: val as number})}
                           />
                           <IconContainerEdit>
                             <CancelButton variant='contained' onClick={cancelEditTask} >Cancel</CancelButton>

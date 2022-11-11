@@ -6,7 +6,7 @@ import { EmptyProjectView } from "./projects";
 export const EmptyTaskEdit: ITasktDetails = {
   title: "",
   description: "",
-  points: -1, 
+  points: 1, 
   status: 0,
   deadline: "",
   // profileAssignee: -1,
