@@ -76,7 +76,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
-        if (!isValidHappiness(profile.getHappiness())) {
+        if (profile.getHappiness() != null && !isValidHappiness(profile.getHappiness())) {
             String errorMessage = String.format("\"Happiness\" value must be %d, %d, %d, %d, %d or %d",
                     util.NO_FACE_PROVIDED, util.STRESSED_FACE, util.WORRIED_FACE, util.NEUTRAL_FACE, util.COMFORTABLE_FACE, util.HAPPY_FACE);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IProject } from "../interfaces/api-response";
-import { IProjectDetails } from "../interfaces/project";
+import { IProjectDetails, IProjectStats } from "../interfaces/project";
 
 export const getProjects = async (profileId: number): Promise<IProject[]> => {
   try {
@@ -88,6 +88,19 @@ export const deleteMember = async (projectId: string, profileId: string, deleteM
         profileId,
         "profileIdToRemove": deleteMemberId
       }
+    });
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const getProjectStatistics = async (projectId: string): Promise<IProjectStats> => {
+  try {
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/statistics`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+      }, 
     });
     return data;
   } catch (err: any) {
