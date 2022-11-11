@@ -52,9 +52,9 @@ export const fetchStatusColor = (status: number) => {
   } else if (status === 1) {
     return Palette.progressBlue;
   } else if (status === 2) {
-    return Palette.errorRed;
-  } else if (status === 3) {
     return Palette.successGreen;
+  } else if (status === 3) {
+    return Palette.errorRed;
   } else {
     return 'black';
   }

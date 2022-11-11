@@ -1,6 +1,6 @@
 import { InputLabel, MenuItem, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getTask, putTask } from "../../api/task";
 import Footer from "../../components/Footer/Footer";
 import FriendsList from "../../components/FriendsList/FriendsList";
@@ -10,18 +10,19 @@ import { fetchStatusColor, findSelectedMember, formatDate, getInitials } from ".
 import { IProfile, ITask } from "../../interfaces/api-response";
 // import { ITask } from "../../interfaces/api-response";
 import { ITasktDetails, TaskStatus } from "../../interfaces/task";
-import { BodyContainer, CancelButton, DeadlineContainer, DescriptionContainer, IconContainerEdit, IconContainerView, MainContainer, StyledAvatar, StyledSlider, TaskContainer, TaskMembers, TaskPageContainer, TitleContainerEdit, TitleContainerView, TopContainer, UpdateButton, UserAvatar, UserAvatarEdit, UserCard } from "./style"
+import { BodyContainer, CancelButton, DeadlineContainer, DescriptionContainer, IconContainerEdit, IconContainerView, MainContainer, ProjectLink, StyledAvatar, StyledSlider, TaskContainer, TaskMembers, TaskPageContainer, TitleContainerEdit, TitleContainerView, TopContainer, UpdateButton, UserAvatar, UserAvatarEdit, UserCard } from "./style"
 import EditIcon from "../../assets/edit.png";
 import DeleteIcon from "../../assets/delete.png";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import { EmptyProfile } from "../../constants/profiles";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
 
 const TaskPage = () => {
   const { projectId, taskId } = useParams();
+  const navigate = useNavigate();
   // const { taskId } = useParams();
   // console.log(projectId, taskId)
   const [taskDetails, setTaskDetails] = useState<ITask>(EmptyTaskView);
@@ -38,6 +39,8 @@ const TaskPage = () => {
   const [points, setPoints] = useState<number>(0);
   // CHange to deadline?
   const [value, setValue] = useState<Dayjs | null>(null);
+  const [projectTitle, setProjectTitle] = useState<string>("");
+  const [changedStatus, setChangedStatus] = useState<boolean>(false);
 
   const handleChange = (newValue: Dayjs | null) => {
     setValue(newValue);
@@ -48,19 +51,14 @@ const TaskPage = () => {
     // console.log(projectId, taskId);
     try {
       const resp = await getTask(parseInt(projectId!), parseInt(taskId!));
-      console.log(resp)
       setTaskDetails(resp);
+      console.log(resp)
+      setProjectTitle(resp.project.title);
       setPossibleAssignees(resp.project.profiles);
       setSelectedMember(resp.profileAssignee);
-      console.log(resp.points)
-      //These not working
-      setUpdatedTaskDetails({...updatedTaskDetails, points: resp.points})
-      setUpdatedTaskDetails({...updatedTaskDetails, status: resp.status})
+      setValue(dayjs(resp.deadline));
       setStatus(resp.status);
       setPoints(resp.points);
-      // setValue(resp.deadline);
-
-      console.log(updatedTaskDetails);
       const profileId = parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
 
       if (resp.profileAuthor.id === profileId || resp.profileAssignee.id === profileId) setIsMember(true);
@@ -79,8 +77,8 @@ const TaskPage = () => {
   const cancelEditTask = () => {
     setPageState("view");
     setUpdatedTaskDetails(EmptyTaskEdit);
-    setTaskDetails({...taskDetails, points: points});
-    setTaskDetails({...taskDetails, status: status});
+    // setTaskDetails({...taskDetails, points: points});
+    // setTaskDetails({...taskDetails, status: status});
   }
   // Display project as well
 
@@ -90,21 +88,22 @@ const TaskPage = () => {
     // console.log(selectedMember)
     if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && status === taskDetails.status && points === taskDetails.points && (selectedMember === null || taskDetails.profileAssignee  === null || selectedMember.id === taskDetails.profileAssignee.id) && updatedTaskDetails.description === "") {
       setPageState("view");
+      console.log("WHY RESET")
       return;
     } 
 
-    updatedTaskDetails.title = (!!updatedTaskDetails.title ? updatedTaskDetails.title : taskDetails.title);
+    updatedTaskDetails.title = (updatedTaskDetails.title !== "" ? updatedTaskDetails.title : taskDetails.title);
     updatedTaskDetails.deadline = (!!updatedTaskDetails.deadline ? updatedTaskDetails.deadline : taskDetails.deadline);
     updatedTaskDetails.description = (!!updatedTaskDetails.description ? updatedTaskDetails.description : taskDetails.description);
     updatedTaskDetails.points = (points !== taskDetails.points  ? taskDetails.points: points);
-    console.log(updatedTaskDetails.status)
-    console.log(taskDetails.status)
-
     updatedTaskDetails.status = (updatedTaskDetails.status !== taskDetails.status ? updatedTaskDetails.status : taskDetails.status);
     
 
     try {
       // No previous assignee and no member was selected to be assignee
+      console.log(updatedTaskDetails.title)
+      // alert(updatedTaskDetails)
+      // alert(updatedTaskDetails.title)
       if (selectedMember === null && taskDetails.profileAssignee === null) await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       else await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       window.location.reload();
@@ -118,26 +117,40 @@ const TaskPage = () => {
   }
 
   const updateStatus = (status_num: number) => {
-    console.log(status_num)
+    // console.log(status_num)
     setUpdatedTaskDetails({...updatedTaskDetails, status: status_num});
+    
     if (pageState === "view") {
-      updateTask();
-      alert("test")
+      // setStatus(status_num)
+      setChangedStatus(true);
+      // updateTask();
+      // alert("test")
     } 
   }
 
-  // useEffect(() => {
-  //   updateTask();
-  // }, [status])
+  useEffect(() => {
+    const updateTaskStatus = async () => {
+      if (changedStatus) {
+        updatedTaskDetails.title = taskDetails.title;
+        updatedTaskDetails.points = taskDetails.points;
+        updatedTaskDetails.description = taskDetails.description;
+        updatedTaskDetails.status = status;
+        console.log("ONLY WHEN VIEWING")
+        // alert(updatedTaskDetails.title);
+        await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      }
+    }
+    updateTaskStatus();
+  }, [changedStatus])
 
   /*
-    - UseStates not populated during loadTask
-    - Unable to move task to completed? (403)
-    - Date not showing up in edit mode
-    - Unable to edit progress in view mode
     - Check when no assignee
     - Project page links to create task modal
     - Add error checks for both create and task page
+    - Add colour to project list
+    - Centre Friends list title in task page
+    - Bug with title getting deleted when only changing title
+    - Add project 
   */
 
   return(
@@ -158,7 +171,9 @@ const TaskPage = () => {
                     ? 
                       <>
                         <TitleContainerView>
-                          <h1>{taskDetails.title} [{taskDetails.points}]</h1>
+                        <ProjectLink onClick={() => navigate(`/project/${projectId}`)}>{projectTitle}</ProjectLink>
+                        <h1>&nbsp;| {taskDetails.title} [{taskDetails.points} points]</h1>
+                        
                           {
                               isMember
                             ?
@@ -172,6 +187,7 @@ const TaskPage = () => {
                               null
                           }
                         </TitleContainerView>
+                        
                         <h3>Deadline: {taskDetails.deadline ? formatDate(taskDetails.deadline) : "No current deadline"}</h3>
                       </>
                     :
@@ -213,7 +229,6 @@ const TaskPage = () => {
                         </DeadlineContainer>
                       </TopContainer>
                   }
-                
                 {/* Look at project */}
                 
                 {/* <StyledForm> */}
@@ -223,27 +238,51 @@ const TaskPage = () => {
                     ?
                       <Select
                         // label="Your tasks"
-                        defaultValue="0"
-                        value={updatedTaskDetails.status.toString()}
-                        // value={status.toString()}
-                        // Have own useState? maybe one for edit (view uses useEffect?)
-                        onChange={(e: SelectChangeEvent) => 
-                          updateStatus(parseInt(e.target.value))
-                          // setStatus(parseInt(e.target.value))
-                        }
+                        // defaultValue="0"
+                        value={pageState === 'view' ? status.toString() : updatedTaskDetails.status.toString()}
+                        onChange={(e: SelectChangeEvent) => updateStatus(parseInt(e.target.value))}
                         sx={{ width: "16.06vw" }}
                         style={{ height: 50 }}
                       >
-                        <MenuItem value={"0"} key={"0"}>Not Started</MenuItem>
-                        <MenuItem value={"1"} key={"1"}>In Progress</MenuItem>
-                        <MenuItem value={"2"} key={"2"}>Completed</MenuItem>
-                        <MenuItem value={"3"} key={"3"}>Blocked</MenuItem>
+                        <MenuItem value={"0"} key={"0"}>
+                          <p
+                            style={{ backgroundColor: fetchStatusColor(0), color: "white", borderRadius: "1rem", textAlign: "center", width: "13vw"}}
+                          >
+                            Not Started
+                          </p>
+                        </MenuItem>
+                        <MenuItem value={"1"} key={"1"}>
+                          <p
+                            style={{ backgroundColor: fetchStatusColor(1), color: "white", borderRadius: "1rem", textAlign: "center", width: "13vw"}}
+                          >
+                            In Progress
+                          </p>
+                        </MenuItem>
+                        <MenuItem value={"2"} key={"2"}>
+                          <p
+                            style={{ backgroundColor: fetchStatusColor(2), color: "white", borderRadius: "1rem", textAlign: "center", width: "13vw"}}
+                          >
+                            Completed
+                          </p>
+                        </MenuItem>
+                        <MenuItem value={"3"} key={"3"}>
+                          <p
+                            style={{ backgroundColor: fetchStatusColor(3), color: "white", borderRadius: "1rem", textAlign: "center", width: "13vw"}}
+                          >
+                            Blocked
+                          </p>
+                        </MenuItem>
+
+                        {/* {taskStatus.map((status: TaskStatus) => {
+                          <p>{status[0]}</p>
+                        })} */}
+
                       </Select>
                     :
                       <p
-                        style={{ backgroundColor: fetchStatusColor(updatedTaskDetails.status), color: "white", borderRadius: "1rem", textAlign: "center", width: "10rem"}}
+                        style={{ backgroundColor: fetchStatusColor(taskDetails.status), color: "white", borderRadius: "1rem", textAlign: "center", width: "10rem"}}
                       >
-                        {taskStatus[updatedTaskDetails.status as keyof TaskStatus]}
+                        {taskStatus[taskDetails.status as keyof TaskStatus]}
                       </p>
                   }
                 <TaskMembers>
@@ -289,7 +328,7 @@ const TaskPage = () => {
                         </>
                       :
                       <Select
-                        defaultValue="1"
+                        // defaultValue="1"
                         value={selectedMember === null || selectedMember.id === -1 ? "" : selectedMember.id.toString()}
                         // MAKE NEW FUNCITNO??
                         // onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}

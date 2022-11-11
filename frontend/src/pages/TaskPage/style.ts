@@ -36,7 +36,10 @@ export const TaskContainer = styled('div')`
   padding: 0 2rem;
 
   border: 1px solid ${Palette.gray};
-
+  // > h2 {
+  //   font-weight: normal;
+  //   // text-align: center;
+  // };
   > h3 {
     font-weight: normal;
   };
@@ -48,7 +51,7 @@ export const DescriptionContainer = styled('div')`
   // Change??
   margin-top: 1rem;
   margin-bottom: 1rem;
-  padding: 0.5rem 2rem;
+  padding: 1rem;
   
   border: 1px solid ${Palette.gray};
 `;
@@ -191,7 +194,18 @@ export const TitleContainerView = styled('div')`
   };
 `;
 
-export const TitleContainerEdit= styled('div')`
+export const ProjectLink = styled('h1')`
+  padding-top: 0rem;
+  font-weight: normal;
+  color: #3a86ff;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  // margin-right: 0.5rem;
+  // text-decoration: underline;
+  background-color: ${Palette.lightGray}
+`;
+
+export const TitleContainerEdit = styled('div')`
   display: flex;
   // flex-direction: column;
   margin-top: 1rem;
@@ -216,4 +230,3 @@ export const StyledSlider = styled(Slider)`
   margin-top: 1.2rem;
   margin-left: 1rem;
 `;
-
