@@ -428,19 +428,22 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             double taskBusyness = 0f;
             // Only tasks that are in progress or not started contribute to busyness
             if(task.getStatus() == util.TASK_IN_PROGRESS || task.getStatus() == util.TASK_NOT_STARTED) {
-                Date currDate = new Date();
-                // Time difference between the current date and the deadline of the task in hours
-                long diff = (currDate.getTime() - task.getDeadline().getTime() / (1000 * 60 * 60)) % 24;
-                
-                // If the difference is less that 24 hours, it is worth more towards busyness
-                if (diff < 24) {
-                    taskBusyness += 10f;
-                } else if (diff < 48) {
-                    taskBusyness += 5f;
-                } else {
-                    taskBusyness += 2f;
+                if(task.getDeadline() != null) {
+                    
+                   Date currDate = new Date();
+                    // Time difference between the current date and the deadline of the task in hours
+                    long diff = (currDate.getTime() - task.getDeadline().getTime() / (1000 * 60 * 60)) % 24;
+                    
+                    // If the difference is less that 24 hours, it is worth more towards busyness
+                    if (diff < 24) {
+                        taskBusyness += 10f;
+                    } else if (diff < 48) {
+                        taskBusyness += 5f;
+                    } else {
+                        taskBusyness += 2f;
+                    } 
                 }
-
+                
                 // A task in progress is worth less towards busyness than one that isn't started
                 if(task.getStatus() == util.TASK_NOT_STARTED) {
                     taskBusyness += 5f;
