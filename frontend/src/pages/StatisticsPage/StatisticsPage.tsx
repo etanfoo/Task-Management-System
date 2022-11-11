@@ -33,7 +33,6 @@ const StatisticsPage = () => {
   const [busynessData, setBusynessData] = useState<number[]>([]);
   const [taskStatusData, setTaskStatusData] = useState<number[]>([]);
   
-  // const [isLoading, setIsLoading] = useState(true);
   const CHART_BACKGROUND_RED = "rgb(255, 99, 132, 0.2)";
   const CHART_BACKGROUND_YELLOW = "rgb(255, 205, 86, 0.2)";
   const CHART_BACKGROUND_BLUE = "rgba(54, 162, 235, 0.2)";
@@ -61,7 +60,6 @@ const StatisticsPage = () => {
     labels: ['N/A', 'Stressed', 'Worried', 'Neutral', 'Comfortable', 'Happy'],
     datasets: [
       {
-        // todo: replace mock with api data
         data: happinessData,
         backgroundColor: [
           CHART_BACKGROUND_RED,
@@ -137,7 +135,6 @@ const StatisticsPage = () => {
       setBusynessData(Object.values(stats.busyness));
       setTaskStatusData(Object.values(stats.tasks));
     } catch (err: any) {
-      // todo: error handling
       console.log(err);
     };
   };
@@ -149,7 +146,6 @@ const StatisticsPage = () => {
   
   return (
     <StatisticsPageContainer>
-      {/* todo: loading element */}
       <Header />
       <SectionContainer>
         <h2>Happiness tracker</h2>
