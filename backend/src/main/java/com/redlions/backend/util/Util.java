@@ -22,6 +22,16 @@ public class Util {
     private final ProfileRepository profileRepo;
     private final ProjectRepository projectRepo;
     private final TaskRepository taskRepo;
+    public final Integer TASK_NOT_STARTED = 0;
+    public final Integer TASK_IN_PROGRESS = 1;
+    public final Integer TASK_COMPLETE = 2;
+    public final Integer TASK_BLOCKED = 3;
+    public final Integer NO_FACE_PROVIDED = -1;
+    public final int STRESSED_FACE = 0;
+    public final int WORRIED_FACE = 1;
+    public final int NEUTRAL_FACE = 2;
+    public final int COMFORTABLE_FACE = 3;
+    public final int HAPPY_FACE = 4;
 
     /**
      * checks if profile with corresponding id exists
@@ -79,7 +89,7 @@ public class Util {
         Set<Profile> profiles = projectInDb.getProfiles();
         boolean found = false;
         for (Profile p: profiles) {
-            if (p.getId() == profileId) {
+            if (p.getId().equals(profileId)) {
                 found = true;
             }
         }
@@ -100,7 +110,7 @@ public class Util {
         Set<Task> tasks = project.getTasks();
         boolean found = false;
         for (Task t: tasks) {
-            if (t.getId() == taskId) {
+            if (t.getId().equals(taskId)) {
                 found = true;
             }
         }
