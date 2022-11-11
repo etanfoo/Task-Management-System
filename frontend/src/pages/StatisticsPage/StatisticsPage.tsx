@@ -13,6 +13,9 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
+import { useEffect } from "react";
+import { getProjectStatistics } from "../../api/project";
+import { useParams } from "react-router-dom";
 
 ChartJS.register(
   ArcElement,
@@ -25,7 +28,7 @@ ChartJS.register(
 );
 
 const StatisticsPage = () => {
-  // const { projectId } = useParams();
+  const { projectId } = useParams();
   // const [projectData, setProjectData] = useState({});
   // const [isLoading, setIsLoading] = useState(true);
   const CHART_BACKGROUND_RED = "rgb(255, 99, 132, 0.2)";
@@ -121,12 +124,27 @@ const StatisticsPage = () => {
         ],
         borderWidth: 1,
       },
-
     ],
   };
+
+  const fetchProjectStatistics = async () => {
+    try {
+      const stats = await getProjectStatistics(projectId!);
+      console.log(stats);
+    } catch (err: any) {
+      // todo: error handling
+      console.log(err);
+    };
+  };
+
+  useEffect(() => {
+    fetchProjectStatistics();
+    // eslint-disable-next-line
+  }, []);
   
   return (
     <StatisticsPageContainer>
+      {/* todo: loading element */}
       <Header />
       <SectionContainer>
         <h2>Happiness tracker</h2>
