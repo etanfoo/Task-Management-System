@@ -76,7 +76,6 @@ public class TaskServiceImplementation implements TaskService {
         util.isProfileInProject(profileId, projectId, projectInDb);
         Task taskInDb = util.checkTask(taskId);
         util.isTaskInProject(projectId, taskId);
-
         // checking if task is passed in case only updating profile and not passing in task
         if (task != null) {
             String title = task.getTitle();
@@ -85,7 +84,7 @@ public class TaskServiceImplementation implements TaskService {
             }
     
             String description = task.getDescription();
-            if (description.length() > DESCRIPTION_CHARACTER_LIMIT) {
+            if (description != null && description.length() > DESCRIPTION_CHARACTER_LIMIT) {
                 String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
             } else {

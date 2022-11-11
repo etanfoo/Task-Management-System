@@ -50,7 +50,7 @@ public class Profile {
     private String aboutMe;
 
     @Column(name="busyness")
-    private Double busyness;
+    private Double busyness = 0.0;
 
     @JsonIgnore
     @ManyToMany(mappedBy="profiles")
