@@ -181,11 +181,12 @@ public class ProjectServiceImplementation implements ProjectService {
     
         Map<String, Double> busyness = new HashMap<String, Double>();
 
-        busyness.put("0-19", 0.0);
-        busyness.put("20-39", 0.0);
-        busyness.put("40-59", 0.0);
-        busyness.put("60-79", 0.0);
-        busyness.put("80-99+", 0.0);
+        busyness.put("0-20", 0.0);
+        busyness.put("20-40", 0.0);
+        busyness.put("40-60", 0.0);
+        busyness.put("60-80", 0.0);
+        busyness.put("80-100", 0.0);
+        busyness.put("100+", 0.0);
 
         // tallying up tasks
         for (Task task: project.getTasks()) {
@@ -200,16 +201,18 @@ public class ProjectServiceImplementation implements ProjectService {
 
             happiness.put(happinessLevel, happiness.get(happinessLevel) + 1);
 
-            if (busynessLevel < 20) {
-                busyness.put("0-19", busyness.get("0-19") + 1);
-            } else if (busynessLevel < 40) {
-                busyness.put("20-39", busyness.get("20-39") + 1);
-            } else if (busynessLevel < 60) {
-                busyness.put("40-59", busyness.get("40-59") + 1);
-            } else if (busynessLevel < 80) {
-                busyness.put("60-79", busyness.get("60-79") + 1);
+            if (busynessLevel <= 20) {
+                busyness.put("0-20", busyness.get("0-20") + 1);
+            } else if (busynessLevel <= 40) {
+                busyness.put("20-40", busyness.get("20-40") + 1);
+            } else if (busynessLevel <= 60) {
+                busyness.put("40-60", busyness.get("40-60") + 1);
+            } else if (busynessLevel <= 80) {
+                busyness.put("60-80", busyness.get("60-80") + 1);
+            } else if (busynessLevel <= 100) {
+                busyness.put("80-100", busyness.get("80-100") + 1);
             } else {
-                busyness.put("80-99+", busyness.get("80-99+") + 1);
+                busyness.put("100+", busyness.get("100+") + 1);
             }
         }
 

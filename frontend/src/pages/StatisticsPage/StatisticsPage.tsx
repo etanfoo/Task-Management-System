@@ -83,7 +83,7 @@ const StatisticsPage = () => {
   };
 
   const busynessGraphData = {
-    labels: ["0-19", "20-39", "40-59", "60-79", "80-99+"],
+    labels: ["0-20", "20-40", "40-60", "60-80", "80-100", "100+"],
     datasets: [
       {
         data: busynessData,
@@ -91,13 +91,15 @@ const StatisticsPage = () => {
           CHART_BACKGROUND_YELLOW,
           CHART_BACKGROUND_ORANGE,
           CHART_BACKGROUND_GREEN,
+          CHART_BACKGROUND_BLUE,
           CHART_BACKGROUND_PURPLE,
           CHART_BACKGROUND_RED,
         ],
         borderColor: [
           CHART_BORDER_YELLOW,
           CHART_BORDER_ORANGE,
-          CHART_BORDER_GREEN,        
+          CHART_BORDER_GREEN,   
+          CHART_BORDER_BLUE,
           CHART_BORDER_PURPLE,
           CHART_BORDER_RED,
         ],
