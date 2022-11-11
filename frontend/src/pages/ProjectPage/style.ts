@@ -3,6 +3,9 @@ import { Palette } from "../../components/Palette";
 
 export const ProjectPageContainer = styled('div')`
   display: flex;
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 3rem;
 `;
 
 export const ProjectContainer = styled('div')`

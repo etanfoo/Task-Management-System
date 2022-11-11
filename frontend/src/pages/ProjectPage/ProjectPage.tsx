@@ -273,8 +273,8 @@ const ProjectPage = () => {
                   </FriendsContainer>
                 </PP>
               </ProjectContainer>
+              <Footer />
             </ProjectPageContainer>
-            <Footer />
           </>
         )
       }
