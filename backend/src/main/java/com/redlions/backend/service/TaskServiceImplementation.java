@@ -1,5 +1,7 @@
 package com.redlions.backend.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.transaction.Transactional;
 
@@ -51,8 +53,9 @@ public class TaskServiceImplementation implements TaskService {
         Date deadline = task.getDeadline();
 
         if (deadline != null) {
-            Date currDate = new Date();
-            if(deadline.before(currDate)) {
+            LocalDate currDate = LocalDate.now();
+            LocalDate deadlineLocalDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if(deadlineLocalDate.isBefore(currDate)) {
                 String errorMessage = String.format("Deadline cannot be earlier than the current date.");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
             }
@@ -101,8 +104,9 @@ public class TaskServiceImplementation implements TaskService {
     
             Date deadline = task.getDeadline();
             if (deadline != null) {
-                Date currDate = new Date();
-                if(deadline.before(currDate)) {
+                LocalDate currDate = LocalDate.now();
+                LocalDate deadlineLocalDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if(deadlineLocalDate.isBefore(currDate)) {
                     String errorMessage = String.format("Deadline cannot be earlier than the current date.");
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
                 }
