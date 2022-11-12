@@ -145,16 +145,17 @@ public class ProjectServiceImplementation implements ProjectService {
     public List<Project> getAssociatedProjects(Long profileId) {
         Profile profile = util.checkProfile(profileId);
         Set<Project> projectsSet = profile.getProjects();
-        return projectsSet.stream().collect(Collectors.toList());
+        return projectsSet.stream().sorted((a, b) -> a.getTitle().compareTo(b.getTitle())).collect(Collectors.toList());
     }
 
     /**
      * returns all tasks associated with a project
      */
     @Override
-    public Set<Task> getProjectTasks(Long projectId) {
+    public List<Task> getProjectTasks(Long projectId) {
         Project project = util.checkProject(projectId);
-        return project.getTasks();
+        Set<Task> tasks = project.getTasks();
+        return tasks.stream().sorted((a, b) -> a.getId().compareTo(b.getId())).collect(Collectors.toList());
     }
 
     /**
