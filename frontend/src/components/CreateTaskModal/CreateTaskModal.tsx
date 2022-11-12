@@ -38,9 +38,6 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
     if (newDeadline !== null) setTaskDetails({ ...taskDetails, deadline: newDeadline.format('YYYY-MM-DD') });
   };
 
-  // alert(projectId)
-  
-
   const createTask = async () => {
     // todo: Check deadline is past today
     //todo: temp checks??

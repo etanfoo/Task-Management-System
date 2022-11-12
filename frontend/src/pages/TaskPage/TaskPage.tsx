@@ -101,15 +101,6 @@ const TaskPage = () => {
 
     try {
       // No previous assignee and no member was selected to be assignee
-      // console.log(updatedTaskDetails.title)
-      // alert(updatedTaskDetails)
-      // alert(updatedTaskDetails.title)
-      // if (selectedMember === null && taskDetails.profileAssignee === null) {
-      //   console.log("NULL")
-      //   await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-
-      // }
-      // else 
       await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       window.location.reload();
     } catch (err: any) {
@@ -122,14 +113,11 @@ const TaskPage = () => {
   }
 
   const updateStatus = (status_num: number) => {
-    // console.log(status_num)
     setUpdatedTaskDetails({...updatedTaskDetails, status: status_num});
     
     if (pageState === "view") {
       setStatus(status_num)
       setChangedStatus(true);
-      // updateTask();
-      // alert("test")
     } 
   }
 
@@ -141,7 +129,6 @@ const TaskPage = () => {
         updatedTaskDetails.description = taskDetails.description;
         updatedTaskDetails.status = status;
         console.log("ONLY WHEN VIEWING")
-        // alert(updatedTaskDetails.title);
         await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       }
     }
@@ -242,7 +229,7 @@ const TaskPage = () => {
                       <Select
                         // label="Your tasks"
                         // defaultValue="0"
-                        value={pageState === 'view' ? status.toString() : updatedTaskDetails.status.toString()}
+                        value={status.toString()}
                         onChange={(e: SelectChangeEvent) => updateStatus(parseInt(e.target.value))}
                         sx={{ width: "16.06vw" }}
                         style={{ height: 50 }}
@@ -331,14 +318,10 @@ const TaskPage = () => {
                         </>
                       :
                       <Select
-                        // defaultValue="1"
                         value={selectedMember === null || selectedMember.id === -1 ? "" : selectedMember.id.toString()}
-                        // MAKE NEW FUNCITNO??
-                        // onChange={(e: SelectChangeEvent) => findSelectMember(parseInt(e.target.value))}
                         onChange={(e: SelectChangeEvent) => changeMember(parseInt(e.target.value))}
                         sx={{ width: "30%" }}
                         style={{ height: 60, marginLeft: '0.5rem' }}
-                        // size='small'
                       >
                         {possibleAssignees.map((user)=> (
                           <MenuItem value={user.id} key={user.id}>
