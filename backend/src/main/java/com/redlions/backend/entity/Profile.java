@@ -40,7 +40,7 @@ public class Profile {
     private Integer points = 0;
 
     @Column(name="happiness")
-    private Integer happiness;
+    private Integer happiness = -1;
 
     @Lob
     @Column(name="profile_picture")
