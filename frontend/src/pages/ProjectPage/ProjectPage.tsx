@@ -19,6 +19,7 @@ import { search } from "../../helpers";
 import { getConnections } from "../../api/connect";
 import { Palette } from "../../components/Palette";
 import { getProjectTasks } from "../../api/task";
+import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
 
 const ProjectPage = () => {
   const { projectId } = useParams();
@@ -34,9 +35,10 @@ const ProjectPage = () => {
   const [searchMember, setSearchMember] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [taskSortType, setTaskSortType] = useState<string>("ID");
-  // eslint-disable-next-line
   const [allTasks, setAllTasks] = useState<ITask[]>([]);
   const [shownTasks, setShownTasks] = useState<ITask[]>([]);
+  const [isCreateTaskModalVisible, setIsCreateTaskModalVisible] = useState<boolean>(false);
+
 
   const loadProject = async () => {
     try {
@@ -122,7 +124,6 @@ const ProjectPage = () => {
       );
     } else if (taskSortType === "Deadline") {
       sortedTasks = [...shownTasks].sort(
-        // todo: figure out how deadline is store - date or string?
         (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
       );
     }
@@ -145,9 +146,14 @@ const ProjectPage = () => {
         : (
           <>
             <DeleteOverlay isOpen={isDelete} content="project" contentId={projectId!} closeCallback={() => setIsDelete(false)} memberId={null} secondaryContentId={null}/>
+            <CreateTaskModal 
+              isOpen={isCreateTaskModalVisible}
+              handleClose={() => {setIsCreateTaskModalVisible(false)}}
+              projectId={projectId!}
+            />
             <Header />
             <ProjectPageContainer>
-              <ProjectSidebar id={projectId!} />
+              <ProjectSidebar id={projectId!} triggerCreateTaskModal={() => setIsCreateTaskModalVisible(true)}/>
               <ProjectContainer>
                 <TopContainer>
                   {pageState === 'view'
@@ -226,7 +232,6 @@ const ProjectPage = () => {
                           <p style={{ color: taskSortType === "Status" ? "black" : Palette.thGray }}>Status</p>
                         </LabelContainer>
                         <OverflowContainer>
-                          {/* todo: replace with real data returned from api */}
                           {shownTasks.map((task) => (
                             <TaskCard
                               key={task.id}

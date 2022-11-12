@@ -14,6 +14,7 @@ import { EmptyProfile } from "../../constants/profiles";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import Popup from "../Popup/Popup";
 
 type CreateTaskModalProps = {
   isOpen: boolean;
@@ -29,31 +30,52 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
   const [selectedProject, setSelectedProject] = useState<IProject>(EmptyProjectView);
   const [selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
   const [currProjectId, setCurrProjectId] = useState<string>("");
-  // Change name to deadline?
-  const [value, setValue] = useState<Dayjs | null>(null);
+  const [deadline, setDeadline] = useState<Dayjs | null>(null);
+  const [error, setError] = useState<string>("");
 
-  const handleChange = (newValue: Dayjs | null) => {
-    setValue(newValue);
-    if (newValue !== null) setTaskDetails({ ...taskDetails, deadline: newValue.format('YYYY-MM-DD') });
+  const changeDeadline = (newDeadline: Dayjs | null) => {
+    setDeadline(newDeadline);
+    if (newDeadline !== null) setTaskDetails({ ...taskDetails, deadline: newDeadline.format('YYYY-MM-DD') });
   };
 
-  if (projectId !== null) setCurrProjectId(projectId);
+  // alert(projectId)
+  
 
   const createTask = async () => {
     // todo: Check deadline is past today
-    // console.log(taskDetails)
+    //todo: temp checks??
+    if (taskDetails.title === "") {
+      setError("Task must have a title.");
+      return;
+    }
+
+    console.log(selectedProject)
+
+
     let resp;
-    if (selectedMember.id === -1) resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), null);
-    else resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), selectedMember.id);
-    console.log(resp)
-    // Change return type from any
-    navigate(`/project/${currProjectId}/task/${resp.id}`)
+    try {
+      if (selectedMember.id === -1) resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), null);
+      else resp = await postTask(taskDetails, parseInt(currProjectId), parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), selectedMember.id);
+      navigate(`/project/${currProjectId}/task/${resp.id}`)
+    } catch (err: any) {
+      if (err.response.status === 400 && err.response.data.message.includes("Description")) setError("Summary must be less than or equal to 1000 characters.");
+      else setError("Task must be associated to a project");
+      console.log(err)
+    }
+   
   }
 
   const fetchAllProjects = async () => {
     try {
       const data = await getProjects(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       setUserProjects(data);
+
+      // If the modal is opened in a project page (refactor?)
+      if (projectId !== null) {
+        const currentProjectDetails: IProject = data.filter((project: IProject) => project.id === parseInt(projectId))[0];
+        setSelectedProject(currentProjectDetails);
+        setCurrProjectId(currentProjectDetails.id.toString());
+      }
     } catch (err: any) {
       // todo: figure some error handling here? show error popup?
       console.log(err);
@@ -64,23 +86,21 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
     fetchAllProjects();
   }, []);
 
-
-  const changeProject = (projectId: number) => {
-    // Edge case for projects with same name
-    const currentProjectDetails: IProject = userProjects.filter((project: IProject) => project.id === projectId)[0];
-
+  // Changes useState to newly selected project, filters using the projectId
+  const changeProject = (selectProjectId: number) => {
+    const currentProjectDetails: IProject = userProjects.filter((project: IProject) => project.id === selectProjectId)[0];
     setSelectedProject(currentProjectDetails);
     setCurrProjectId(currentProjectDetails.id.toString());
   }
+  
+  // Changes useState to newly selected member, uses helper function to search an array of profiles using profileId
+  const changeMember = (profileId: number) => setSelectedMember(findSelectedMember(profileId, selectedProject.profiles));
 
-  // const findSelectMember = (profileId: number) => {
-  //   setSelectedMember(selectedProject.profiles.filter((user: IProfile) => user.id === profileId)[0]);
-  // }
-
-  const changeMember = (profileId: number) => {
-    setSelectedMember(findSelectedMember(profileId, selectedProject.profiles));
-  }
-
+  /* 
+    - Check deadline is not today?
+    - Check a project is selected
+    - no title?
+  */
 
   return(
     <Modal open={isOpen} onClose={handleClose}>
@@ -92,6 +112,12 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
         </ModalContainer>
         :
         <ModalContainer>
+          <Popup
+            isOpen={error !== ""}
+            popupMessage={error}
+            handleClose={() => setError("")}
+            type="error"
+          />
           <ModalBody>
             <h1>Create a task</h1>
             <Divider />
@@ -113,8 +139,8 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopDatePicker
                     inputFormat="DD/MM/YYYY"
-                    value={value}
-                    onChange={handleChange}
+                    value={deadline}
+                    onChange={changeDeadline}
                     renderInput={(params) => <TextField {...params} sx={{ width: "100%" }}/>}
                   />
                 </LocalizationProvider>
@@ -124,7 +150,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
                 <Select
                   // label="Your tasks"
                   defaultValue="1"
-                  value={selectedProject.id < 1 ? "" : selectedProject.id.toString()}
+                  value={currProjectId ? currProjectId : ""}
                   onChange={(e: SelectChangeEvent) => { changeProject(parseInt(e.target.value)) }}
                   sx={{ width: "100%" }}
                 >

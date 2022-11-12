@@ -23,7 +23,7 @@ export const postTask = async (task: ITasktDetails, projectId: number, profileId
   }
 };
 
-export const putTask = async (projectId: number, taskId: number, task: ITasktDetails, profileAssignee: number | null, profileId: number): Promise<ITask> => {
+export const putTask = async (projectId: number, taskId: number, task: ITasktDetails, profileAssignee: number, profileId: number): Promise<ITask> => {
   // console.log(task)
   try {
     const { data } = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/task/${taskId}`, {

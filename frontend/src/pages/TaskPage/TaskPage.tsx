@@ -86,7 +86,7 @@ const TaskPage = () => {
     // console.log(updatedTaskDetails)
     // setUpdatedTaskDetails({ ...updatedTaskDetails, status: status})
     // console.log(selectedMember)
-    if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && status === taskDetails.status && points === taskDetails.points && (selectedMember === null || taskDetails.profileAssignee  === null || selectedMember.id === taskDetails.profileAssignee.id) && updatedTaskDetails.description === "") {
+    if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && status === taskDetails.status && points === taskDetails.points && selectedMember.id === taskDetails.profileAssignee.id && updatedTaskDetails.description === "") {
       setPageState("view");
       console.log("WHY RESET")
       return;
@@ -101,11 +101,16 @@ const TaskPage = () => {
 
     try {
       // No previous assignee and no member was selected to be assignee
-      console.log(updatedTaskDetails.title)
+      // console.log(updatedTaskDetails.title)
       // alert(updatedTaskDetails)
       // alert(updatedTaskDetails.title)
-      if (selectedMember === null && taskDetails.profileAssignee === null) await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
-      else await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      // if (selectedMember === null && taskDetails.profileAssignee === null) {
+      //   console.log("NULL")
+      //   await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+
+      // }
+      // else 
+      await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       window.location.reload();
     } catch (err: any) {
       console.log(err);
@@ -121,7 +126,7 @@ const TaskPage = () => {
     setUpdatedTaskDetails({...updatedTaskDetails, status: status_num});
     
     if (pageState === "view") {
-      // setStatus(status_num)
+      setStatus(status_num)
       setChangedStatus(true);
       // updateTask();
       // alert("test")
@@ -137,20 +142,18 @@ const TaskPage = () => {
         updatedTaskDetails.status = status;
         console.log("ONLY WHEN VIEWING")
         // alert(updatedTaskDetails.title);
-        await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, null, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+        await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       }
     }
     updateTaskStatus();
   }, [changedStatus])
 
   /*
-    - Check when no assignee
     - Project page links to create task modal
     - Add error checks for both create and task page
     - Add colour to project list
     - Centre Friends list title in task page
-    - Bug with title getting deleted when only changing title
-    - Add project 
+    - Project link overflow?
   */
 
   return(

@@ -11,7 +11,7 @@ export const ProjectSidebarContainer = styled('div')`
   width: 18rem;
 `;
 
-export const ProjectButton = styled(Link)`
+export const ProjectSidebarLinks = styled(Link)`
   display: flex;
   text-decoration: none;
   margin-top: 1.5rem;
