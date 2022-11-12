@@ -145,7 +145,7 @@ public class ProjectController {
      */
     @GetMapping(value = "/{id}/allTasks")
     @ResponseStatus(HttpStatus.OK)
-    public Set<Task> getProjectTasks(@PathVariable Long id) {
+    public List<Task> getProjectTasks(@PathVariable Long id) {
         return projectService.getProjectTasks(id);
     }
 
