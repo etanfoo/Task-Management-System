@@ -9,6 +9,9 @@ export const CreateProjectPageContainer = styled('div')`
   align-items: center;
   width: 100%;
   height: 100%;
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 3rem;
 `;
 
 export const TopContainer = styled('div')`
@@ -89,8 +92,7 @@ export const FriendsContainer = styled('div')`
 export const ControlContainer = styled('div')`
   display: flex;
   flex-direction: row;
-  margin-left: auto;
-  margin-right: 10vw;
+  margin: 0 10vw 1rem auto;
   align-self: flex-start;
 
   > :first-of-type {

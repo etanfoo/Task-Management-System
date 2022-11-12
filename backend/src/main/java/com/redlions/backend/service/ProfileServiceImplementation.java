@@ -2,6 +2,7 @@ package com.redlions.backend.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -179,7 +181,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     @Override
     public List<Profile> getProfiles() {
         log.info("Fetching all users");
-        return profileRepo.findAll();
+        return profileRepo.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     /**
@@ -190,6 +192,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         Profile profile = util.checkProfile(id);
         List<Task> taskList = new ArrayList<Task>();
         taskList.addAll(profile.getAssignedTasks());
+        Collections.sort(taskList, (a, b) -> a.getId().compareTo(b.getId()));
         return taskList;
     }
 
@@ -201,6 +204,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         Profile profile = util.checkProfile(id);
         List<Task> taskList = new ArrayList<Task>();
         taskList.addAll(profile.getAuthoredTasks());
+        Collections.sort(taskList, (a, b) -> a.getId().compareTo(b.getId()));
         return taskList;
     }
 
@@ -403,7 +407,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     public List<Profile> getAcceptedConnections(Long id) {
         Profile profile = util.checkProfile(id);
         Set<Profile> profileSet = profile.getAcceptedConnections();
-        return profileSet.stream().collect(Collectors.toList());
+        return profileSet.stream().sorted((a, b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
     }
 
     /**
@@ -413,6 +417,6 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     public List<Profile> getRequestedConnections(Long id) {
         Profile profile = util.checkProfile(id);
         Set<Profile> profileSet = profile.getRequestedConnections();
-        return profileSet.stream().collect(Collectors.toList());
+        return profileSet.stream().sorted((a, b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
     }
 }

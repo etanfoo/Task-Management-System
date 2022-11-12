@@ -14,6 +14,6 @@ public interface ProjectService {
     void removeProfilesFromProject(Long projectId, Long profileId, Set<Long> profileIds);
     void removeProfileFromProject(Long projectId, Long profileId, Long profileIdToRemove);
     List<Project> getAssociatedProjects(Long profileId);
-    Set<Task> getProjectTasks(Long projectId);
+    List<Task> getProjectTasks(Long projectId);
     Object getProjectStatistics(Long projectId);
 }
