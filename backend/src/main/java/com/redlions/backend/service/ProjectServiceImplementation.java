@@ -135,6 +135,12 @@ public class ProjectServiceImplementation implements ProjectService {
         util.isProfileInProject(profileId, projectId, projectInDb);
 
         Profile profileToRemove = util.checkProfile(profileIdToRemove);
+        for (Task t: projectInDb.getTasks()) {
+            if (t.getProfileAssignee().getId() == profileIdToRemove) {
+                String errorMessage = String.format("Profile to remove is currently an assignee of a task, please assign the task to someone else before removing them from this project");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            }
+        }
         projectInDb.removeProfile(profileToRemove);
     }
 
