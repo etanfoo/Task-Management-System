@@ -11,7 +11,7 @@ import { getProjects } from "../../api/project";
 import { IProfile, IProject } from "../../interfaces/api-response";
 import { EmptyProjectView } from "../../constants/projects";
 import { EmptyProfile } from "../../constants/profiles";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DateTimePicker, DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Popup from "../Popup/Popup";
@@ -35,7 +35,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
 
   const changeDeadline = (newDeadline: Dayjs | null) => {
     setDeadline(newDeadline);
-    if (newDeadline !== null) setTaskDetails({ ...taskDetails, deadline: newDeadline.format('YYYY-MM-DD') });
+    if (newDeadline !== null) setTaskDetails({ ...taskDetails, deadline: newDeadline.format('YYYY-MM-DD HH:mm:ss') });
   };
 
   // alert(projectId)
@@ -49,7 +49,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
       return;
     }
 
-    console.log(selectedProject)
+    console.log(taskDetails.deadline)
 
 
     let resp;
@@ -137,8 +137,9 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
               <div>
                 <h2>Deadline</h2>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DesktopDatePicker
-                    inputFormat="DD/MM/YYYY"
+                  <DateTimePicker
+                    inputFormat="DD/MM/YYYY HH:mm:ss"
+                    // label="Date&Time picker"
                     value={deadline}
                     onChange={changeDeadline}
                     renderInput={(params) => <TextField {...params} sx={{ width: "100%" }}/>}

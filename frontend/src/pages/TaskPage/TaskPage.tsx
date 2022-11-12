@@ -149,11 +149,10 @@ const TaskPage = () => {
   }, [changedStatus])
 
   /*
-    - Project page links to create task modal
-    - Add error checks for both create and task page
     - Add colour to project list
     - Centre Friends list title in task page
     - Project link overflow?
+    - Style empty task inputs
   */
 
   return(
