@@ -13,22 +13,38 @@ export const DashboardPageContainer = styled('div')`
   text-align: center;
 `;
 
-// export const ImageContainer = styled('div')`
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-around;
+export const LeftContainer = styled('div')`
+  border-right: 1px solid ${Palette.gray};
+  border-top: 1px solid ${Palette.gray};
+  height: 100vh;
+  width: 25rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  > h2 {
+    font-weight: normal;
+  }
+`;
 
-//   > img {
-//     width: 3.125rem;
-//     height: 3.125rem;
-//     cursor: pointer;
+export const FriendsContainer = styled('div')`
+  overflow-y: auto;
+  padding: 0 1rem;
+  height: 65%;
+`;
 
-//     transition: transform .2s;
-//     &:hover {
-//       transform: scale(1.10);
-//     };  
-//   }
-// `;
+export const ImageContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  > img {
+    width: 3.125rem;
+    height: 3.125rem;
+    cursor: pointer;
+    transition: transform .2s;
+    &:hover {
+      transform: scale(1.10);
+    };  
+  }
+`;
 
 export const BodyContainer = styled('div')`
   display: flex;
@@ -67,7 +83,6 @@ export const TasksContainer = styled('div')`
   padding: 1rem;
   margin-bottom: 2rem;
   text-align: left;
-
   > p {
     margin: auto auto;
     color: ${Palette.thGray};
@@ -78,7 +93,6 @@ export const TasksLabelContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 0 3rem;
-
   > :first-of-type {
     width: 10%;
   };
@@ -98,7 +112,6 @@ export const ProjectsLabelContainer = styled('div')`
   flex-direction: row;
   padding: 0 3rem;
   justify-content: space-between;
-
   > :first-of-type {
     width: 20%;
   };

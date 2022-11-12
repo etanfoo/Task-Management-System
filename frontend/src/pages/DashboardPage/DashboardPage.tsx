@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
-import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ProjectsLabelContainer } from "./style";
+import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ProjectsLabelContainer, LeftContainer, FriendsContainer } from "./style";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
-import { IProject, ITask } from "../../interfaces/api-response";
+import { IProfile, IProject, ITask } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 import { useLocation } from "react-router-dom";
 import FriendsList from "../../components/FriendsList/FriendsList";
 import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
 import { getUserTasks } from "../../api/task";
+import FriendsCard from "../../components/FriendsCard/FriendsCard";
+import HappinessTracker from "../../components/HappinessTracker/HappinessTracker";
+import { getConnections } from "../../api/connect";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -29,8 +32,8 @@ const DashboardPage = () => {
   const [shownTasks, setShownTasks] = useState<ITask[]>([]);
 
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
-
   const [isCreateTaskModalVisible, setIsCreateTaskModalVisible] = useState<boolean>(false);
+  const [connections, setConnections] = useState<IProfile[]>([]);
 
   const fetchAllProjects = async () => {
     try {
@@ -53,9 +56,22 @@ const DashboardPage = () => {
     }
   }
 
+  const fetchFriends = async () => {
+    try {
+      const friends = await getConnections(
+        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
+      );
+      setConnections(friends);
+    } catch (err: any) {
+      // todo: figure some error handling here
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchAllTasks();
     fetchAllProjects();
+    fetchFriends();
   }, []);
 
   useEffect(() => {
@@ -129,7 +145,40 @@ const DashboardPage = () => {
         triggerCreateTaskModal={() => setIsCreateTaskModalVisible(true)}
       />
       <BodyContainer>
-        <FriendsList />
+        <LeftContainer>
+          {connections.length !== 0
+            ? (
+              <>
+                <h2>Your friends</h2>
+                <FriendsContainer
+                  style={{
+                    height: sessionStorage.getItem("showHappinessTracker")! === "true" ? '' : '85%'
+                  }}
+                >
+                  {connections.map((connection) => (
+                    <FriendsCard
+                      key={connection.id}
+                      profileId={connection.id}
+                      name={connection.name}
+                      email={connection.email}
+                      imageURL={connection.profilePicture}
+                      functionality="profile"
+                      projectId={null!}
+                      alreadyAdded={false}
+                    />
+                  ))}
+                </FriendsContainer>
+                {
+                  sessionStorage.getItem("showHappinessTracker")! === "true"
+                    ? (
+                      <Divider sx={{ margin: '1rem 0' }} />
+                    ) : null
+                }
+              </>
+            ) : null
+          }
+          <HappinessTracker />
+        </LeftContainer>
         <RightContainer>
           <StyledTextField
             fullWidth

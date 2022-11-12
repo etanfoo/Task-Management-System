@@ -25,6 +25,7 @@ const LoginPage = () => {
       const resp = await postLogin(email, password);
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, resp.access_token);
       sessionStorage.setItem(process.env.REACT_APP_PROFILE_ID!, resp.profile_id.toString());
+      sessionStorage.setItem("showHappinessTracker", "true");
       setIsLoading(false);
       navigate('/dashboard', {state:{initialPageState:"tasks"}});
     } catch (err: any) {

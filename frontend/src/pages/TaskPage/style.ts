@@ -200,9 +200,11 @@ export const ProjectLink = styled('h1')`
   color: #3a86ff;
   padding: 0.5rem;
   border-radius: 1rem;
-  // margin-right: 0.5rem;
-  // text-decoration: underline;
-  background-color: ${Palette.lightGray}
+  background-color: ${Palette.lightGray};
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 export const TitleContainerEdit = styled('div')`
