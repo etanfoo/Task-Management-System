@@ -171,12 +171,11 @@ public class Util {
                 if (task.getDeadline() != null) {
                     Date currDate = new Date();
                     // Time difference between the current date and the deadline of the task in hours
-                    long diff = (currDate.getTime() - task.getDeadline().getTime() / (1000 * 60 * 60)) % 24;
-                    
+                    long diff = ((task.getDeadline().getTime() - currDate.getTime()) / (1000 * 60 * 60));
                     // If the difference is less that 24 hours, it is worth more towards busyness
                     if (diff < 24) {
                         taskBusyness += 10f;
-                    } else if (diff < 48) {
+                    } else if (diff >= 24 && diff < 48) {
                         taskBusyness += 5f;
                     } else {
                         taskBusyness += 2f;

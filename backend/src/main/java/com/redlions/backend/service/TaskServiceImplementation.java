@@ -1,9 +1,8 @@
 package com.redlions.backend.service;
 
-import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
-import java.util.Set;
-
 import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
@@ -50,6 +49,16 @@ public class TaskServiceImplementation implements TaskService {
             String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
+        
+        Date deadline = task.getDeadline();
+
+        if (deadline != null) {
+            Date currDate = new Date();
+            if(deadline.before(currDate)) {
+                String errorMessage = String.format("Deadline cannot be earlier than the current date.");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            }
+        }
 
         Profile author = util.checkProfile(profileAuthor);
         task.setProfileAuthor(author);
@@ -94,6 +103,11 @@ public class TaskServiceImplementation implements TaskService {
     
             Date deadline = task.getDeadline();
             if (deadline != null) {
+                Date currDate = new Date();
+                if(deadline.before(currDate)) {
+                    String errorMessage = String.format("Deadline cannot be earlier than the current date.");
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            }
                 taskInDb.setDeadline(deadline);
             }
     
