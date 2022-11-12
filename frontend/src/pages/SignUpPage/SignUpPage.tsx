@@ -40,6 +40,7 @@ const SignUpPage = () => {
       // todo: may want to extract this out to redux?
       sessionStorage.setItem(process.env.REACT_APP_PROFILE_ID!, data.profile_id.toString());
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, data.access_token);
+      sessionStorage.setItem("showHappinessTracker", "true");
       setIsLoading(false);
       navigate('/dashboard', {state:{initialPageState:"tasks"}});
     } catch (err: any) {

@@ -39,7 +39,8 @@ def create_users() -> dict:
             "email": user.get("email"),
             "password": user.get("password"),
             "aboutMe": user.get("aboutMe")[:PROFILE_ABOUTME_CHARACTER_LIMIT],
-            "happiness": user.get("happiness")
+            "happiness": user.get("happiness"),
+            "points": user.get("points")
             }
         response = requests.post(SIGNUP_ENDPOINT, json=payload)
         if response.status_code != HTTPStatus.OK:

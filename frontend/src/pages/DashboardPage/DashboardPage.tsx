@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ProjectsLabelContainer } from "./style";
+import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ProjectsLabelContainer, LeftContainer, FriendsContainer } from "./style";
 import TaskCard from "../../components/TaskCard/TaskCard";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";

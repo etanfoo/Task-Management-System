@@ -13,6 +13,25 @@ export const DashboardPageContainer = styled('div')`
   text-align: center;
 `;
 
+export const LeftContainer = styled('div')`
+  border-right: 1px solid ${Palette.gray};
+  border-top: 1px solid ${Palette.gray};
+  height: 100vh;
+  width: 25rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+
+  > h2 {
+    font-weight: normal;
+  }
+`;
+
+export const FriendsContainer = styled('div')`
+  overflow-y: auto;
+  padding: 0 1rem;
+  height: 65%;
+`;
+
 // export const ImageContainer = styled('div')`
 //   display: flex;
 //   flex-direction: row;

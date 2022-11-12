@@ -35,7 +35,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
 
   const changeDeadline = (newDeadline: Dayjs | null) => {
     setDeadline(newDeadline);
-    if (newDeadline !== null) setTaskDetails({ ...taskDetails, deadline: newDeadline.format('YYYY-MM-DD HH:mm:ss') });
+    if (newDeadline !== null) setTaskDetails({ ...taskDetails, deadline: newDeadline.format(' YYYY-MM-DDTHH:mm:ssZ')});
   };
 
   // alert(projectId)
