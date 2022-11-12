@@ -1,7 +1,5 @@
 package com.redlions.backend.service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import javax.transaction.Transactional;
 
@@ -107,7 +105,7 @@ public class TaskServiceImplementation implements TaskService {
                 if(deadline.before(currDate)) {
                     String errorMessage = String.format("Deadline cannot be earlier than the current date.");
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-            }
+                }
                 taskInDb.setDeadline(deadline);
             }
     
