@@ -59,6 +59,9 @@ public class TaskServiceImplementation implements TaskService {
         if (profileAssignee != null) {
             Profile assignee = util.checkProfile(profileAssignee);
             task.setProfileAssignee(assignee);
+        // setting profile assignee to author if no assignee is passed in
+        } else {
+            task.setProfileAssignee(author);
         }
         
         // Initialise the task to not started.
