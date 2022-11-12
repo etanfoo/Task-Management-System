@@ -24,7 +24,8 @@ export const TopContainer = styled('div')<TopContainerProps>`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
   padding: 1rem 0.5rem 1rem 0.25rem;
-  width: 80%;
+  width: 100%;
+  margin-right: 1rem;
   align-items: center;
   margin-bottom: 2rem;
   overflow: hidden;
@@ -74,6 +75,23 @@ export const TopContainer = styled('div')<TopContainerProps>`
     border-radius: 5rem;
   };
 `;
+
+export const StatsContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 50%;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+
+  > p {
+    margin: 0.5rem;
+  }
+`;
+
 
 export const StyledAvatar = styled(Avatar)`
   margin-left: 1rem;
