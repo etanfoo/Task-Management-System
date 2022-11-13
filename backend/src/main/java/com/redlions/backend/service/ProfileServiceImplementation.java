@@ -74,7 +74,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
         if (!isValidPassword(password)) {
-            String errorMessage = "A valid password is required for creating a profile.";
+            String errorMessage = "Your password must be at least 6 characters long and include at least 1 upper case, 1 lower case, 1 number and 1 special character.";
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
