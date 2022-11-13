@@ -1,4 +1,4 @@
-import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle, BadgeContainer, StatsContainer } from "./style";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle, BadgeContainer, StatsContainer, BusynessContainer, BusynessWrapper } from "./style";
 import { useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import TaskCard from "../../components/TaskCard/TaskCard";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 import EditIcon from "../../assets/edit.png";
 import InfoIcon from "../../assets/info.png";
-import { Box, LinearProgress, TextField, Typography } from "@mui/material";
+import { Box, LinearProgress, TextField } from "@mui/material";
 import { EmptyProfile, EmptyUpdatedProfileDetails } from "../../constants/profiles";
 import { MockTasks } from "../../constants/tasks";
 import { toBase64, getInitials } from "../../helpers";
@@ -210,26 +210,22 @@ const ProfilePage = () => {
                   }
                 </TopContainer>
                 <StatsContainer>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box sx={{ minWidth: 35 }}>
-                      <Typography variant="body2" color="text.secondary">{`Busyness (${Math.round(
-                        20
-                      )}%)`}</Typography>
+                  <BusynessContainer>
+                    <Box>
+                      <p style={{ color: Palette.thGray }}>
+                        {`Busyness (${Math.round(profileDetails.busyness)}%)`}
+                      </p>
                     </Box>
-                    <Box sx={{ width: '100%', mr: 1 }}>
-                      <LinearProgress variant="determinate" value={20} />
-                    </Box>
-                  </Box>
-                  <p style={{ padding: '0.5rem', backgroundColor: Palette.diamond, color: 'white', borderRadius: '0.5rem', height: 'auto' }}>
-                    {`Current points: ${profileDetails.busyness}`}
+                    <BusynessWrapper>
+                      <LinearProgress
+                        variant="determinate"
+                        value={Math.round(profileDetails.busyness)}
+                      />
+                    </BusynessWrapper>
+                  </BusynessContainer>
+                  <p>
+                    {`Current points: ${profileDetails.points}`}
                   </p>
-                  {/* <LinearProgress />
-                  
-                  <CircularProgress />
-                  <LinearProgress variant="determinate" value={50} /> */}
-                  {/* todo: add points */}
-                  {/* todo: add linear progress - indicating busyness */}
-                  {/* asdasd */}
                 </StatsContainer>
               </div>
               <BodyContainer>

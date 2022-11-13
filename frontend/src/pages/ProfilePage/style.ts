@@ -1,4 +1,4 @@
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Box, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../../components/Palette";
 
@@ -79,7 +79,7 @@ export const TopContainer = styled('div')<TopContainerProps>`
 export const StatsContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
   padding: 1rem;
@@ -89,9 +89,22 @@ export const StatsContainer = styled('div')`
 
   > p {
     margin: 0.5rem;
+    padding: 0.5rem;
+    background-color: ${Palette.diamond};
+    color: white;
+    border-radius: 0.5rem
   }
 `;
 
+export const BusynessContainer = styled(Box)`
+  display: flex;
+  align-items: center;
+`;
+
+export const BusynessWrapper = styled(Box)`
+  width: 100%;
+  margin-right: 1rem;
+`;
 
 export const StyledAvatar = styled(Avatar)`
   margin-left: 1rem;
