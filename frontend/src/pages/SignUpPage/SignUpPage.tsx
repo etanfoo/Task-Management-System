@@ -22,9 +22,9 @@ const SignUpPage = () => {
       setIsLoading(false);
       setError("All fields must be filled.");
       return;
-    } else if (password.length < 8) {
+    } else if (password.length < 6) {
       setIsLoading(false);
-      setError("Password must be at least 8 characters.");
+      setError("Password must be at least 6 characters.");
       return;
     } else if (password !== confirmedPassword) {
       setIsLoading(false);

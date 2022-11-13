@@ -1,4 +1,4 @@
-import { InputLabel, MenuItem, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getTask, putTask } from "../../api/task";
@@ -133,6 +133,8 @@ const TaskPage = () => {
       }
     }
     updateTaskStatus();
+    // todo: currently disabling next line: may have to take a look into this
+    // eslint-disable-next-line
   }, [changedStatus])
 
   /*

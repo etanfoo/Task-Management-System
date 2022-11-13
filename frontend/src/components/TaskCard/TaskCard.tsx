@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { taskStatus } from "../../constants/tasks";
 import { fetchStatusColor, formatDate } from "../../helpers";
 import { TaskStatus } from "../../interfaces/task";
-import { Palette } from "../Palette";
 import { TaskCardContainer } from "./style";
 
 type TaskCardProps = {

@@ -10,7 +10,6 @@ import { getProjects } from "../../api/project";
 import { IProfile, IProject, ITask } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 import { useLocation } from "react-router-dom";
-import FriendsList from "../../components/FriendsList/FriendsList";
 import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
 import { getUserTasks } from "../../api/task";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
@@ -263,11 +262,12 @@ const DashboardPage = () => {
                       <p style={{ color: projectSortType === "Description" ? "black" : Palette.thGray }}>Description</p>                  
                     </ProjectsLabelContainer>
                     <OverflowContainer>
-                      {shownProjects.map((project) => (
+                      {shownProjects.map((project, index) => (
                         <ProjectCard
                           key={`project ${project.id}`}
                           projectId={project.id}
                           name={project.title}
+                          isEven={index % 2 === 0}
                           description={project.description}
                         />
                       ))}

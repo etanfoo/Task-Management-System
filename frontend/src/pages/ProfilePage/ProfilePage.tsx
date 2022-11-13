@@ -226,18 +226,20 @@ const ProfilePage = () => {
                   <BusynessContainer>
                     <Box>
                       <p style={{ color: Palette.thGray }}>
-                        {`Busyness (${Math.round(profileDetails.busyness)}%)`}
+                        {
+                          `Busyness (${Math.round(profileDetails.busyness) > 100 ? '100%+' : Math.round(profileDetails.busyness)})`
+                        }
                       </p>
                     </Box>
                     <BusynessWrapper>
                       <LinearProgress
                         variant="determinate"
-                        value={Math.round(profileDetails.busyness)}
+                        value={Math.round(profileDetails.busyness) > 100 ? 100 : Math.round(profileDetails.busyness)}
                       />
                     </BusynessWrapper>
                   </BusynessContainer>
                   <p>
-                    {`Current points: ${profileDetails.points}`}
+                    {`Current points: ${profileDetails.points === null ? '0' : profileDetails.points}`}
                   </p>
                 </StatsContainer>
               </TopTopContainer>

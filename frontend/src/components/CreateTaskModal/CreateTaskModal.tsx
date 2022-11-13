@@ -81,6 +81,7 @@ const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProp
   
   useEffect(() => {
     fetchAllProjects();
+    // eslint-disable-next-line
   }, []);
 
   // Changes useState to newly selected project, filters using the projectId
