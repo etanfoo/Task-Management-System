@@ -1,4 +1,4 @@
-import { Avatar, Button, Select, Slider, styled } from "@mui/material";
+import { Avatar, Button, Slider, styled } from "@mui/material";
 import { Palette } from "../../components/Palette";
 
 export const TaskPageContainer = styled('div')`

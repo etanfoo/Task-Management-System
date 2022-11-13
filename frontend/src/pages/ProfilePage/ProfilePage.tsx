@@ -237,7 +237,7 @@ const ProfilePage = () => {
                     </BusynessWrapper>
                   </BusynessContainer>
                   <p>
-                    {`Current points: ${profileDetails.points}`}
+                    {`Current points: ${profileDetails.points === null ? '0' : profileDetails.points}`}
                   </p>
                 </StatsContainer>
               </TopTopContainer>

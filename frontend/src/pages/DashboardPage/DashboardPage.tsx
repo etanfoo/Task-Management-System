@@ -10,7 +10,6 @@ import { getProjects } from "../../api/project";
 import { IProfile, IProject, ITask } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
 import { useLocation } from "react-router-dom";
-import FriendsList from "../../components/FriendsList/FriendsList";
 import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
 import { getUserTasks } from "../../api/task";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
