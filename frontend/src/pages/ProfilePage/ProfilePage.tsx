@@ -1,4 +1,4 @@
-import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle, BadgeContainer, StatsContainer, BusynessContainer, BusynessWrapper } from "./style";
+import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, IconContainer, LabelContainer, OverflowContainer, ProfilePageContainer, UpdateButton, StyledAvatar, TasksContainer, TopContainer, CancelButton, EmptyAvatar, StyledLabel, RightContainer, TextFieldStyle, BadgeContainer, StatsContainer, BusynessContainer, BusynessWrapper, TopTopContainer } from "./style";
 import { useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -132,7 +132,7 @@ const ProfilePage = () => {
         : (
             <ProfilePageContainer>
               <Header />
-              <div style={{ display: 'flex', flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
+              <TopTopContainer>
                 <TopContainer borderColor={getBorderColor()}>
                   {pageState === 'view'
                     ? (
@@ -227,7 +227,7 @@ const ProfilePage = () => {
                     {`Current points: ${profileDetails.points}`}
                   </p>
                 </StatsContainer>
-              </div>
+              </TopTopContainer>
               <BodyContainer>
                 <TasksContainer>
                   <h2>Assigned tasks</h2>

@@ -14,6 +14,13 @@ export const ProfilePageContainer = styled('div')`
   text-align: center;
 `;
 
+export const TopTopContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  justify-content: space-between;
+`;
+
 type TopContainerProps = {
   borderColor?: string;
 };
