@@ -50,12 +50,12 @@ public class TaskServiceImplementation implements TaskService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
         
-        Date deadline = task.getDeadline();
+        LocalDate deadline = task.getDeadline();
 
         if (deadline != null) {
             LocalDate currDate = LocalDate.now();
-            LocalDate deadlineLocalDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            if(deadlineLocalDate.isBefore(currDate)) {
+            // LocalDate deadlineLocalDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if(deadline.isBefore(currDate)) {
                 String errorMessage = String.format("Deadline cannot be earlier than the current date.");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
             }
@@ -104,11 +104,11 @@ public class TaskServiceImplementation implements TaskService {
                 taskInDb.setDescription(description);
             }
     
-            Date deadline = task.getDeadline();
+            LocalDate deadline = task.getDeadline();
             if (deadline != null) {
                 LocalDate currDate = LocalDate.now();
-                LocalDate deadlineLocalDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                if(deadlineLocalDate.isBefore(currDate)) {
+                // LocalDate deadlineLocalDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if(deadline.isBefore(currDate)) {
                     String errorMessage = String.format("Deadline cannot be earlier than the current date.");
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
                 }

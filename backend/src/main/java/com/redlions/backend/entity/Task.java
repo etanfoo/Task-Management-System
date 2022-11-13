@@ -1,5 +1,6 @@
 package com.redlions.backend.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ public class Task {
     private String description;
 
     @Column(name="deadline")
-    private Date deadline;
+    private LocalDate deadline;
 
     @Column(name="points")
     private Integer points;
@@ -50,7 +51,7 @@ public class Task {
 
     }
 
-    public Task(Long id, String title, String description, Date deadline) {
+    public Task(Long id, String title, String description, LocalDate deadline) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -81,11 +82,11 @@ public class Task {
         this.description = description;
     }
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return this.deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 

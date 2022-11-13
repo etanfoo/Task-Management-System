@@ -1,5 +1,6 @@
 package com.redlions.backend.util;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -169,17 +170,15 @@ public class Util {
             // Only tasks that are in progress or not started contribute to busyness
             if (status == TASK_IN_PROGRESS || status == TASK_NOT_STARTED) {
                 if (task.getDeadline() != null) {
-                    Date currDate = new Date();
+                    LocalDate currDate = LocalDate.now();
                     // Time difference between the current date and the deadline of the task in hours
-                    long diff = ((task.getDeadline().getTime() - currDate.getTime()) / (1000 * 60 * 60));
+                    // long diff = ((task.getDeadline(). - currDate.getTime()) / (1000 * 60 * 60));
                     // If the difference is less that 24 hours, it is worth more towards busyness
-                    if (diff < 24) {
+                    if (currDate.isEqual(task.getDeadline())) {
                         taskBusyness += 10f;
-                    } else if (diff >= 24 && diff < 48) {
-                        taskBusyness += 5f;
                     } else {
-                        taskBusyness += 2f;
-                    } 
+                        taskBusyness += 5f;
+                    }
                 }
                 
                 // A task in progress is worth less towards busyness than one that isn't started
