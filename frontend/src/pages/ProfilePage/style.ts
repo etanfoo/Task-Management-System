@@ -258,7 +258,7 @@ export const FriendsContainer = styled('div')`
   text-align: left;
   padding: 1rem;;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 100%;  
+  width: 390px;  
   border-radius: 0.5rem;
   margin-bottom: 3rem;
   height: 17rem;

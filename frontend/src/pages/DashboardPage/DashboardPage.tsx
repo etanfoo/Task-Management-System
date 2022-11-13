@@ -2,18 +2,20 @@ import { useEffect, useState } from "react";
 import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, LeftContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, FriendsContainer, ProjectsLabelContainer } from "./style";
-import { MockTasks } from "../../constants/tasks";
+import { BodyContainer, StyledForm, DashboardPageContainer, TasksLabelContainer, OverflowContainer, RightContainer, TasksContainer, StyledTextField, SelectContainer, ProjectsLabelContainer, LeftContainer, FriendsContainer } from "./style";
 import TaskCard from "../../components/TaskCard/TaskCard";
-import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import { Palette } from "../../components/Palette";
 import { getProjects } from "../../api/project";
-import { IProfile, IProject } from "../../interfaces/api-response";
+import { IProfile, IProject, ITask } from "../../interfaces/api-response";
 import ConnectionRequestsModal from "./ConnectionRequestsModal/ConnectionRequestsModal";
-import { getConnections } from "../../api/connect";
 import { useLocation } from "react-router-dom";
+import FriendsList from "../../components/FriendsList/FriendsList";
+import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
+import { getUserTasks } from "../../api/task";
+import FriendsCard from "../../components/FriendsCard/FriendsCard";
 import HappinessTracker from "../../components/HappinessTracker/HappinessTracker";
+import { getConnections } from "../../api/connect";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -24,19 +26,14 @@ const DashboardPage = () => {
 
   const [taskSortType, setTaskSortType] = useState<string>("ID");
   const [projectSortType, setProjectSortType] = useState<string>("Name");
-
   const [allProjects, setAllProjects] = useState<IProject[]>([]);
-
-  // todo: currently disabling until tasks epic is complete
-  // eslint-disable-next-line
-  const [allTasks, setAllTasks] = useState(MockTasks);
-
   const [shownProjects, setShownProjects] = useState<IProject[]>([]);
-  const [shownTasks, setShownTasks] = useState(allTasks);
-
-  const [connections, setConnections] = useState<IProfile[]>([]);
+  const [allTasks, setAllTasks] = useState<ITask[]>([]);
+  const [shownTasks, setShownTasks] = useState<ITask[]>([]);
 
   const [isConnectionRequestsModalVisible, setIsConnectionRequestsModalVisible] = useState<boolean>(false);
+  const [isCreateTaskModalVisible, setIsCreateTaskModalVisible] = useState<boolean>(false);
+  const [connections, setConnections] = useState<IProfile[]>([]);
 
   const fetchAllProjects = async () => {
     try {
@@ -48,6 +45,16 @@ const DashboardPage = () => {
       console.log(err);
     }
   };
+
+  const fetchAllTasks = async () => {
+    try {
+      const resp = await getUserTasks(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      setAllTasks(resp);
+      setShownTasks(resp);
+    } catch (err:any) { 
+      console.log(err);
+    }
+  }
 
   const fetchFriends = async () => {
     try {
@@ -62,17 +69,17 @@ const DashboardPage = () => {
   };
 
   useEffect(() => {
+    fetchAllTasks();
     fetchAllProjects();
-    // todo: update friends list after accepting --> right now just refreshing window after modal closes
     fetchFriends();
   }, []);
 
   useEffect(() => {
     if (pageState === "tasks") {
-      let sortedTasks: any[] = shownTasks;
+      let sortedTasks: ITask[] = shownTasks;
       if (taskSortType === "ID") {
         sortedTasks = [...shownTasks].sort(
-          (taskA, taskB) => taskA.taskId.localeCompare(taskB.taskId)
+          (taskA, taskB) => taskA.id.toString().localeCompare(taskB.id.toString())
         );
       } else if (taskSortType === "Title") {
         sortedTasks = [...shownTasks].sort(
@@ -80,7 +87,7 @@ const DashboardPage = () => {
         );        
       } else if (taskSortType === "Status") {
         sortedTasks = [...shownTasks].sort(
-          (taskA, taskB) => taskA.status.localeCompare(taskB.status)
+          (taskA, taskB) => taskA.status.toString().localeCompare(taskB.status.toString())
         );
       } else if (taskSortType === "Deadline") {
         sortedTasks = [...shownTasks].sort(
@@ -127,9 +134,15 @@ const DashboardPage = () => {
         // todo: temp fix, need to refresh friends list after adding someone
         handleClose={() => {setIsConnectionRequestsModalVisible(false); window.location.reload();}}
       />
+      <CreateTaskModal 
+        isOpen={isCreateTaskModalVisible}
+        handleClose={() => {setIsCreateTaskModalVisible(false)}}
+        projectId={null}
+      />
       <Header 
         triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
         // todo: include trigger create task modal
+        triggerCreateTaskModal={() => setIsCreateTaskModalVisible(true)}
       />
       <BodyContainer>
         <LeftContainer>
@@ -228,8 +241,9 @@ const DashboardPage = () => {
                     <OverflowContainer>
                       {shownTasks.map((task) => (
                         <TaskCard
-                          key={`task ${task.taskId}`}
-                          taskId={task.taskId}
+                          key={`task ${task.id}`}
+                          projectId={task.project.id}
+                          taskId={task.id}
                           title={task.title}
                           deadline={task.deadline}
                           status={task.status}

@@ -23,9 +23,9 @@ export const DeleteOverlayContainer = styled('div')`
 export const ButtonsContainer = styled('div')`
   display: flex;
   width: 10%;
-  position: absolute;
-  top: 70%;
-  left: 44%;
+  position: relative;
+  margin: auto;
+  margin-top: 10vh;
   transform: translate(-50%, -50%);
 
   > :first-of-type {

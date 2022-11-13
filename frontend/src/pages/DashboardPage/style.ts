@@ -20,7 +20,6 @@ export const LeftContainer = styled('div')`
   width: 25rem;
   border-radius: 0.5rem;
   padding: 1rem;
-
   > h2 {
     font-weight: normal;
   }
@@ -36,12 +35,10 @@ export const ImageContainer = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-
   > img {
     width: 3.125rem;
     height: 3.125rem;
     cursor: pointer;
-
     transition: transform .2s;
     &:hover {
       transform: scale(1.10);
@@ -86,7 +83,6 @@ export const TasksContainer = styled('div')`
   padding: 1rem;
   margin-bottom: 2rem;
   text-align: left;
-
   > p {
     margin: auto auto;
     color: ${Palette.thGray};
@@ -97,7 +93,6 @@ export const TasksLabelContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 0 3rem;
-
   > :first-of-type {
     width: 10%;
   };
@@ -117,7 +112,6 @@ export const ProjectsLabelContainer = styled('div')`
   flex-direction: row;
   padding: 0 3rem;
   justify-content: space-between;
-
   > :first-of-type {
     width: 20%;
   };

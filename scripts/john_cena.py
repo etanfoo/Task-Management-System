@@ -11,15 +11,20 @@ PROFILE_ENDPOINT = f'{BASE_URL}/profile'
 PROJECT_ENDPOINT = f'{BASE_URL}/project'
 CONNECT_ENDPOINT = f'{BASE_URL}/profile/connect'
 ACCEPT_CONNECT_ENDPOINT = f'{BASE_URL}/profile/accept'
+TASK_ENDPOINT = f'{BASE_URL}/project'
 
 MOCK_USER_DATA_FILE_PATH = 'mock_user_data.json'
 MOCK_PROJECT_DATA_FILE_PATH = 'mock_project_data.json'
+MOCK_TASK_DATA_FILE_PATH = 'mock_task_data.json'
+
 PROFILE_ABOUTME_CHARACTER_LIMIT = 250
 PROJECT_DESCRIPTION_CHARACTER_LIMIT = 900
+TASK_DESCRIPTION_CHARACTER_LIMIT = 900
 
 NUMBER_OF_USERS = 50
 NUMBER_OF_CONNECTIONS = 30
 NUMBER_OF_PROJECTS = 15
+NUMBER_OF_TASKS = 200
 
 FIRST_USER_ID = 1
 
@@ -93,6 +98,30 @@ def create_projects(headers: dict):
             exit(1)
     print(f"Success! Sent {NUMBER_OF_PROJECTS} POST requests to {PROJECT_ENDPOINT}.")
 
+def create_tasks(headers: dict):
+    with open(MOCK_TASK_DATA_FILE_PATH) as f:
+        tasks = json.load(f)
+
+    first_project_id = 1
+    for i in range(NUMBER_OF_TASKS):
+        task = tasks[i]
+        payload = { 
+            "profileId": task.get("profileId"),
+            "profileAssignee": task.get("profileAssignee"),
+            "task":{
+              "deadline": task.get("task").get("deadline"),
+              "description": task.get("task").get("description")[:TASK_DESCRIPTION_CHARACTER_LIMIT],
+              "points": task.get("task").get("points"),
+              "status": task.get("task").get("status"),
+              "title": task.get("task").get("title")
+            }
+        }
+        response = requests.post(f'{TASK_ENDPOINT}/{first_project_id}/task', json=payload, headers=headers)
+        if response.status_code != HTTPStatus.OK:
+            print(f"Error {response.status_code} when calling {TASK_ENDPOINT}/{first_project_id}/task.")
+            exit(1)
+    print(f"Success! Sent {NUMBER_OF_TASKS} POST requests to {TASK_ENDPOINT}/{first_project_id}/task.")
+
 if __name__ == '__main__':
     first_user_access_token = create_users()
     headers = {
@@ -100,3 +129,4 @@ if __name__ == '__main__':
     }
     create_connections(headers)
     create_projects(headers)
+    create_tasks(headers)

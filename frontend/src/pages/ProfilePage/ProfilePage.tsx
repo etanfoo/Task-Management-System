@@ -2,7 +2,7 @@ import { AboutMeContainer, BodyContainer, DetailsContainer, FriendsContainer, Ic
 import { useParams } from "react-router-dom";
 import { getProfile, putProfile } from "../../api/profile";
 import { ChangeEvent, useEffect, useState } from "react";
-import { IProfile } from "../../interfaces/api-response";
+import { IProfile, ITask } from "../../interfaces/api-response";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import FriendsCard from "../../components/FriendsCard/FriendsCard";
@@ -12,10 +12,10 @@ import EditIcon from "../../assets/edit.png";
 import InfoIcon from "../../assets/info.png";
 import { TextField } from "@mui/material";
 import { EmptyProfile, EmptyUpdatedProfileDetails } from "../../constants/profiles";
-import { MockTasks } from "../../constants/tasks";
 import { toBase64, getInitials } from "../../helpers";
 import { IUpdatedProfileDetails } from "../../interfaces/profile";
 import { getConnections } from "../../api/connect";
+import { getUserTasks } from "../../api/task";
 import { Palette } from "../../components/Palette";
 import BronzeIcon from "../../assets/bronze.png";
 import SilverIcon from "../../assets/silver.png";
@@ -36,6 +36,7 @@ const ProfilePage = () => {
   const [updatedProfileDetails, setUpdatedProfileDetails] = useState<IUpdatedProfileDetails>(EmptyUpdatedProfileDetails);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
   const [friends, setFriends] = useState<IProfile[]>([]);
+  const [userTasks, setUserTasks] = useState<ITask[]>([]);
 
   const loadProfile = async () => {
     try {
@@ -119,9 +120,21 @@ const ProfilePage = () => {
     }
   };
 
+  const fetchUserTasks = async () => {
+    try {
+      const resp = await getUserTasks(parseInt(profileId!));
+      console.log(resp)
+      setUserTasks(resp);
+    } catch (err:any) { 
+      console.log(err);
+    }
+  }
+
+
   useEffect(() => {
     loadProfile();
     fetchFriends();
+    fetchUserTasks();
     // eslint-disable-next-line
   }, [profileId]);
 
@@ -211,24 +224,33 @@ const ProfilePage = () => {
               <BodyContainer>
                 <TasksContainer>
                   <h2>Assigned tasks</h2>
-                  <LabelContainer>
-                    <p>ID</p>
-                    <p>Title</p>
-                    <p>Deadline</p>
-                    <p>Status</p>
-                  </LabelContainer>
-                  <OverflowContainer>
-                    {/* todo: replace with real data returned from api */}
-                    {MockTasks.map((task) => (
-                      <TaskCard
-                        key={task.taskId}
-                        taskId={task.taskId}
-                        title={task.title}
-                        deadline={task.deadline}
-                        status={task.status}
-                      />
-                    ))}
-                  </OverflowContainer>
+                  {
+                    userTasks.length === 0
+                    ?
+                    // todo: Need to style
+                    <p>Nothing to see here...</p>
+                    :
+                    <>
+                      <LabelContainer>
+                        <p>ID</p>
+                        <p>Title</p>
+                        <p>Deadline</p>
+                        <p>Status</p>
+                      </LabelContainer>
+                      <OverflowContainer>
+                        {userTasks.map((task) => (
+                          <TaskCard
+                            key={task.id}
+                            taskId={task.id}
+                            projectId={task.project.id}
+                            title={task.title}
+                            deadline={task.deadline}
+                            status={task.status}
+                          />
+                        ))}
+                      </OverflowContainer>
+                    </>
+                  }
                 </TasksContainer>
                 <RightContainer>
                   <AboutMeContainer>

@@ -206,7 +206,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         taskList.addAll(profile.getAuthoredTasks());
         Collections.sort(taskList, (a, b) -> a.getId().compareTo(b.getId()));
         return taskList;
-    }
+    }   
 
     /**
      * function to check if a password is valid

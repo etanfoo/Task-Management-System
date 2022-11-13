@@ -14,6 +14,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import CreateProjectPage from "./pages/CreateProject/CreateProject";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ProjectPage from "./pages/ProjectPage/ProjectPage";
+import TaskPage from "./pages/TaskPage/TaskPage";
 import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
 import InfoPage from "./pages/InfoPage/InfoPage";
 
@@ -25,26 +26,23 @@ const AuthenticatedRoutes = () => {
 const Router = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/info" element={<InfoPage />} />
-      <Route element={<AuthenticatedRoutes />}>
-        <Route path="/profile/:profileId" element={<ProfilePage />} />
-        <Route
-          path="/task/:taskId"
-          element={<div>this be the task page</div>}
-        />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/project/create" element={<CreateProjectPage />} />
-        <Route path="/project/:projectId" element={<ProjectPage />} />
+      <Route path='/' element={ <LandingPage /> } />
+      <Route path='/login' element={ <LoginPage /> } />
+      <Route path='/signup' element={ <SignUpPage /> } />
+      <Route path="/info" element={ <InfoPage /> } />
+      <Route element={ <AuthenticatedRoutes /> }>
+        <Route path='/profile/:profileId' element={ <ProfilePage /> } />
+        <Route path='/project/:projectId/task/:taskId' element={ <TaskPage /> } />
+        <Route path='/dashboard' element={ <DashboardPage /> } />
+        <Route path='/project/create' element={ <CreateProjectPage /> } />
+        <Route path='/project/:projectId' element={ <ProjectPage /> } />
         <Route
           path="/project/:projectId/statistics"
-          element={<StatisticsPage />}
+          element={ <StatisticsPage /> }
         />
-        <Route path="/friends" element={<FriendsPage />} />
+        <Route path="/friends" element={ <FriendsPage /> } />
       </Route>
-      <Route path="*" element={<PageNotFound />} />
+      <Route path="*" element={ <PageNotFound /> } />
     </Routes>
   </BrowserRouter>
 );

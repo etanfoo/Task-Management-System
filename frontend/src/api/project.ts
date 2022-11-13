@@ -15,7 +15,7 @@ export const getProjects = async (profileId: number): Promise<IProject[]> => {
   }
 };
 
-export const postProject = async (profileId: string, project: IProjectDetails, profileIdsToAdd: number[]): Promise<IProject> => {
+export const postProject = async (profileId: number, project: IProjectDetails, profileIdsToAdd: number[]): Promise<IProject> => {
   try {
     const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/project`, {
       profileId,

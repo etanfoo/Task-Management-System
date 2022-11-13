@@ -26,6 +26,15 @@ export interface IProject {
   title: string;
 };
 
+// Add more fields
 export interface ITask {
-  // todo
+  id: number;
+  title: string;
+  description: string;
+  project: IProject;
+  deadline: string;
+  points: number;
+  status: number;
+  profileAssignee: IProfile;
+  profileAuthor: IProfile;
 };

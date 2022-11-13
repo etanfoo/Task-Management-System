@@ -1,39 +1,33 @@
 import { useNavigate } from "react-router-dom";
+import { taskStatus } from "../../constants/tasks";
+import { fetchStatusColor, formatDate } from "../../helpers";
+import { TaskStatus } from "../../interfaces/task";
 import { Palette } from "../Palette";
 import { TaskCardContainer } from "./style";
 
 type TaskCardProps = {
   // todo: may need project id/name as well in future for displayed taskid
-  taskId: string;
+  projectId: number;
+  taskId: number;
   title: string;
   deadline: string;
-  status: string;
+  status: number;
 }
 
-const TaskCard = ({ taskId, title, deadline, status}: TaskCardProps) => {
+const TaskCard = ({ projectId, taskId, title, deadline, status}: TaskCardProps) => {
   const navigate = useNavigate();
 
-  const fetchStatusColor = () => {
-    if (status === "Not Started") {
-      return Palette.thGray;
-    } else if (status === "In Progress") {
-      return Palette.progressBlue;
-    } else if (status === "Blocked") {
-      return Palette.errorRed;
-    } else if (status === "Completed") {
-      return Palette.successGreen;
-    } else {
-      return 'black';
-    }
-  };
-  
+  if (deadline !== null) deadline = formatDate(deadline);
+
   return (
-    <TaskCardContainer onClick={() => navigate(`/task/${taskId}`)}>
+    <TaskCardContainer onClick={() => navigate(`/project/${projectId}/task/${taskId}`)}>
       <p>{taskId}</p>
       <p>{title}</p>
       <p>{deadline}</p>
       {/* todo: do we want to have this editable? i.e. a <select> component */}
-      <p style={{ backgroundColor: fetchStatusColor(), color: "white", borderRadius: "1rem", textAlign: "center"}}>{status}</p>
+      <p
+        style={{ backgroundColor: fetchStatusColor(status), color: "white", borderRadius: "1rem", textAlign: "center"}}
+      >{taskStatus[status as keyof TaskStatus]}</p>
     </TaskCardContainer>
   );
 };

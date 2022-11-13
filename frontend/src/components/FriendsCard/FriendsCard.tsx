@@ -29,7 +29,7 @@ const FriendsCard = ({ imageURL, name, email, profileId, functionality, projectI
               functionality.match("profile-project") && (parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!) !== profileId) 
                 ?
                   <FriendsCardEditContainer>
-                    <DeleteOverlay isOpen={isDelete} content="project-member" contentId={projectId!} closeCallback={() => setIsDelete(false)} memberId={profileId}/>
+                    <DeleteOverlay isOpen={isDelete} content="project-member" contentId={projectId!} closeCallback={() => setIsDelete(false)} memberId={profileId} secondaryContentId={null}/>
                     <ProfileContainer onClick={() => navigate(`/profile/${profileId}`)}>
                       {!!imageURL
                         ? (
