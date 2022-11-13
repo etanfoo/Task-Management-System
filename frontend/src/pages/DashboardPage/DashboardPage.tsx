@@ -262,11 +262,12 @@ const DashboardPage = () => {
                       <p style={{ color: projectSortType === "Description" ? "black" : Palette.thGray }}>Description</p>                  
                     </ProjectsLabelContainer>
                     <OverflowContainer>
-                      {shownProjects.map((project) => (
+                      {shownProjects.map((project, index) => (
                         <ProjectCard
                           key={`project ${project.id}`}
                           projectId={project.id}
                           name={project.title}
+                          isEven={index % 2 === 0}
                           description={project.description}
                         />
                       ))}
