@@ -23,7 +23,6 @@ import CreateTaskModal from "../../components/CreateTaskModal/CreateTaskModal";
 
 const ProjectPage = () => {
   const { projectId } = useParams();
-  // Make sure IProject and IProjectDetails
   const [projectDetails, setProjectDetails] = useState<IProject>(EmptyProjectView);
   const [updatedProjectDetails, setUpdatedProjectDetails] = useState<IProjectDetails>(EmptyProjectEdit);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -39,15 +38,12 @@ const ProjectPage = () => {
   const [shownTasks, setShownTasks] = useState<ITask[]>([]);
   const [isCreateTaskModalVisible, setIsCreateTaskModalVisible] = useState<boolean>(false);
 
-
   const loadProject = async () => {
     try {
       const resp = await getProject(projectId!);
       setProjectDetails(resp);
       setCurrentMembers(resp.profiles);
       console.log(resp)
-      // setAllTasks(resp.tasks);
-      // setShownTasks(resp.tasks);
       const connections = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       // Filters a user's connections with current members of this project 
       setPotentialMembers(connections.filter(profileA => !resp.profiles.some(profileB => profileA.id === profileB.id)));
@@ -62,7 +58,6 @@ const ProjectPage = () => {
     try {
       const resp = await getProjectTasks(parseInt(projectId!));
       setAllTasks(resp);
-      console.log(resp)
       setShownTasks(resp);
     } catch(err: any) {
       console.log(err);
@@ -87,16 +82,19 @@ const ProjectPage = () => {
   };
 
   const updateProject = async () => {
+    // If the user presses update button but no fields were changed 
     if (updatedProjectDetails.title === "" && updatedProjectDetails.description === "" && addedMembers.length === 0) {
       setPageState('view');
       return;
     }
+    
+    // Check if the user provided a new input, if not use the previous input
+    updatedProjectDetails.title = (!!updatedProjectDetails.title ? updatedProjectDetails.title : projectDetails.title);
+    updatedProjectDetails.description = (!!updatedProjectDetails.description ? updatedProjectDetails.description : projectDetails.description);
+    updatedProjectDetails.id = projectDetails.id;
 
     try {
-      updatedProjectDetails.title = (!!updatedProjectDetails.title ? updatedProjectDetails.title : projectDetails.title);
-      updatedProjectDetails.description = (!!updatedProjectDetails.description ? updatedProjectDetails.description : projectDetails.description);
-      updatedProjectDetails.id = projectDetails.id;
-      console.log(addedMembers)
+      
       await putProject(
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!),
         updatedProjectDetails,

@@ -48,11 +48,10 @@ const TaskPage = () => {
   };
 
   const loadTask = async () => {
-    // console.log(projectId, taskId);
+
     try {
       const resp = await getTask(parseInt(projectId!), parseInt(taskId!));
       setTaskDetails(resp);
-      console.log(resp)
       setProjectTitle(resp.project.title);
       setPossibleAssignees(resp.project.profiles);
       setSelectedMember(resp.profileAssignee);
@@ -77,31 +76,37 @@ const TaskPage = () => {
   const cancelEditTask = () => {
     setPageState("view");
     setUpdatedTaskDetails(EmptyTaskEdit);
-    // setTaskDetails({...taskDetails, points: points});
-    // setTaskDetails({...taskDetails, status: status});
   }
-  // Display project as well
 
   const updateTask = async () => {
-    // console.log(updatedTaskDetails)
-    // setUpdatedTaskDetails({ ...updatedTaskDetails, status: status})
-    // console.log(selectedMember)
-    if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && status === taskDetails.status && points === taskDetails.points && selectedMember.id === taskDetails.profileAssignee.id && updatedTaskDetails.description === "") {
-      setPageState("view");
-      console.log("WHY RESET")
-      return;
-    } 
-
-    updatedTaskDetails.title = (updatedTaskDetails.title !== "" ? updatedTaskDetails.title : taskDetails.title);
-    updatedTaskDetails.deadline = (!!updatedTaskDetails.deadline ? updatedTaskDetails.deadline : taskDetails.deadline);
-    updatedTaskDetails.description = (!!updatedTaskDetails.description ? updatedTaskDetails.description : taskDetails.description);
-    updatedTaskDetails.points = (points !== taskDetails.points  ? taskDetails.points: points);
-    updatedTaskDetails.status = (updatedTaskDetails.status !== taskDetails.status ? updatedTaskDetails.status : taskDetails.status);
+    // If the user presses update button but no fields were changed 
+    if (pageState === "edit") {
+      if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && status === taskDetails.status && points === taskDetails.points && selectedMember.id === taskDetails.profileAssignee.id && updatedTaskDetails.description === "") {
+        setPageState("view");
+        return;
+      } 
+      // Check if the user provided a new input, if not use the previous input
+      updatedTaskDetails.title = (updatedTaskDetails.title !== "" ? updatedTaskDetails.title : taskDetails.title);
+      updatedTaskDetails.deadline = (!!updatedTaskDetails.deadline ? updatedTaskDetails.deadline : taskDetails.deadline);
+      updatedTaskDetails.description = (!!updatedTaskDetails.description ? updatedTaskDetails.description : taskDetails.description);
+      updatedTaskDetails.points = (points !== taskDetails.points  ? taskDetails.points: points);
+      updatedTaskDetails.status = (updatedTaskDetails.status !== taskDetails.status ? updatedTaskDetails.status : taskDetails.status);
+    } else {
+      // todo:  remove updateTaskStatus useEffect
+      updatedTaskDetails.title = taskDetails.title;
+      updatedTaskDetails.points = taskDetails.points;
+      updatedTaskDetails.description = taskDetails.description;
+      updatedTaskDetails.status = status;
+    }
     
-
     try {
-      // No previous assignee and no member was selected to be assignee
-      await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      await putTask(
+        parseInt(projectId!), 
+        parseInt(taskId!), 
+        updatedTaskDetails, 
+        selectedMember.id, 
+        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
+      );
       window.location.reload();
     } catch (err: any) {
       console.log(err);
@@ -114,32 +119,35 @@ const TaskPage = () => {
 
   const updateStatus = (status_num: number) => {
     setUpdatedTaskDetails({...updatedTaskDetails, status: status_num});
-    
-    setStatus(status_num)
-    if (pageState === "view") {
-      setChangedStatus(true);
-    } 
+    setStatus(status_num);
+    // Triggers the useEffect 
+    if (pageState === "view") setChangedStatus(true);
   }
 
   useEffect(() => {
     const updateTaskStatus = async () => {
+      // Doesn't trigger on initial page load
       if (changedStatus) {
         updatedTaskDetails.title = taskDetails.title;
         updatedTaskDetails.points = taskDetails.points;
         updatedTaskDetails.description = taskDetails.description;
         updatedTaskDetails.status = status;
-        console.log("ONLY WHEN VIEWING")
-        await putTask(parseInt(projectId!), parseInt(taskId!), updatedTaskDetails, selectedMember.id, parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+        await putTask(
+          parseInt(projectId!), 
+          parseInt(taskId!), 
+          updatedTaskDetails, 
+          selectedMember.id, 
+          parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
+        );
       }
     }
     updateTaskStatus();
-    // todo: currently disabling next line: may have to take a look into this
     // eslint-disable-next-line
   }, [changedStatus])
 
   /*
+  todo
     - Cursor for 
-    - Add colour to project list
     - Centre Friends list title in task page
     - Project link overflow?
   */

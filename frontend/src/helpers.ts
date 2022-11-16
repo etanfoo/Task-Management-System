@@ -11,6 +11,9 @@ export const toBase64 = (file: any) => {
   });
 };
 
+/*
+ * Returns initial of given name
+ */
 export const getInitials = (name: string) => {
   if (name === "") {
     return null;
@@ -38,14 +41,23 @@ export const search = (profiles: IProfile[], searchMember: string) => {
   );
 };
 
+/*
+ * Formats the date from YYYY-MM-DD to DD-MM-YYYY
+ */
 export const formatDate = (date: string) => {
   return date.split("-").reverse().join("/"); 
 }
 
+/*
+ * Receives array of profiles and filters depending on given profileId
+ */
 export const findSelectedMember = (profileId: number, profiles: IProfile[]) => {
   return profiles.filter((user: IProfile) => user.id === profileId)[0];
 }
 
+/*
+ * Returns corresponding task status colour
+ */
 export const fetchStatusColor = (status: number) => {
   if (status === 0) {
     return Palette.thGray;

@@ -17,38 +17,22 @@ export const BodyContainer = styled('div')`
   padding-top: 1rem;
 `;
 
-
 export const MainContainer = styled('div')`
   height: 100%;
   width: 80%;
   padding: 0 4rem;
-
-  // border: 2px solid ${Palette.gray};
-
-  // > h1 {
-  //   font-weight: normal;
-  // };
 `;
 
 export const TaskContainer = styled('div')`
-  // height: 100%;
-  // width: 80%;
   padding: 0 2rem;
-
   border: 1px solid ${Palette.gray};
-  // > h2 {
-  //   font-weight: normal;
-  //   // text-align: center;
-  // };
+
   > h3 {
     font-weight: normal;
   };
 `;
 
 export const DescriptionContainer = styled('div')`
-  // height: 100%;
-  // width: 80%;
-  // Change??
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding: 1rem;
@@ -57,14 +41,6 @@ export const DescriptionContainer = styled('div')`
 `;
 
 export const TaskMembers = styled('div')`
-  // // height: 100%;
-  // // width: 80%;
-  // // Change??
-  // margin: 1rem;
-  // padding: 0 2rem;
-  
-  // border: 2px solid ${Palette.gray};
-  // text-align: center;
   > h3 {
     font-weight: normal;
     display: flex;
@@ -82,7 +58,6 @@ export const UserAvatar = styled('img')`
   margin-left: 1rem;
   margin-right: 0.5rem;
   border-radius: 5rem;
-  // margin-top: 0.5rem;
 `;
 
 export const UserAvatarEdit = styled('img')`
@@ -99,16 +74,10 @@ export const StyledAvatar = styled(Avatar)`
   background-color: ${Palette.mainTeal};
 `;
 
-// export const StyledSelect = styled(Select)`
-//   height: 60px;
-//   margin-left: 0.5rem;
-// `;
-
 export const UserCard = styled('div')`
   display: flex;
   > h3 {
     font-weight: normal;
-    // margin-top: 0.2rem;
     margin-left: 0.5rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -180,8 +149,7 @@ export const TopContainer = styled('div')`
 
 export const TitleContainerView = styled('div')`
   display: flex;
-  // flex-direction: column;
-  // margin-top: 1rem;
+
   > h1 {
     font-weight: normal;
     padding-top: 0rem;
@@ -209,7 +177,6 @@ export const ProjectLink = styled('h1')`
 
 export const TitleContainerEdit = styled('div')`
   display: flex;
-  // flex-direction: column;
   margin-top: 1rem;
 
   h3 {
@@ -221,7 +188,7 @@ export const TitleContainerEdit = styled('div')`
 
 export const DeadlineContainer = styled('div')`
   display: flex;
-  // flex-direction: column;
+
   > h3 {
     font-weight: normal;
     margin-right: 0.5rem;
