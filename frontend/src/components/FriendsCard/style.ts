@@ -18,6 +18,7 @@ export const FriendsCardContainer = styled('div')`
   }
 
   > img {
+    width: 3.125rem; 
     height: 3.125rem;
     margin-right: 1rem;
     border-radius: 5rem;
@@ -46,6 +47,7 @@ export const ProfileContainer = styled('div')`
 
 
 export const UserAvatar = styled('img')`
+  width: 3.125rem;  
   height: 3.125rem;
   margin-right: 1rem;
   border-radius: 5rem;

@@ -54,7 +54,7 @@ export const BodyContainer = styled('div')`
 
 export const RightContainer = styled('div')`
   height: 100%;
-  width: 80%;
+  width: 77.5%;
   padding: 0 4rem;
 `;
 
@@ -83,6 +83,7 @@ export const TasksContainer = styled('div')`
   padding: 1rem;
   margin-bottom: 2rem;
   text-align: left;
+  
   > p {
     margin: auto auto;
     color: ${Palette.thGray};
