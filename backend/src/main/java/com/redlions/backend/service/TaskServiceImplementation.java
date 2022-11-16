@@ -24,10 +24,11 @@ public class TaskServiceImplementation implements TaskService {
     private final TaskRepository taskRepo;
     private final Util util;
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
-    
+
     /**
      * creates a task and save it to database
-     * throws error if task does not contain a title, points or description is too long
+     * throws error if task does not contain a title, points or description is too
+     * long
      */
     public Task create(Task task, Long projectId, Long profileAuthor, Long profileAssignee) {
         Project project = util.checkProject(projectId);
@@ -46,16 +47,18 @@ public class TaskServiceImplementation implements TaskService {
         String description = task.getDescription();
 
         if (description != null && description.length() > DESCRIPTION_CHARACTER_LIMIT) {
-            String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
+            String errorMessage = String.format("\"Description\" section must be below %d characters long.",
+                    DESCRIPTION_CHARACTER_LIMIT);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-        
+
         LocalDate deadline = task.getDeadline();
 
         if (deadline != null) {
             LocalDate currDate = LocalDate.now();
-            // LocalDate deadlineLocalDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            if(deadline.isBefore(currDate)) {
+            // LocalDate deadlineLocalDate =
+            // deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if (deadline.isBefore(currDate)) {
                 String errorMessage = String.format("Deadline cannot be earlier than the current date.");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
             }
@@ -66,15 +69,15 @@ public class TaskServiceImplementation implements TaskService {
         if (profileAssignee != null) {
             Profile assignee = util.checkProfile(profileAssignee);
             task.setProfileAssignee(assignee);
-        // setting profile assignee to author if no assignee is passed in
+            // setting profile assignee to author if no assignee is passed in
         } else {
             task.setProfileAssignee(author);
         }
-        
+
         // Initialise the task to not started.
         task.setStatus(util.TASK_NOT_STARTED);
         task.setProject(project);
-        
+
         return taskRepo.save(task);
     }
 
@@ -89,56 +92,61 @@ public class TaskServiceImplementation implements TaskService {
         Task taskInDb = util.checkTask(taskId);
         util.isTaskInProject(projectId, taskId);
 
-        // checking if task is passed in case only updating profile and not passing in task
+        // checking if task is passed in case only updating profile and not passing in
+        // task
         if (task != null) {
             String title = task.getTitle();
             if (title != null) {
                 taskInDb.setTitle(title);
             }
-    
+
             String description = task.getDescription();
             if (description != null && description.length() > DESCRIPTION_CHARACTER_LIMIT) {
-                String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
+                String errorMessage = String.format("\"Description\" section must be below %d characters long.",
+                        DESCRIPTION_CHARACTER_LIMIT);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
             } else {
                 taskInDb.setDescription(description);
             }
-    
+
             LocalDate deadline = task.getDeadline();
             if (deadline != null) {
                 LocalDate currDate = LocalDate.now();
-                // LocalDate deadlineLocalDate = deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                if(deadline.isBefore(currDate)) {
+                // LocalDate deadlineLocalDate =
+                // deadline.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (deadline.isBefore(currDate)) {
                     String errorMessage = String.format("Deadline cannot be earlier than the current date.");
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
                 }
                 taskInDb.setDeadline(deadline);
             }
-    
+
             Integer points = task.getPoints();
             if (points != null) {
                 taskInDb.setPoints(points);
             }
-    
+
             Integer status = task.getStatus();
-            
+
             if (status != null) {
                 Long assigneeId = taskInDb.getProfileAssignee().getId();
                 Long authorId = taskInDb.getProfileAuthor().getId();
-    
+
                 // Only the assignee and the author are able to change the status of the task
                 if (profileId.equals(assigneeId) || profileId.equals(authorId)) {
                     // Get the status from the task in the db
                     Integer prevStatus = taskInDb.getStatus();
                     // Set it to the new status
                     taskInDb.setStatus(status);
-                    // Use prev status and current status to determine how we need to update the user's points
+                    // Use prev status and current status to determine how we need to update the
+                    // user's points
                     updateProfilePoints(prevStatus, status, taskInDb.getProfileAssignee(), taskInDb.getPoints());
                 } else {
-                    String errorMessage = String.format("User %d must be the author or assignee to change the status of this task.", profileId);
+                    String errorMessage = String.format(
+                            "User %d must be the author or assignee to change the status of this task.", profileId);
                     throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
                 }
-                
+
             }
         }
 
@@ -152,6 +160,7 @@ public class TaskServiceImplementation implements TaskService {
 
     /**
      * function to update profile points
+     * 
      * @param prevStatus
      * @param status
      * @param profileAssignee
@@ -159,13 +168,15 @@ public class TaskServiceImplementation implements TaskService {
      */
     private void updateProfilePoints(Integer prevStatus, Integer status, Profile profileAssignee, Integer points) {
         Integer currPoints = profileAssignee.getPoints();
-        // When the task is complete we add the points to the profile, need to make sure that the 
+        // When the task is complete we add the points to the profile, need to make sure
+        // that the
         // task was not already complete.
         if (status == util.TASK_COMPLETE && prevStatus != util.TASK_COMPLETE) {
             profileAssignee.setPoints(currPoints + points);
         }
-        
-        // If the task is moved from complete to in progress or not started we remove the points from the profile
+
+        // If the task is moved from complete to in progress or not started we remove
+        // the points from the profile
         if (prevStatus == util.TASK_COMPLETE && status != util.TASK_COMPLETE) {
             // Set the points to 0 if they're going to go into the negative (somehow)
             if (currPoints < points) {
@@ -193,7 +204,7 @@ public class TaskServiceImplementation implements TaskService {
 
         Project project = util.checkProject(projectId);
         util.isProfileInProject(profileId, projectId, project);
-        
+
         Task task = util.checkTask(taskId);
         util.isTaskInProject(projectId, taskId);
 
@@ -203,6 +214,5 @@ public class TaskServiceImplementation implements TaskService {
         taskRepo.delete(task);
 
     }
-
 
 }

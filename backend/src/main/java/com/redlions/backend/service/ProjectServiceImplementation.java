@@ -28,16 +28,16 @@ public class ProjectServiceImplementation implements ProjectService {
     private final Util util;
     private final int DESCRIPTION_CHARACTER_LIMIT = 1000;
 
-
     /**
      * create a project and save it to database
      * profileId passed through is automatically added to the project
-     * throws an error if project does not contain a title or description is too long
+     * throws an error if project does not contain a title or description is too
+     * long
      */
     @Override
     public Project create(Project project, Long profileId, Set<Long> profileIdsToAdd) {
         Profile profile = util.checkProfile(profileId);
-        
+
         if (project.getTitle() == null) {
             String errorMessage = String.format("Project must contain a title");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
@@ -45,20 +45,21 @@ public class ProjectServiceImplementation implements ProjectService {
 
         String description = project.getDescription();
         if (description != null && description.length() > DESCRIPTION_CHARACTER_LIMIT) {
-            String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
+            String errorMessage = String.format("\"Description\" section must be below %d characters long.",
+                    DESCRIPTION_CHARACTER_LIMIT);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
         Set<Profile> profiles = util.getProfilesFromIds(profileIdsToAdd);
-        for (Profile currProfile: profiles) {
+        for (Profile currProfile : profiles) {
             project.addProfile(currProfile);
         }
         project.addProfile(profile);
         return projectRepo.save(project);
     }
-    
+
     /**
-     * update an existing project given a project id 
+     * update an existing project given a project id
      * throws error if description is too long
      */
     @Override
@@ -67,7 +68,7 @@ public class ProjectServiceImplementation implements ProjectService {
         Project projectInDb = util.checkProject(projectId);
 
         util.isProfileInProject(profileId, projectId, projectInDb);
-        
+
         String title = project.getTitle();
         if (title != null) {
             projectInDb.setTitle(title);
@@ -76,7 +77,8 @@ public class ProjectServiceImplementation implements ProjectService {
         String description = project.getDescription();
         if (description != null) {
             if (description.length() > DESCRIPTION_CHARACTER_LIMIT) {
-                String errorMessage = String.format("\"Description\" section must be below %d characters long.", DESCRIPTION_CHARACTER_LIMIT);
+                String errorMessage = String.format("\"Description\" section must be below %d characters long.",
+                        DESCRIPTION_CHARACTER_LIMIT);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
             } else {
                 projectInDb.setDescription(description);
@@ -84,7 +86,7 @@ public class ProjectServiceImplementation implements ProjectService {
         }
 
         Set<Profile> newProfiles = util.getProfilesFromIds(profileIdsToAdd);
-        for (Profile currProfile: newProfiles) {
+        for (Profile currProfile : newProfiles) {
             projectInDb.addProfile(currProfile);
         }
 
@@ -120,7 +122,7 @@ public class ProjectServiceImplementation implements ProjectService {
         util.isProfileInProject(profileId, projectId, projectInDb);
 
         Set<Profile> profilesToDelete = util.getProfilesFromIds(profileIds);
-        for (Profile currProfile: profilesToDelete) {
+        for (Profile currProfile : profilesToDelete) {
             projectInDb.removeProfile(currProfile);
         }
     }
@@ -135,9 +137,10 @@ public class ProjectServiceImplementation implements ProjectService {
         util.isProfileInProject(profileId, projectId, projectInDb);
 
         Profile profileToRemove = util.checkProfile(profileIdToRemove);
-        for (Task t: projectInDb.getTasks()) {
+        for (Task t : projectInDb.getTasks()) {
             if (t.getProfileAssignee().getId().equals(profileIdToRemove)) {
-                String errorMessage = String.format("Profile to remove is currently an assignee of a task, please assign the task to someone else before removing them from this project");
+                String errorMessage = String.format(
+                        "Profile to remove is currently an assignee of a task, please assign the task to someone else before removing them from this project");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
             }
         }
@@ -185,7 +188,7 @@ public class ProjectServiceImplementation implements ProjectService {
         happiness.put(util.NEUTRAL_FACE, 0);
         happiness.put(util.COMFORTABLE_FACE, 0);
         happiness.put(util.HAPPY_FACE, 0);
-    
+
         Map<String, Double> busyness = new HashMap<String, Double>();
 
         busyness.put("0", 0.0);
@@ -196,13 +199,13 @@ public class ProjectServiceImplementation implements ProjectService {
         busyness.put("100", 0.0);
 
         // tallying up tasks
-        for (Task task: project.getTasks()) {
+        for (Task task : project.getTasks()) {
             Integer status = task.getStatus();
             tasks.put(status, tasks.get(status) + 1);
         }
 
         // tallying up profile happiness and busyness
-        for (Profile profile: project.getProfiles()) {
+        for (Profile profile : project.getProfiles()) {
             // updating busyness before retrieving it
             util.updateBusyness(profile);
             Integer happinessLevel = profile.getHappiness();

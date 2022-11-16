@@ -41,7 +41,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     private final int ABOUT_ME_SECTION_CHARACTER_LIMIT = 300;
     private final Util util;
     private final int MIN_PASSWORD_LENGTH = 6;
-    
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Profile profile = profileRepo.findByEmail(email);
@@ -60,7 +60,8 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
     /**
      * Create a profile and save it to database.
      * To create a profile, username and password is required.
-     * throws error if profile is already in use or email/password/happiness is invalid
+     * throws error if profile is already in use or email/password/happiness is
+     * invalid
      */
     @Override
     public Profile create(Profile profile) {
@@ -80,7 +81,8 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
         if (profile.getHappiness() != null && !isValidHappiness(profile.getHappiness())) {
             String errorMessage = String.format("\"Happiness\" value must be %d, %d, %d, %d, %d or %d",
-                    util.NO_FACE_PROVIDED, util.STRESSED_FACE, util.WORRIED_FACE, util.NEUTRAL_FACE, util.COMFORTABLE_FACE, util.HAPPY_FACE);
+                    util.NO_FACE_PROVIDED, util.STRESSED_FACE, util.WORRIED_FACE, util.NEUTRAL_FACE,
+                    util.COMFORTABLE_FACE, util.HAPPY_FACE);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
@@ -92,7 +94,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         log.info("Saving new profile {} to database", email);
         // encrypting password to not save plain text in db
         profile.setPassword(passwordEncoder.encode(password));
-        
+
         return profileRepo.save(profile);
     }
 
@@ -134,7 +136,8 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         } else {
             String errorMessage = String.format(
                     "\"Happiness\" value must be %d (NO_FACE_PROVIDED), %d (STRESSED_FACE), %d (WORRIED_FACE), %d (NEUTRAL_FACE), %d (COMFORTABLE_FACE) or %d (HAPPY_FACE)",
-                    util.NO_FACE_PROVIDED, util.STRESSED_FACE, util.WORRIED_FACE, util.NEUTRAL_FACE, util.COMFORTABLE_FACE, util.HAPPY_FACE);
+                    util.NO_FACE_PROVIDED, util.STRESSED_FACE, util.WORRIED_FACE, util.NEUTRAL_FACE,
+                    util.COMFORTABLE_FACE, util.HAPPY_FACE);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
@@ -206,10 +209,11 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
         taskList.addAll(profile.getAuthoredTasks());
         Collections.sort(taskList, (a, b) -> a.getId().compareTo(b.getId()));
         return taskList;
-    }   
+    }
 
     /**
      * function to check if a password is valid
+     * 
      * @param password
      * @return true if valid and false if invalid
      */
@@ -246,6 +250,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
     /**
      * function to check if a given character is special character or not
+     * 
      * @param ch
      * @return true if special character false if not
      */
@@ -256,6 +261,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
     /**
      * function to check if an email is valid or not
+     * 
      * @param email
      * @return true if valid false if invalid
      */
@@ -267,6 +273,7 @@ public class ProfileServiceImplementation implements ProfileService, UserDetails
 
     /**
      * function to check if happiness is valid or not
+     * 
      * @param happiness
      * @return true if valid false if invalid
      */

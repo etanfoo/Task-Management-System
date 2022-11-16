@@ -16,7 +16,6 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 @SpringBootTest
 public class ProfileTests {
     int PORT = 7777;
@@ -26,12 +25,12 @@ public class ProfileTests {
     public void GetUserWithInvalidId_Throws400() throws IOException {
         String id = "9929";
         HttpUriRequest request = new HttpGet(URL + "/" + id);
-        HttpResponse response = HttpClientBuilder.create().build().execute( request );
+        HttpResponse response = HttpClientBuilder.create().build().execute(request);
         assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.BAD_REQUEST.value());
 
         String id2 = "horse";
         request = new HttpGet(URL + "/" + id2);
-        response = HttpClientBuilder.create().build().execute( request );
+        response = HttpClientBuilder.create().build().execute(request);
 
         assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.BAD_REQUEST.value());
     }
@@ -40,15 +39,15 @@ public class ProfileTests {
     public void GetUserWithValidId_Throws200() throws IOException {
         String id = "1";
         HttpUriRequest request = new HttpGet(URL + "/" + id);
-        HttpResponse httpResponse = HttpClientBuilder.create().build().execute( request );
+        HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
         assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.OK.value());
     }
 
     @Test
     public void CreateUser() throws IOException {
         String payload = "{" +
-                    "\"email\": \"bob221@gmail.com\"," +
-                    "\"password\": \"password1234\"" +
+                "\"email\": \"bob221@gmail.com\"," +
+                "\"password\": \"password1234\"" +
                 "}";
         StringEntity entity = new StringEntity(payload,
                 ContentType.APPLICATION_JSON);

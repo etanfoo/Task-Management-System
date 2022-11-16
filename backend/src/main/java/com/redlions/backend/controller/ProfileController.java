@@ -31,6 +31,7 @@ public class ProfileController {
 
     /**
      * get mapping to return all profiles
+     * 
      * @return
      */
     @GetMapping
@@ -41,6 +42,7 @@ public class ProfileController {
 
     /**
      * get mapping to return a single profile given an id
+     * 
      * @param id
      * @return
      */
@@ -70,54 +72,61 @@ public class ProfileController {
 
     /**
      * post mapping to send a connect request between 2 profiles
+     * 
      * @param user_id
      * @param target_id
      * @return
      */
     @PostMapping("/connect/{id}/{id2}")
     @ResponseBody
-    public ResponseEntity<HashMap<String, Long>> requestConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+    public ResponseEntity<HashMap<String, Long>> requestConnection(@PathVariable("id") long user_id,
+            @PathVariable("id2") long target_id) {
         HashMap<String, Long> response = profileService.requestConnection(user_id, target_id);
         return new ResponseEntity<HashMap<String, Long>>(
-            response,
-            HttpStatus.OK);
-        
+                response,
+                HttpStatus.OK);
+
     }
 
     /**
      * post mapping to accept a connect request between 2 profiles
+     * 
      * @param user_id
      * @param target_id
      * @return
      */
     @PostMapping("/accept/{id}/{id2}")
     @ResponseBody
-    public ResponseEntity<HashMap<String, Long>>  acceptConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+    public ResponseEntity<HashMap<String, Long>> acceptConnection(@PathVariable("id") long user_id,
+            @PathVariable("id2") long target_id) {
         HashMap<String, Long> response = profileService.acceptConnection(user_id, target_id);
         return new ResponseEntity<HashMap<String, Long>>(
-            response,
-            HttpStatus.OK);
-        
+                response,
+                HttpStatus.OK);
+
     }
 
     /**
      * post mapping to reject a connect request between 2 profiles
+     * 
      * @param user_id
      * @param target_id
      * @return
      */
     @PostMapping("/reject/{id}/{id2}")
     @ResponseBody
-    public ResponseEntity<HashMap<String, Long>> rejectConnection(@PathVariable("id") long user_id, @PathVariable("id2") long target_id) {
+    public ResponseEntity<HashMap<String, Long>> rejectConnection(@PathVariable("id") long user_id,
+            @PathVariable("id2") long target_id) {
         HashMap<String, Long> response = profileService.rejectConnection(user_id, target_id);
         return new ResponseEntity<HashMap<String, Long>>(
-            response,
-            HttpStatus.OK);
-        
+                response,
+                HttpStatus.OK);
+
     }
 
     /**
      * get mapping to return all accepted connections for a single profile
+     * 
      * @param id
      * @return
      */
@@ -129,6 +138,7 @@ public class ProfileController {
 
     /**
      * get mapping to return all requested connections for a single profile
+     * 
      * @param id
      * @return
      */
@@ -140,6 +150,7 @@ public class ProfileController {
 
     /**
      * get mapping to return all assigned task for a single profile
+     * 
      * @param id
      * @return
      */

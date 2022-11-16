@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin
 public class TaskController {
     private final TaskService taskService;
-    
+
     public static class TaskJson {
         public Task task;
         public Long profileId;
@@ -41,6 +41,7 @@ public class TaskController {
 
     /**
      * post mapping to add a new task
+     * 
      * @param json
      * @param projectId
      * @return
@@ -56,6 +57,7 @@ public class TaskController {
 
     /**
      * put mapping to update a task's info
+     * 
      * @param json
      * @param projectId
      * @param taskId
@@ -72,6 +74,7 @@ public class TaskController {
 
     /**
      * get mapping to return a single task info given a task id
+     * 
      * @param projectId
      * @param taskId
      * @return
@@ -84,6 +87,7 @@ public class TaskController {
 
     /**
      * delete mapping to delete a single task given a task id
+     * 
      * @param json
      * @param projectId
      * @param taskId
