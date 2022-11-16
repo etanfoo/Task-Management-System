@@ -115,8 +115,8 @@ const TaskPage = () => {
   const updateStatus = (status_num: number) => {
     setUpdatedTaskDetails({...updatedTaskDetails, status: status_num});
     
+    setStatus(status_num)
     if (pageState === "view") {
-      setStatus(status_num)
       setChangedStatus(true);
     } 
   }

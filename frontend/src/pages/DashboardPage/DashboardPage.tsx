@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
@@ -34,6 +34,8 @@ const DashboardPage = () => {
   const [isCreateTaskModalVisible, setIsCreateTaskModalVisible] = useState<boolean>(false);
   const [connections, setConnections] = useState<IProfile[]>([]);
 
+  const [updateList, setUpdateList] = useState<boolean>(false);
+
   const fetchAllProjects = async () => {
     try {
       const data = await getProjects(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
@@ -56,11 +58,13 @@ const DashboardPage = () => {
   }
 
   const fetchFriends = async () => {
+
     try {
       const friends = await getConnections(
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
       );
       setConnections(friends);
+      setUpdateList(false);
     } catch (err: any) {
       // todo: figure some error handling here
       console.log(err);
@@ -72,6 +76,15 @@ const DashboardPage = () => {
     fetchAllProjects();
     fetchFriends();
   }, []);
+
+  useEffect(() => {
+    fetchFriends();
+  }, [updateList]);
+
+  // const updateFriendslist = useCallback(() => {
+
+  // }, )
+
 
   useEffect(() => {
     if (pageState === "tasks") {
@@ -131,7 +144,8 @@ const DashboardPage = () => {
       <ConnectionRequestsModal
         isOpen={isConnectionRequestsModalVisible}
         // todo: temp fix, need to refresh friends list after adding someone
-        handleClose={() => {setIsConnectionRequestsModalVisible(false); window.location.reload();}}
+        handleClose={() => {setIsConnectionRequestsModalVisible(false)}}
+        updateFriendslist={() => setUpdateList(true)}
       />
       <CreateTaskModal 
         isOpen={isCreateTaskModalVisible}
