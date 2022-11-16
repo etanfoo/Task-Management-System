@@ -38,6 +38,7 @@ public class Util {
     /**
      * checks if profile with corresponding id exists
      * throws http error if it doesn't
+     * 
      * @param profileId
      * @return
      */
@@ -53,11 +54,14 @@ public class Util {
     /**
      * checks if project with corresponding id exists
      * throws http error if it doesn't
+     * 
      * @param projectId
      * @return
      */
     public Project checkProject(Long projectId) {
-        Project project = projectRepo.findById(projectId).stream().findFirst().orElse(null); // convert Optional<Project> to Project
+        Project project = projectRepo.findById(projectId).stream().findFirst().orElse(null); // convert
+                                                                                             // Optional<Project> to
+                                                                                             // Project
         if (project == null) {
             String errorMessage = String.format("Project with id %d does not exist.", projectId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
@@ -68,6 +72,7 @@ public class Util {
     /**
      * checks if task with corresponding id exists
      * throws http error if it doesn't
+     * 
      * @param taskId
      * @return
      */
@@ -83,6 +88,7 @@ public class Util {
     /**
      * checks if profile is in a project
      * throws an http error if profile is not a member
+     * 
      * @param profileId
      * @param projectId
      * @param projectInDb
@@ -90,13 +96,14 @@ public class Util {
     public void isProfileInProject(Long profileId, Long projectId, Project projectInDb) {
         Set<Profile> profiles = projectInDb.getProfiles();
         boolean found = false;
-        for (Profile p: profiles) {
+        for (Profile p : profiles) {
             if (p.getId().equals(profileId)) {
                 found = true;
             }
         }
         if (found == false) {
-            String errorMessage = String.format("Profile with profile id %d is not a member of Project with id %d.", profileId, projectId);
+            String errorMessage = String.format("Profile with profile id %d is not a member of Project with id %d.",
+                    profileId, projectId);
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
         }
     }
@@ -104,6 +111,7 @@ public class Util {
     /**
      * checks if task is in a project
      * throws an http error if task is not part of project
+     * 
      * @param projectId
      * @param taskId
      */
@@ -111,13 +119,14 @@ public class Util {
         Project project = projectRepo.findById(projectId).stream().findFirst().orElse(null);
         Set<Task> tasks = project.getTasks();
         boolean found = false;
-        for (Task t: tasks) {
+        for (Task t : tasks) {
             if (t.getId().equals(taskId)) {
                 found = true;
             }
         }
         if (found == false) {
-            String errorMessage = String.format("Task with task id %d is not a task of Project with id %d.", taskId, projectId);
+            String errorMessage = String.format("Task with task id %d is not a task of Project with id %d.", taskId,
+                    projectId);
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
         }
     }
@@ -125,12 +134,13 @@ public class Util {
     /**
      * loops through a set of id's and returns corresponding objects
      * throws an http error if any id not found
+     * 
      * @param profileIdsToAdd
      * @return
      */
     public Set<Profile> getProfilesFromIds(Set<Long> profileIdsToAdd) {
         Set<Profile> profiles = new HashSet<>();
-        for (Long currProfileId: profileIdsToAdd) {
+        for (Long currProfileId : profileIdsToAdd) {
             Profile currProfile = profileRepo.findById(currProfileId).stream().findFirst().orElse(null);
             if (currProfile == null) {
                 String errorMessage = String.format("Profile with id %d does not exist.", currProfileId);
@@ -145,6 +155,7 @@ public class Util {
     /**
      * checks if profile is an author of a task
      * throws an http error if they are not
+     * 
      * @param profileId
      * @param taskId
      */
@@ -157,7 +168,9 @@ public class Util {
     }
 
     /**
-     * calculates the busyness of the user depending on the properties of each task they are assigned to
+     * calculates the busyness of the user depending on the properties of each task
+     * they are assigned to
+     * 
      * @param profile
      */
     public void updateBusyness(Profile profile) {
@@ -171,7 +184,8 @@ public class Util {
             if (status == TASK_IN_PROGRESS || status == TASK_NOT_STARTED) {
                 if (task.getDeadline() != null) {
                     LocalDate currDate = LocalDate.now();
-                    // Time difference between the current date and the deadline of the task in hours
+                    // Time difference between the current date and the deadline of the task in
+                    // hours
                     // long diff = ((task.getDeadline(). - currDate.getTime()) / (1000 * 60 * 60));
                     // If the difference is less that 24 hours, it is worth more towards busyness
                     if (currDate.isEqual(task.getDeadline())) {
@@ -180,14 +194,14 @@ public class Util {
                         taskBusyness += 5f;
                     }
                 }
-                
+
                 // A task in progress is worth less towards busyness than one that isn't started
-                if(task.getStatus() == TASK_NOT_STARTED) {
+                if (task.getStatus() == TASK_NOT_STARTED) {
                     taskBusyness += 5f;
                 } else if (task.getStatus() == TASK_IN_PROGRESS) {
                     taskBusyness += 2f;
                 }
-                
+
                 Integer points = task.getPoints();
                 // The more points a task is worth the more it is worth towards busyness
                 if (points < 4) {

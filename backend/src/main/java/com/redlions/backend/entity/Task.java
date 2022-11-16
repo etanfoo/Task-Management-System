@@ -1,7 +1,6 @@
 package com.redlions.backend.entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,38 +12,38 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="task")
+@Table(name = "task")
 public class Task {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name="deadline")
+    @Column(name = "deadline")
     private LocalDate deadline;
 
-    @Column(name="points")
+    @Column(name = "points")
     private Integer points;
 
-    @Column(name="status")
+    @Column(name = "status")
     private Integer status;
 
     @ManyToOne()
-    @JoinColumn(name="project_id", nullable=false)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @ManyToOne()
-    @JoinColumn(name="author_id")
+    @JoinColumn(name = "author_id")
     private Profile profileAuthor;
 
     @ManyToOne()
-    @JoinColumn(name="assignee_id")
+    @JoinColumn(name = "assignee_id")
     private Profile profileAssignee;
 
     public Task() {
@@ -133,15 +132,15 @@ public class Task {
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", title='" + getTitle() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", deadline='" + getDeadline() + "'" +
-            ", points='" + getPoints() + "'" +
-            ", project='" + getProject() + "'" +
-            ", profileAuthor='" + getProfileAuthor() + "'" +
-            ", profileAssignee='" + getProfileAssignee() + "'" +
-            "}";
+                " id='" + getId() + "'" +
+                ", title='" + getTitle() + "'" +
+                ", description='" + getDescription() + "'" +
+                ", deadline='" + getDeadline() + "'" +
+                ", points='" + getPoints() + "'" +
+                ", project='" + getProject() + "'" +
+                ", profileAuthor='" + getProfileAuthor() + "'" +
+                ", profileAssignee='" + getProfileAssignee() + "'" +
+                "}";
     }
-    
+
 }

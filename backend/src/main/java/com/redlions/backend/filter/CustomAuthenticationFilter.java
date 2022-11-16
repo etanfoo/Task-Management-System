@@ -31,8 +31,9 @@ import lombok.Data;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository profileRepository;
-    
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, ProfileRepository profileRepository) {
+
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager,
+            ProfileRepository profileRepository) {
         this.authenticationManager = authenticationManager;
         this.profileRepository = profileRepository;
     }
@@ -52,8 +53,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             if (parsedReq != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 AuthReq authReq = mapper.readValue(parsedReq, AuthReq.class);
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authReq.getEmail(), authReq.getPassword());
-            return authenticationManager.authenticate(authenticationToken);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        authReq.getEmail(), authReq.getPassword());
+                return authenticationManager.authenticate(authenticationToken);
             }
         } catch (Exception e) {
             throw new InternalAuthenticationServiceException("Failed to parse authentication request body");
@@ -74,23 +76,25 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         // can change secret later if needed
         Algorithm algorithm = Algorithm.HMAC256("mySuperSecret".getBytes());
         String accessToken = JWT.create()
-                                .withSubject(user.getUsername())
-                                // currently set timeout to 24 hour
-                                .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
-                                .withIssuer(request.getRequestURL().toString())
-                                // can change if want to add roles later
-                                // .withClaim("temp", user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
-                                .sign(algorithm);
-        
+                .withSubject(user.getUsername())
+                // currently set timeout to 24 hour
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
+                .withIssuer(request.getRequestURL().toString())
+                // can change if want to add roles later
+                // .withClaim("temp",
+                // user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
+                .sign(algorithm);
+
         // add in later if we want to use refresh token, have to add endpoint in as well
         // String refreshToken = JWT.create()
-        //                         .withSubject(user.getUsername())
-        //                         // currently set refresh timeout to 24 hours
-        //                         .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
-        //                         .withIssuer(request.getRequestURL().toString())
-        //                         // can change if want to add roles later
-        //                         // .withClaim("temp", user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
-        //                         .sign(algorithm);
+        // .withSubject(user.getUsername())
+        // // currently set refresh timeout to 24 hours
+        // .withExpiresAt(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
+        // .withIssuer(request.getRequestURL().toString())
+        // // can change if want to add roles later
+        // // .withClaim("temp",
+        // user.getAuthorities().stream().map(GrantedAuthority::getAuthority)).collect(Collectors.toList())
+        // .sign(algorithm);
         Profile profile = profileRepository.findByEmail(user.getUsername());
         Map<String, Object> returnedJson = new HashMap<>();
         returnedJson.put("access_token", accessToken);

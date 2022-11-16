@@ -39,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), profileRepository);
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(
+                authenticationManagerBean(), profileRepository);
         customAuthenticationFilter.setFilterProcessesUrl("/api/v1/profile/login");
         http.cors();
         // disables cross site request forgery
@@ -48,9 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // allow these api's without authentication
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/login").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/signup").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/connect/**").permitAll(); // TODO: bandaid fix for now
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/accept/**").permitAll(); // TODO: bandaid fix for now
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/reject/**").permitAll(); // TODO: bandaid fix for now
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/connect/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/accept/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/profile/reject/**").permitAll();
         // these api's need authentication
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/**").hasAnyAuthority("PERMITTED");
         http.authorizeRequests().antMatchers("/api/v1/**").authenticated();
@@ -68,13 +69,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", 
-        "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", 
-        "x-auth-token"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH",
+                "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type",
+                "x-auth-token"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
-        UrlBasedCorsConfigurationSource source = new 
-        UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
         return source;

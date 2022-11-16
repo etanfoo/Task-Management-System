@@ -20,34 +20,30 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="project")
+@Table(name = "project")
 public class Project {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
     @Lob
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy="project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name="manage",
-        joinColumns = @JoinColumn(name="project_id"),
-        inverseJoinColumns = @JoinColumn(name="profile_id")
-    )
+    @JoinTable(name = "manage", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "profile_id"))
     private Set<Profile> profiles = new HashSet<>();
 
     public Project() {
-        
+
     }
 
     public Project(Long id, String title, String description) {
@@ -107,10 +103,10 @@ public class Project {
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", title='" + getTitle() + "'" +
-            ", description='" + getDescription() + "'" +
-            "}";
+                " id='" + getId() + "'" +
+                ", title='" + getTitle() + "'" +
+                ", description='" + getDescription() + "'" +
+                "}";
     }
 
 }

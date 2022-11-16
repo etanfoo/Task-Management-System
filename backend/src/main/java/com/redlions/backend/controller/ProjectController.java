@@ -52,6 +52,7 @@ public class ProjectController {
 
     /**
      * post mapping to add a new project
+     * 
      * @param projectJson
      * @return
      */
@@ -66,6 +67,7 @@ public class ProjectController {
 
     /**
      * put mapping to update a project's info
+     * 
      * @param projectJson
      * @param id
      */
@@ -80,6 +82,7 @@ public class ProjectController {
 
     /**
      * get mapping to return a single project given a project id
+     * 
      * @param id
      * @return
      */
@@ -91,6 +94,7 @@ public class ProjectController {
 
     /**
      * delete mapping to delete a project given a project id
+     * 
      * @param json
      * @param id
      */
@@ -103,17 +107,19 @@ public class ProjectController {
 
     /**
      * get mapping to return all associated projects for a profile
+     * 
      * @param profileId
      * @return
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Project> getAssociatedProjects(@RequestParam(value="profileId") Long profileId) {
+    public List<Project> getAssociatedProjects(@RequestParam(value = "profileId") Long profileId) {
         return projectService.getAssociatedProjects(profileId);
     }
 
     /**
      * delete mapping to remove multiple profiles from a given project
+     * 
      * @param json
      * @param id
      */
@@ -122,11 +128,12 @@ public class ProjectController {
     public void removeProfilesFromProject(@RequestBody removeProfilesFromProject json, @PathVariable Long id) {
         Long profileId = json.profileId;
         Set<Long> profileIdsToRemove = json.profileIdsToRemove;
-        projectService.removeProfilesFromProject(id, profileId, profileIdsToRemove);    
+        projectService.removeProfilesFromProject(id, profileId, profileIdsToRemove);
     }
 
     /**
      * delete mapping to remove a single profile from a given project
+     * 
      * @param json
      * @param id
      */
@@ -135,11 +142,12 @@ public class ProjectController {
     public void removeProfileFromProject(@RequestBody removeProfileFromProject json, @PathVariable Long id) {
         Long profileId = json.profileId;
         Long profileIdToRemove = json.profileIdToRemove;
-        projectService.removeProfileFromProject(id, profileId, profileIdToRemove);    
+        projectService.removeProfileFromProject(id, profileId, profileIdToRemove);
     }
 
     /**
      * get mapping to return all tasks associated with a project
+     * 
      * @param id
      * @return
      */
@@ -151,6 +159,7 @@ public class ProjectController {
 
     /**
      * get mapping to return statistics for a given project
+     * 
      * @param id
      * @return
      */
