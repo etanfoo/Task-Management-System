@@ -63,5 +63,5 @@ export const LandingPageStats = [
   {
     description: "Total tasks completed this month",
     number: 70
-  },
+  }
 ];

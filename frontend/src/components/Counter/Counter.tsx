@@ -31,7 +31,7 @@ const Counter = ({ stat, finalValue, inView, innerRef }: CounterProps) => {
       <h3>{count}</h3>
       <p>{stat}</p>
     </CounterContainer>
-  )
+  );
 };
 
 export default Counter;

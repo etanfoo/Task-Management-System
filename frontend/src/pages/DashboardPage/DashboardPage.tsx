@@ -34,15 +34,16 @@ const DashboardPage = () => {
   const [isCreateTaskModalVisible, setIsCreateTaskModalVisible] = useState<boolean>(false);
   const [connections, setConnections] = useState<IProfile[]>([]);
 
+  const [updateList, setUpdateList] = useState<boolean>(false);
+
   const fetchAllProjects = async () => {
     try {
       const data = await getProjects(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       setAllProjects(data);
       setShownProjects(data);
     } catch (err: any) {
-      // todo: figure some error handling here? show error popup?
       console.log(err);
-    }
+    };
   };
 
   const fetchAllTasks = async () => {
@@ -52,8 +53,8 @@ const DashboardPage = () => {
       setShownTasks(resp);
     } catch (err:any) { 
       console.log(err);
-    }
-  }
+    };
+  };
 
   const fetchFriends = async () => {
     try {
@@ -61,17 +62,23 @@ const DashboardPage = () => {
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
       );
       setConnections(friends);
+      setUpdateList(false);
     } catch (err: any) {
-      // todo: figure some error handling here
       console.log(err);
-    }
+    };
   };
 
   useEffect(() => {
     fetchAllTasks();
     fetchAllProjects();
     fetchFriends();
+    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    fetchFriends();
+    // eslint-disable-next-line
+  }, [updateList]);
 
   useEffect(() => {
     if (pageState === "tasks") {
@@ -90,7 +97,6 @@ const DashboardPage = () => {
         );
       } else if (taskSortType === "Deadline") {
         sortedTasks = [...shownTasks].sort(
-          // todo: figure out how deadline is store - date or string?
           (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
         );
       }
@@ -130,8 +136,8 @@ const DashboardPage = () => {
     <DashboardPageContainer>
       <ConnectionRequestsModal
         isOpen={isConnectionRequestsModalVisible}
-        // todo: temp fix, need to refresh friends list after adding someone
-        handleClose={() => {setIsConnectionRequestsModalVisible(false); window.location.reload();}}
+        handleClose={() => {setIsConnectionRequestsModalVisible(false)}}
+        updateFriendslist={() => setUpdateList(true)}
       />
       <CreateTaskModal 
         isOpen={isCreateTaskModalVisible}
@@ -140,7 +146,6 @@ const DashboardPage = () => {
       />
       <Header 
         triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
-        // todo: include trigger create task modal
         triggerCreateTaskModal={() => setIsCreateTaskModalVisible(true)}
       />
       <BodyContainer>

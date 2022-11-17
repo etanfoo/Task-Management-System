@@ -11,7 +11,7 @@ export const postLogin = async (email: string, password: string): Promise<IAuthR
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const postSignUp = async (name: string, email: string, password: string): Promise<IAuthResponse> => {
@@ -24,5 +24,5 @@ export const postSignUp = async (name: string, email: string, password: string):
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };

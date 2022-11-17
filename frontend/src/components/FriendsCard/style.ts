@@ -11,13 +11,14 @@ export const FriendsCardContainer = styled('div')`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 1rem;
   margin-bottom: 1rem;
-
   transition: transform .2s;
+
   &:hover {
     transform: scale(1.05);
-  }
+  };
 
   > img {
+    width: 3.125rem; 
     height: 3.125rem;
     margin-right: 1rem;
     border-radius: 5rem;
@@ -41,11 +42,12 @@ export const ProfileContainer = styled('div')`
 
   &:hover {
     transform: scale(1.05);
-  }
+  };
 `;
 
 
 export const UserAvatar = styled('img')`
+  width: 3.125rem;  
   height: 3.125rem;
   margin-right: 1rem;
   border-radius: 5rem;
@@ -59,7 +61,7 @@ export const DeleteButton = styled('img')`
   
   &:hover {
     transform: scale(1.25);
-  }
+  };
 `;
 
 export const StyledAvatar = styled(Avatar)`

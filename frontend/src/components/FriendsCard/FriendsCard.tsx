@@ -17,15 +17,18 @@ type FriendsCardProps = {
 
 const FriendsCard = ({ imageURL, name, email, profileId, functionality, projectId, alreadyAdded }: FriendsCardProps) => {
   const navigate = useNavigate();
+  
   const [isAdded, setIsAdded] = useState<boolean>(alreadyAdded);
   const [isDelete, setIsDelete] = useState<boolean>(false); 
-
+  
+  // Returns either a friends list for profile, project or task
   return (
     <>
       {
         functionality.includes("profile") 
           ?
             (
+              // For project, contains a delete button to remove from project
               functionality.match("profile-project") && (parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!) !== profileId) 
                 ?
                   <FriendsCardEditContainer>
@@ -65,6 +68,7 @@ const FriendsCard = ({ imageURL, name, email, profileId, functionality, projectI
                   </FriendsCardContainer>
             )
         :
+          // For task, doesn't redirect to user profile page
           <FriendsCardContainer 
             onClick={() => setIsAdded(current => !current)}
             style={{

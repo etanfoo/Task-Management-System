@@ -12,7 +12,7 @@ export const getProfile = async (profileId: number): Promise<IProfile> => {
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const putProfile = async (
@@ -33,7 +33,7 @@ export const putProfile = async (
     });
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const putProfileHappiness = async (
@@ -50,7 +50,7 @@ export const putProfileHappiness = async (
     });
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const getProfiles = async () => {
@@ -63,5 +63,5 @@ export const getProfiles = async () => {
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };

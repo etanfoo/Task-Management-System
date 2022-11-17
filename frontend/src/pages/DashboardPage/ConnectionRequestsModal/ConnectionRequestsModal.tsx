@@ -8,9 +8,10 @@ import { ModalBody, StyledDivider, OverflowContainer } from "./style";
 type ConnectionRequestsModalProps = {
   isOpen: boolean;
   handleClose: () => void;
+  updateFriendslist: () => void;
 }
 
-const ConnectionRequestsModal = ({ isOpen, handleClose }: ConnectionRequestsModalProps) => {
+const ConnectionRequestsModal = ({ isOpen, handleClose, updateFriendslist }: ConnectionRequestsModalProps) => {
   const [requestConnections, setRequestConnections] = useState<IProfile[]>([]);
 
   const fetchRequestedConnections = async () => {
@@ -20,9 +21,8 @@ const ConnectionRequestsModal = ({ isOpen, handleClose }: ConnectionRequestsModa
       );
       setRequestConnections(requests);
     } catch (err: any) {
-      // todo: do some error handling
       console.log(err);
-    }
+    };
   };
 
   const removeRequestCard = (requestorId: number) => {
@@ -33,6 +33,7 @@ const ConnectionRequestsModal = ({ isOpen, handleClose }: ConnectionRequestsModa
 
   useEffect(() => {
     fetchRequestedConnections();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -52,7 +53,11 @@ const ConnectionRequestsModal = ({ isOpen, handleClose }: ConnectionRequestsModa
                     id={request.id}
                     name={request.name}
                     email={request.email}
-                    removeRequestCallback={() => removeRequestCard(request.id)}
+                    removeRequestCallback={() => {
+                      removeRequestCard(request.id);
+                      updateFriendslist();
+                      }
+                    }
                   />
                 ))
                 }

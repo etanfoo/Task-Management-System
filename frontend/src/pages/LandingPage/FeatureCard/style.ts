@@ -12,12 +12,13 @@ export const FeatureCardContainer = styled('div')`
 
   > p {
     color: ${Palette.thGray};
-  }
+  };
 
   transition: transform .2s;
+  
   &:hover {
     transform: scale(1.05);
-  }
+  };
 `;
 
 export const ImageTitleContainer = styled('div')`

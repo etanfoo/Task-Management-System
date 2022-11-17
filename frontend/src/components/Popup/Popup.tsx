@@ -5,7 +5,7 @@ type PopupProps = {
   popupMessage: string;
   type: AlertColor;
   handleClose: () => void;
-}
+};
 
 const Popup = ({ isOpen, handleClose, popupMessage, type }: PopupProps) => {
   return (

@@ -29,14 +29,15 @@ const CreateProjectPage = () => {
       setError("Project must have a title.");
       return;
     }
+    
     try {
       const resp = await postProject(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!), projectDetail, addedMembers);
       navigate(`/project/${resp.id}`);
     } catch (err: any) {
       if (err.response.status === 400) setError("Summary must be less than or equal to 1000 characters.");
       console.log(err);
-    }
-  }
+    };
+  };
 
   const fetchFriends = async () => {
     try {
@@ -44,20 +45,21 @@ const CreateProjectPage = () => {
       setFriends(resp);
       setIsLoading(false);
     } catch (err: any) {
-      console.log(err);
       setIsLoading(false);
-    }
-  }
+      console.log(err);
+    };
+  };
 
   useEffect(() => {
     fetchFriends();
-  }, [])
+    // eslint-disable-next-line
+  }, []);
   
   // Add or remove member from list
   const moveMember = (profileId: number) => {
     if (!addedMembers.includes(profileId)) setAddedMembers([...addedMembers, profileId]);
     else setAddedMembers(addedMembers.filter(userId => userId !== profileId));
-  }
+  };
 
   return(
     <>

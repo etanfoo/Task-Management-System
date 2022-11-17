@@ -2,7 +2,7 @@ import { Backdrop, CircularProgress } from '@mui/material';
 
 type LoadingOverlayProps = {
   isOpen: boolean;
-}
+};
 
 const LoadingOverlay = ({ isOpen }: LoadingOverlayProps) => {
   return (

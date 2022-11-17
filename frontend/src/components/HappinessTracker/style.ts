@@ -18,8 +18,8 @@ export const EmotionContainer = styled('div')`
 
     &:hover {
       transform: scale(1.25);
-    }
-  }
+    };
+  };
 `;
 
 export const BottomContainer = styled('div')`

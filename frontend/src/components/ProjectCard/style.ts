@@ -10,8 +10,8 @@ export const ProjectCardContainer = styled('div')`
   padding: 0.5rem 1rem;
   margin-bottom: 0.5rem;
   cursor: pointer;
-
   transition: transform .2s;
+  
   &:hover {
     transform: scale(1.05);
   };
@@ -22,6 +22,7 @@ export const ProjectCardContainer = styled('div')`
     text-overflow: ellipsis;
     white-space: nowrap;
   };
+
   > :nth-of-type(2) {
     width: 75%;
     overflow: hidden;

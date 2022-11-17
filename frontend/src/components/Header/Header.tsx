@@ -11,7 +11,6 @@ import { IProfile } from "../../interfaces/api-response";
 
 type HeaderProps = {
   triggerConnectionRequestsModal?: () => void;
-  // todo: create task modal
   triggerCreateTaskModal?: () => void;
 };
 
@@ -44,7 +43,7 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
       navigate('/dashboard', {state:{initialPageState:"tasks"}});
     } else {
       navigate('/');
-    }
+    };
   };
   
   const fetchUserDetails = async () => {
@@ -56,7 +55,7 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
       setProfilePicture(data.profilePicture);
     } catch (err: any) {
       console.log(err);
-    }
+    };
   };
 
   const fetchRequestedConnections = async () => {
@@ -66,17 +65,17 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
       );
       setRequestConnections(requests);
     } catch (err: any) {
-      // todo: do some error handling
       console.log(err);
-    }
+    };
   };
 
   useEffect(() => {
+    // only do so if user is logged in
     if (sessionStorage.getItem(process.env.REACT_APP_TOKEN!)) {
-      // only do so if user is logged in
       fetchUserDetails();
       fetchRequestedConnections();
     }
+    // eslint-disable-next-line
   }, [requestConnections]);
 
   return (
@@ -120,7 +119,6 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
                 anchorEl={anchorEl}
                 onClose={handleMenuClose}
               >
-                {/* todo: update with logos */}
                 <MenuItem onClick={() => navigate(`/profile/${sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)}`)}>
                   Profile 
                 </MenuItem>

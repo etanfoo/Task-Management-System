@@ -18,8 +18,8 @@ const RequestCard = ({ id, name, email, removeRequestCallback }: RequestCardProp
       );
       removeRequestCallback();
     } catch (err: any) {
-      // todo: show some error
-    }
+      console.log(err);
+    };
   };
 
   const handleAccept = async () => {
@@ -30,8 +30,8 @@ const RequestCard = ({ id, name, email, removeRequestCallback }: RequestCardProp
       );
       removeRequestCallback();
     } catch (err: any) {
-      // todo: show some error
-    }
+      console.log(err);
+    };
   };
 
   return (

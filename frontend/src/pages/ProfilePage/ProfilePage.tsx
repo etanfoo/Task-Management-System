@@ -44,7 +44,7 @@ const ProfilePage = () => {
       setProfileDetails(data);
     } catch (err: any) {
       console.log(err);
-    }
+    };
   };
 
   const updateLogo = async (e: ChangeEvent) => {
@@ -54,6 +54,7 @@ const ProfilePage = () => {
   };
 
   const updateProfile = async () => {
+    // If the user presses update button but no fields were changed 
     if (
       updatedProfileDetails.name === ""
       && updatedProfileDetails.aboutMe === ""
@@ -62,7 +63,6 @@ const ProfilePage = () => {
       setPageState('view');
       return;
     }
-    console.log(updatedProfileDetails.profilePicture);
     try {
       await putProfile(
         parseInt(profileId!),
@@ -73,7 +73,7 @@ const ProfilePage = () => {
       window.location.reload();
     } catch (err: any) {
       console.log(err);
-    }
+    };
   };
 
   const cancelEditProfile = () => {
@@ -89,7 +89,7 @@ const ProfilePage = () => {
     } catch (err: any) {
       console.log(err);
       setIsLoading(false);
-    }
+    };
   };
 
   const getBorderColor = () => {
@@ -103,7 +103,7 @@ const ProfilePage = () => {
       return Palette.gold;
     } else {
       return Palette.diamond; 
-    }
+    };
   };
 
   const getTierBadge = () => {
@@ -117,19 +117,17 @@ const ProfilePage = () => {
       return GoldIcon;
     } else {
       return DiamondIcon; 
-    }
+    };
   };
 
   const fetchUserTasks = async () => {
     try {
       const resp = await getUserTasks(parseInt(profileId!));
-      console.log(resp)
       setUserTasks(resp);
     } catch (err:any) { 
       console.log(err);
-    }
+    };
   }
-
 
   useEffect(() => {
     loadProfile();
@@ -246,32 +244,30 @@ const ProfilePage = () => {
               <BodyContainer>
                 <TasksContainer>
                   <h2>Assigned tasks</h2>
-                  {
-                    userTasks.length === 0
+                  {userTasks.length === 0
                     ?
-                    // todo: Need to style
-                    <p>Nothing to see here...</p>
+                      <p>Nothing to see here...</p>
                     :
-                    <>
-                      <LabelContainer>
-                        <p>ID</p>
-                        <p>Title</p>
-                        <p>Deadline</p>
-                        <p>Status</p>
-                      </LabelContainer>
-                      <OverflowContainer>
-                        {userTasks.map((task) => (
-                          <TaskCard
-                            key={task.id}
-                            taskId={task.id}
-                            projectId={task.project.id}
-                            title={task.title}
-                            deadline={task.deadline}
-                            status={task.status}
-                          />
-                        ))}
-                      </OverflowContainer>
-                    </>
+                      <>
+                        <LabelContainer>
+                          <p>ID</p>
+                          <p>Title</p>
+                          <p>Deadline</p>
+                          <p>Status</p>
+                        </LabelContainer>
+                        <OverflowContainer>
+                          {userTasks.map((task) => (
+                            <TaskCard
+                              key={task.id}
+                              taskId={task.id}
+                              projectId={task.project.id}
+                              title={task.title}
+                              deadline={task.deadline}
+                              status={task.status}
+                            />
+                          ))}
+                        </OverflowContainer>
+                      </>
                   }
                 </TasksContainer>
                 <RightContainer>
