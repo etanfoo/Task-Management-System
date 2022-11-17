@@ -11,9 +11,6 @@ export const ModalContainer = styled("div")`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  // > TextField {
-  //   align-items: center;
-  // };
 `;
 
 export const EmptyModal = styled("div")`
@@ -29,7 +26,6 @@ export const ModalBody = styled("div")`
 
   > h1,
   h2 {
-    // align-text: none;
     font-weight: normal;
     margin-bottom: 0.5rem;
   }
@@ -50,20 +46,6 @@ export const BottomContainer = styled("div")`
     width: 30%;
   }
 `;
-
-// export const SelectProjectContainer = styled('div')`
-//   // width: 12rem;
-//   // width: 40%;
-//   margin-left: 5%;
-//   // margin-right: 5%;
-// `;
-
-// export const PointsContainer = styled('div')`
-//   // width: 12rem;
-//   // width: 40%;
-//   // margin-left: 5%;
-//   margin-left: 5%;
-// `;
 
 export const ButtonsContainer = styled("div")`
   display: flex;
@@ -107,9 +89,6 @@ export const StyledAvatar = styled(Avatar)`
 
 export const UserCard = styled("div")`
   display: flex;
-  // text-align: center;
-  // align-items: center;
-  // margin: 0;
   > h3 {
     font-weight: normal;
     margin-top: 0.6rem;
