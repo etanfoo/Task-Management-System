@@ -26,7 +26,6 @@ export interface IProject {
   title: string;
 };
 
-// Add more fields
 export interface ITask {
   id: number;
   title: string;

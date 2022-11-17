@@ -12,7 +12,7 @@ export const getProjects = async (profileId: number): Promise<IProject[]> => {
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const postProject = async (profileId: number, project: IProjectDetails, profileIdsToAdd: number[]): Promise<IProject> => {
@@ -29,7 +29,7 @@ export const postProject = async (profileId: number, project: IProjectDetails, p
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const getProject = async (profileId: string): Promise<IProject> => {
@@ -42,7 +42,7 @@ export const getProject = async (profileId: string): Promise<IProject> => {
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const putProject = async (profileId: number, project: IProjectDetails,  profileIdsToAdd: number[]): Promise<IProject> => {
@@ -59,7 +59,7 @@ export const putProject = async (profileId: number, project: IProjectDetails,  p
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const deleteProject = async (projectId: string, profileId: string): Promise<string> => {
@@ -75,7 +75,7 @@ export const deleteProject = async (projectId: string, profileId: string): Promi
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const deleteMember = async (projectId: string, profileId: string, deleteMemberId: number): Promise<string> => {
@@ -92,7 +92,7 @@ export const deleteMember = async (projectId: string, profileId: string, deleteM
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const getProjectStatistics = async (projectId: string): Promise<IProjectStats> => {
@@ -105,5 +105,5 @@ export const getProjectStatistics = async (projectId: string): Promise<IProjectS
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };

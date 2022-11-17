@@ -1,5 +1,4 @@
 export const Palette = {
-  // add colours here
   mainTeal: "#469d89",
   darkTeal: "#036666",
   lightTeal: "#99e2b4",
@@ -12,5 +11,5 @@ export const Palette = {
   offGray: "#dee2e6",
   diamond: "#009C89",
   gold: "#FFD700",
-  bronze: "#CD7F32",
+  bronze: "#CD7F32"
 };

@@ -37,17 +37,16 @@ export const NoButton = styled(Button)`
   background-color: white;
   color: black;
   font-size: 1rem;
+
   &:hover {
     background-color: ${Palette.lightGray};
-  }
+  };
 `;
 
 export const YesButton = styled(Button)`
-  // position: relative;
-  // left: 40%;
-  // margin-top: 11%;
   background-color: ${Palette.mainTeal};
+
   &:hover {
     background-color: ${Palette.darkTeal};
-  }
+  };
 `;

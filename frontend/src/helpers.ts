@@ -1,7 +1,9 @@
 import { Palette } from "./components/Palette";
 import { IProfile } from "./interfaces/api-response";
 
-// todo: check file type
+/*
+ * Converts a file to base64
+ */
 export const toBase64 = (file: any) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

@@ -24,7 +24,7 @@ export const requestConnection = async (
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const acceptConnection = async (userId: number, requestorId: number) => {
@@ -36,7 +36,7 @@ export const acceptConnection = async (userId: number, requestorId: number) => {
     });
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const rejectConnection = async (userId: number, requestorId: number) => {
@@ -48,7 +48,7 @@ export const rejectConnection = async (userId: number, requestorId: number) => {
     });
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const getRequestedConnections = async (userId: number): Promise<IProfile[]> => {
@@ -62,7 +62,7 @@ export const getRequestedConnections = async (userId: number): Promise<IProfile[
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };
 
 export const getConnections = async (userId: number): Promise<IProfile[]> => {
@@ -76,5 +76,5 @@ export const getConnections = async (userId: number): Promise<IProfile[]> => {
     return data;
   } catch (err: any) {
     throw err;
-  }
+  };
 };

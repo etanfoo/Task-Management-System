@@ -17,10 +17,12 @@ const LoginPage = () => {
   
   const login = async () => {
     setIsLoading(true);
+
     if (email === "" || password === "") {
       setError("All fields must be filled.");
       return;
     }
+
     try{
       const resp = await postLogin(email, password);
       sessionStorage.setItem(process.env.REACT_APP_TOKEN!, resp.access_token);
@@ -31,8 +33,8 @@ const LoginPage = () => {
     } catch (err: any) {
       setIsLoading(false);
       if (err.response.status === 401) setError("Incorrect email or password");
-    }
-  }
+    };
+  };
 
   return (
     <>

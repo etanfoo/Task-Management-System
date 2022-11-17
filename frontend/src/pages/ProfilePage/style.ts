@@ -255,6 +255,11 @@ export const TasksContainer = styled('div')`
     margin-left: 1rem;
     font-weight: normal;
   };
+
+  > p {
+    text-align: center;
+    color: ${Palette.thGray};
+  };
 `;
 
 export const LabelContainer = styled('div')`

@@ -21,14 +21,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import DeleteOverlay from "../../components/DeleteOverlay/DeleteOverlay";
 
 const TaskPage = () => {
-  const { projectId, taskId } = useParams();
   const navigate = useNavigate();
-  // const { taskId } = useParams();
-  // console.log(projectId, taskId)
-  const [taskDetails, setTaskDetails] = useState<ITask>(EmptyTaskView);
-  // Make sure empty fields can be detected (for user that didnt input)
-  const [updatedTaskDetails, setUpdatedTaskDetails] = useState<ITasktDetails>(EmptyTaskEdit);
 
+  const { projectId, taskId } = useParams();
+  const [taskDetails, setTaskDetails] = useState<ITask>(EmptyTaskView);
+  const [updatedTaskDetails, setUpdatedTaskDetails] = useState<ITasktDetails>(EmptyTaskEdit);
   const [isMember, setIsMember] = useState<boolean>(false);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -37,68 +34,46 @@ const TaskPage = () => {
   const [isDelete, setIsDelete] = useState<boolean>(false); 
   const [status, setStatus] = useState<number>(0);
   const [points, setPoints] = useState<number>(0);
-  // CHange to deadline?
-  const [value, setValue] = useState<Dayjs | null>(null);
+  const [deadline, setDeadline] = useState<Dayjs | null>(null);
   const [projectTitle, setProjectTitle] = useState<string>("");
   const [changedStatus, setChangedStatus] = useState<boolean>(false);
 
-  const handleChange = (newValue: Dayjs | null) => {
-    setValue(newValue);
-    if (newValue !== null) setUpdatedTaskDetails({ ...updatedTaskDetails, deadline: newValue.format('YYYY-MM-DD') });
-  };
-
   const loadTask = async () => {
-
     try {
       const resp = await getTask(parseInt(projectId!), parseInt(taskId!));
       setTaskDetails(resp);
       setProjectTitle(resp.project.title);
       setPossibleAssignees(resp.project.profiles);
       setSelectedMember(resp.profileAssignee);
-      setValue(dayjs(resp.deadline));
+      setDeadline(dayjs(resp.deadline));
       setStatus(resp.status);
       setPoints(resp.points);
-      const profileId = parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
 
+      const profileId = parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!);
+      // Only author and assignee can edit the task
       if (resp.profileAuthor.id === profileId || resp.profileAssignee.id === profileId) setIsMember(true);
+
       setIsLoading(false);
     } catch (err: any) {
       console.log(err);
       setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadTask();
-    // eslint-disable-next-line
-  }, [taskId])
-
-  const cancelEditTask = () => {
-    setPageState("view");
-    setUpdatedTaskDetails(EmptyTaskEdit);
-  }
+    };
+  };
 
   const updateTask = async () => {
     // If the user presses update button but no fields were changed 
-    if (pageState === "edit") {
-      if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && status === taskDetails.status && points === taskDetails.points && selectedMember.id === taskDetails.profileAssignee.id && updatedTaskDetails.description === "") {
-        setPageState("view");
-        return;
-      } 
-      // Check if the user provided a new input, if not use the previous input
-      updatedTaskDetails.title = (updatedTaskDetails.title !== "" ? updatedTaskDetails.title : taskDetails.title);
-      updatedTaskDetails.deadline = (!!updatedTaskDetails.deadline ? updatedTaskDetails.deadline : taskDetails.deadline);
-      updatedTaskDetails.description = (!!updatedTaskDetails.description ? updatedTaskDetails.description : taskDetails.description);
-      updatedTaskDetails.points = (points !== taskDetails.points  ? taskDetails.points: points);
-      updatedTaskDetails.status = (updatedTaskDetails.status !== taskDetails.status ? updatedTaskDetails.status : taskDetails.status);
-    } else {
-      // todo:  remove updateTaskStatus useEffect
-      updatedTaskDetails.title = taskDetails.title;
-      updatedTaskDetails.points = taskDetails.points;
-      updatedTaskDetails.description = taskDetails.description;
-      updatedTaskDetails.status = status;
-    }
-    
+    if (updatedTaskDetails.title === "" && updatedTaskDetails.deadline === "" && status === taskDetails.status && points === taskDetails.points && selectedMember.id === taskDetails.profileAssignee.id && updatedTaskDetails.description === "") {
+      setPageState("view");
+      return;
+    } 
+
+    // Check if the user provided a new input, if not use the previous input
+    updatedTaskDetails.title = (updatedTaskDetails.title !== "" ? updatedTaskDetails.title : taskDetails.title);
+    updatedTaskDetails.deadline = (!!updatedTaskDetails.deadline ? updatedTaskDetails.deadline : taskDetails.deadline);
+    updatedTaskDetails.description = (!!updatedTaskDetails.description ? updatedTaskDetails.description : taskDetails.description);
+    updatedTaskDetails.points = (points !== taskDetails.points  ? taskDetails.points: points);
+    updatedTaskDetails.status = (updatedTaskDetails.status !== taskDetails.status ? updatedTaskDetails.status : taskDetails.status);
+  
     try {
       await putTask(
         parseInt(projectId!), 
@@ -110,19 +85,34 @@ const TaskPage = () => {
       window.location.reload();
     } catch (err: any) {
       console.log(err);
-    }
-  }
+    };
+  };
+
+  const cancelEditTask = () => {
+    setPageState("view");
+    setUpdatedTaskDetails(EmptyTaskEdit);
+  };
+
+  const changeDeadline = (newDeadline: Dayjs | null) => {
+    setDeadline(newDeadline);
+    if (newDeadline !== null) setUpdatedTaskDetails({ ...updatedTaskDetails, deadline: newDeadline.format('YYYY-MM-DD') });
+  };
 
   const changeMember = (profileId: number) => {
     setSelectedMember(findSelectedMember(profileId, possibleAssignees));
-  }
+  };
 
   const updateStatus = (status_num: number) => {
     setUpdatedTaskDetails({...updatedTaskDetails, status: status_num});
     setStatus(status_num);
     // Triggers the useEffect 
     if (pageState === "view") setChangedStatus(true);
-  }
+  };
+
+  useEffect(() => {
+    loadTask();
+    // eslint-disable-next-line
+  }, [taskId]);
 
   useEffect(() => {
     const updateTaskStatus = async () => {
@@ -140,17 +130,10 @@ const TaskPage = () => {
           parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
         );
       }
-    }
+    };
     updateTaskStatus();
     // eslint-disable-next-line
-  }, [changedStatus])
-
-  /*
-  todo
-    - Cursor for 
-    - Centre Friends list title in task page
-    - Project link overflow?
-  */
+  }, [changedStatus]);
 
   return(
     <>
@@ -170,11 +153,9 @@ const TaskPage = () => {
                     ? 
                       <>
                         <TitleContainerView>
-                        <ProjectLink onClick={() => navigate(`/project/${projectId}`)}>{projectTitle}</ProjectLink>
-                        <h1>&nbsp;| {taskDetails.title} [{taskDetails.points} points]</h1>
-                        
-                          {
-                              isMember
+                          <ProjectLink onClick={() => navigate(`/project/${projectId}`)}>{projectTitle}</ProjectLink>
+                          <h1>&nbsp;| {taskDetails.title} [{taskDetails.points} points]</h1>
+                          {isMember
                             ?
                               <IconContainerView>
                                 <>
@@ -198,7 +179,6 @@ const TaskPage = () => {
                             onChange={(e) => setUpdatedTaskDetails({ ...updatedTaskDetails, title: e.target.value})}
                           />
                           <h3>Points:</h3>
-                          {/* Value not saving */}
                           <StyledSlider
                             defaultValue={taskDetails.points}
                             valueLabelDisplay="auto"
@@ -220,24 +200,18 @@ const TaskPage = () => {
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
                               inputFormat="DD/MM/YYYY"
-                              value={value}
-                              onChange={handleChange}
+                              value={deadline}
+                              onChange={changeDeadline}
                               renderInput={(params) => <TextField {...params} sx={{ width: "17%" }}/>}
                             />
                           </LocalizationProvider>
                         </DeadlineContainer>
                       </TopContainer>
                   }
-                {/* Look at project */}
-                
-                {/* <StyledForm> */}
-                  {/* <InputLabel>Task Status</InputLabel> */}
                   {
                       isMember
                     ?
                       <Select
-                        // label="Your tasks"
-                        // defaultValue="0"
                         value={status.toString()}
                         onChange={(e: SelectChangeEvent) => updateStatus(parseInt(e.target.value))}
                         sx={{ width: "16.06vw" }}
@@ -271,11 +245,6 @@ const TaskPage = () => {
                             Blocked
                           </p>
                         </MenuItem>
-
-                        {/* {taskStatus.map((status: TaskStatus) => {
-                          <p>{status[0]}</p>
-                        })} */}
-
                       </Select>
                     :
                       <p
@@ -303,28 +272,17 @@ const TaskPage = () => {
                     {pageState === 'view'
                       ? 
                         <>
-                          {
-                              taskDetails.profileAssignee 
-                            ?
-                              <>
-                                {!!taskDetails.profileAssignee.profilePicture
-                                  ? (
-                                    <UserAvatar src={taskDetails.profileAssignee.profilePicture} alt='assignee avatar' />
-                                  ) : (
-                                    <StyledAvatar>
-                                      {getInitials(taskDetails.profileAssignee.name)}
-                                    </StyledAvatar>
-                                  )
-                                }
-                                {/* Style?? */}
-                                <div>{taskDetails.profileAssignee.name}</div>
-                              </>
-                            :
-                              <div>
-                                {/* &nbsp; */}
-                                Unassigned</div>
+                          {!!taskDetails.profileAssignee.profilePicture
+                            ? (
+                              <UserAvatar src={taskDetails.profileAssignee.profilePicture} alt='assignee avatar' />
+                            ) : (
+                              <StyledAvatar>
+                                {getInitials(taskDetails.profileAssignee.name)}
+                              </StyledAvatar>
+                            )
                           }
-                        </>
+                          <div>{taskDetails.profileAssignee.name}</div>
+                        </>  
                       :
                       <Select
                         value={selectedMember === null || selectedMember.id === -1 ? "" : selectedMember.id.toString()}
@@ -367,7 +325,6 @@ const TaskPage = () => {
                   } 
                 </DescriptionContainer>
               </TaskContainer>
-              {/* </StyledForm> */}
             </MainContainer>
           </BodyContainer>
           <Footer />

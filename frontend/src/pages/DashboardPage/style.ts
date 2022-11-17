@@ -20,9 +20,10 @@ export const LeftContainer = styled('div')`
   width: 25rem;
   border-radius: 0.5rem;
   padding: 1rem;
+
   > h2 {
     font-weight: normal;
-  }
+  };
 `;
 
 export const FriendsContainer = styled('div')`
@@ -35,6 +36,7 @@ export const ImageContainer = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+
   > img {
     width: 3.125rem;
     height: 3.125rem;
@@ -43,7 +45,7 @@ export const ImageContainer = styled('div')`
     &:hover {
       transform: scale(1.10);
     };  
-  }
+  };
 `;
 
 export const BodyContainer = styled('div')`
@@ -87,22 +89,26 @@ export const TasksContainer = styled('div')`
   > p {
     margin: auto auto;
     color: ${Palette.thGray};
-  }
+  };
 `;
 
 export const TasksLabelContainer = styled('div')`
   display: flex;
   flex-direction: row;
   padding: 0 3rem;
+
   > :first-of-type {
     width: 10%;
   };
+
   > :nth-of-type(2) {
     width: 50%;
   };
+
   > :nth-of-type(3) {
     width: 20%
   };
+
   > :nth-of-type(4) {
     width: 20%;
   };
@@ -113,9 +119,11 @@ export const ProjectsLabelContainer = styled('div')`
   flex-direction: row;
   padding: 0 3rem;
   justify-content: space-between;
+
   > :first-of-type {
     width: 20%;
   };
+  
   > :nth-of-type(2) {
     width: 75%;
   };

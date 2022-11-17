@@ -1,17 +1,6 @@
 import { styled } from "@mui/material";
 import { Palette } from "../../components/Palette";
 
-// export const FriendsListContainer = styled('div')`
-//   display: flex;
-//   flex-direction: column;
-//   width: 100%;
-//   height: 100%;
-//   min-height: 100vh;
-//   position: relative;
-//   padding-bottom: 3rem;
-//   text-align: center;
-// `;
-
 export const FriendsListContainer = styled('div')`
   border-right: 1px solid ${Palette.gray};
   border-top: 1px solid ${Palette.gray};
@@ -22,7 +11,8 @@ export const FriendsListContainer = styled('div')`
 
   > h2 {
     font-weight: normal;
-  }
+    text-align: center;
+  };
 `;
 
 export const FriendsContainer = styled('div')`

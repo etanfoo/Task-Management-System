@@ -31,6 +31,7 @@ export const SignupButton = styled(Link)`
   color: ${Palette.mainTeal};
   text-decoration: none;
   transition: all 0.1s ease 0s;
+
   &:hover {
     font-weight: bold;
   }
@@ -41,6 +42,7 @@ export const LoginPageButton = styled(Button)`
   left: 40%;
   margin-top: 11%;
   background-color: ${Palette.mainTeal};
+  
   &:hover {
     background-color: ${Palette.darkTeal};
   }

@@ -43,7 +43,6 @@ const ProjectPage = () => {
       const resp = await getProject(projectId!);
       setProjectDetails(resp);
       setCurrentMembers(resp.profiles);
-      console.log(resp)
       const connections = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       // Filters a user's connections with current members of this project 
       setPotentialMembers(connections.filter(profileA => !resp.profiles.some(profileB => profileA.id === profileB.id)));
@@ -51,8 +50,8 @@ const ProjectPage = () => {
     } catch (err: any) {
       console.log(err);
       setIsLoading(false);
-    }
-  }
+    };
+  };
 
   const loadTasks = async () => {
     try {
@@ -61,20 +60,13 @@ const ProjectPage = () => {
       setShownTasks(resp);
     } catch(err: any) {
       console.log(err);
-    }
-  }
-
-
-  useEffect(() => {
-    loadProject();
-    loadTasks();
-    // eslint-disable-next-line
-  }, [projectId])
+    };
+  };
 
   const moveMember = (profileId: number) => {
     if (!addedMembers.includes(profileId)) setAddedMembers([...addedMembers, profileId]);
     else setAddedMembers(addedMembers.filter(userId => userId !== profileId));
-  }
+  };
 
   const cancelEditProject = () => {
     setPageState('view');
@@ -87,14 +79,13 @@ const ProjectPage = () => {
       setPageState('view');
       return;
     }
-    
+
     // Check if the user provided a new input, if not use the previous input
     updatedProjectDetails.title = (!!updatedProjectDetails.title ? updatedProjectDetails.title : projectDetails.title);
     updatedProjectDetails.description = (!!updatedProjectDetails.description ? updatedProjectDetails.description : projectDetails.description);
     updatedProjectDetails.id = projectDetails.id;
 
     try {
-      
       await putProject(
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!),
         updatedProjectDetails,
@@ -104,7 +95,7 @@ const ProjectPage = () => {
     } catch (err: any) {
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     let sortedTasks: any[] = shownTasks;
@@ -128,6 +119,12 @@ const ProjectPage = () => {
     setShownTasks(sortedTasks);
     // eslint-disable-next-line
   }, [taskSortType]);
+
+  useEffect(() => {
+    loadProject();
+    loadTasks();
+    // eslint-disable-next-line
+  }, [projectId]);
 
   useEffect(() => {
     setShownTasks(allTasks.filter((task) => 
@@ -245,51 +242,51 @@ const ProjectPage = () => {
                     </BottomContainer>
                   </MidContainer>
                   <FriendsContainer>
-                      {potentialMembers.length === 0 && pageState === 'edit'
-                        ?
-                          <p>You have no friends to add...</p>
-                        :
-                          <>
-                            <MembersSearchbar 
-                              placeholder={pageState === 'view' ? "Search for a member" : "Search for a member to add..."}
-                              onChange={(e) => setSearchMember(e.target.value)}
-                              sx={{ width: "91%" }}
-                            />
-                            <OverflowContainer>
-                              {pageState === 'view'
-                                ?     
-                                  search(currentMembers, searchMember).map((profile: IProfile) => (
+                    {potentialMembers.length === 0 && pageState === 'edit'
+                      ?
+                        <p>You have no friends to add...</p>
+                      :
+                        <>
+                          <MembersSearchbar 
+                            placeholder={pageState === 'view' ? "Search for a member" : "Search for a member to add..."}
+                            onChange={(e) => setSearchMember(e.target.value)}
+                            sx={{ width: "91%" }}
+                          />
+                          <OverflowContainer>
+                            {pageState === 'view'
+                              ?     
+                                search(currentMembers, searchMember).map((profile: IProfile) => (
+                                  <FriendsCard
+                                    key={profile.id}
+                                    profileId={profile.id}
+                                    name={profile.name}
+                                    email={profile.email}
+                                    imageURL={profile.profilePicture}
+                                    functionality="profile-project"
+                                    projectId={projectId!}
+                                    alreadyAdded={false}
+                                  />
+                                ))
+                              :
+                                search(potentialMembers, searchMember).map((profile: IProfile) => (
+                                  <div key={`member ${profile.id}`} onClick={() => moveMember(profile.id)}>
                                     <FriendsCard
-                                      key={profile.id}
+                                      key={`key ${profile.id}`}
                                       profileId={profile.id}
                                       name={profile.name}
                                       email={profile.email}
                                       imageURL={profile.profilePicture}
-                                      functionality="profile-project"
-                                      projectId={projectId!}
-                                      alreadyAdded={false}
+                                      functionality="moveMember"
+                                      projectId={null!}
+                                      alreadyAdded={addedMembers.includes(profile.id)}
                                     />
-                                  ))
-                                :
-                                  search(potentialMembers, searchMember).map((profile: IProfile) => (
-                                    <div key={`member ${profile.id}`} onClick={() => moveMember(profile.id)}>
-                                      <FriendsCard
-                                        key={`key ${profile.id}`}
-                                        profileId={profile.id}
-                                        name={profile.name}
-                                        email={profile.email}
-                                        imageURL={profile.profilePicture}
-                                        functionality="moveMember"
-                                        projectId={null!}
-                                        alreadyAdded={addedMembers.includes(profile.id)}
-                                      />
-                                    </div>
-                                  )
-                                )                        
-                              }
-                            </OverflowContainer>
-                          </>
-                      }
+                                  </div>
+                                )
+                              )                        
+                            }
+                          </OverflowContainer>
+                        </>
+                    }
                   </FriendsContainer>
                 </PP>
               </ProjectContainer>

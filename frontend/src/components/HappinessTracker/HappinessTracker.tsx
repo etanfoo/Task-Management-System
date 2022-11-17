@@ -6,17 +6,17 @@ import {
 } from "./style";
 import HappyFace from "./../../assets/happy_face.png";
 import ComfortableFace from "./../../assets/comfortable_face.png";
-import NeturalFace from "./../../assets/netural_face.png";
+import NeutralFace from "./../../assets/neutral_face.png";
 import WorriedFace from "./../../assets/worried_face.png";
 import StressedFace from "./../../assets/stressed_face.png";
 import { putProfileHappiness } from "../../api/profile";
 
-/**
-   STRESSED = 0;
-   WORRIED = 1;
-   NEUTRAL = 2;
-   COMFORTABLE = 3;
-   HAPPY = 4;
+/*
+  STRESSED = 0;
+  WORRIED = 1;
+  NEUTRAL = 2;
+  COMFORTABLE = 3;
+  HAPPY = 4;
  */
 export type HappinessValue = null | 0 | 1 | 2 | 3 | 4;
 
@@ -34,11 +34,12 @@ const HappinessTracker = () => {
     const currentLoggedInProfileId = parseInt(
       sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
     );
+    
     try {
       await putProfileHappiness(currentLoggedInProfileId, happinessValue);
     } catch (err: any) {
       console.log(err);
-    }
+    };
   };
 
   return (
@@ -59,7 +60,7 @@ const HappinessTracker = () => {
               onClick={handleClick}
             />
             <img
-              src={NeturalFace}
+              src={NeutralFace}
               alt="netural face"
               id="2"
               onClick={handleClick}

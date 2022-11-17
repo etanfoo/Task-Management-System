@@ -26,7 +26,7 @@ export const BodyContainer = styled('div')`
     color: ${Palette.thGray};
     margin-bottom: 2rem;
     width: 50%;
-  }
+  };
 `;
 
 export const TierContainer = styled('div')`

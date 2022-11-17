@@ -28,7 +28,7 @@ export const LandingPageContainer = styled('div')`
     font-weight: normal;
     color: ${Palette.thGray};
     font-size: 1.5rem;
-  }
+  };
 `;
 
 export const GetStartedButton = styled(Button)`
@@ -40,11 +40,11 @@ export const GetStartedButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.darkTeal};
-  }
+  };
 
   > span {
     font-size: 2rem;
-  }
+  };
 `;
 
 export const FeaturesContainer = styled('div')`
@@ -59,7 +59,7 @@ export const FeaturesContainer = styled('div')`
 
     > span {
       color: ${Palette.mainTeal};
-    }
+    };
   }
 `;
 

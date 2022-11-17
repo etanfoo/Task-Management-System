@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Divider, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
@@ -42,9 +42,8 @@ const DashboardPage = () => {
       setAllProjects(data);
       setShownProjects(data);
     } catch (err: any) {
-      // todo: figure some error handling here? show error popup?
       console.log(err);
-    }
+    };
   };
 
   const fetchAllTasks = async () => {
@@ -54,11 +53,10 @@ const DashboardPage = () => {
       setShownTasks(resp);
     } catch (err:any) { 
       console.log(err);
-    }
-  }
+    };
+  };
 
   const fetchFriends = async () => {
-
     try {
       const friends = await getConnections(
         parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
@@ -66,25 +64,21 @@ const DashboardPage = () => {
       setConnections(friends);
       setUpdateList(false);
     } catch (err: any) {
-      // todo: figure some error handling here
       console.log(err);
-    }
+    };
   };
 
   useEffect(() => {
     fetchAllTasks();
     fetchAllProjects();
     fetchFriends();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     fetchFriends();
+    // eslint-disable-next-line
   }, [updateList]);
-
-  // const updateFriendslist = useCallback(() => {
-
-  // }, )
-
 
   useEffect(() => {
     if (pageState === "tasks") {
@@ -103,7 +97,6 @@ const DashboardPage = () => {
         );
       } else if (taskSortType === "Deadline") {
         sortedTasks = [...shownTasks].sort(
-          // todo: figure out how deadline is store - date or string?
           (taskA, taskB) => taskA.deadline.localeCompare(taskB.deadline)
         );
       }
@@ -143,7 +136,6 @@ const DashboardPage = () => {
     <DashboardPageContainer>
       <ConnectionRequestsModal
         isOpen={isConnectionRequestsModalVisible}
-        // todo: temp fix, need to refresh friends list after adding someone
         handleClose={() => {setIsConnectionRequestsModalVisible(false)}}
         updateFriendslist={() => setUpdateList(true)}
       />
@@ -154,7 +146,6 @@ const DashboardPage = () => {
       />
       <Header 
         triggerConnectionRequestsModal={() => setIsConnectionRequestsModalVisible(true)}
-        // todo: include trigger create task modal
         triggerCreateTaskModal={() => setIsCreateTaskModalVisible(true)}
       />
       <BodyContainer>

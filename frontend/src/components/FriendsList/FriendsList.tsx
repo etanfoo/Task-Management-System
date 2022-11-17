@@ -14,15 +14,14 @@ const FriendsList = () => {
       const friends = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
       setConnections(friends);
     } catch (err: any) {
-      // todo: figure some error handling here
       console.log(err);
-    }
+    };
   };
 
   useEffect(() => {
-    // todo: update friends list after accepting --> right now just refreshing window after modal closes
     fetchFriends();
-  },[])
+    // eslint-disable-next-line
+  },[]);
 
   return(
     <FriendsListContainer>

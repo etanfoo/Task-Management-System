@@ -165,6 +165,7 @@ export const TitleContainerView = styled('div')`
 export const ProjectLink = styled('h1')`
   padding-top: 0rem;
   font-weight: normal;
+  height: 2.5rem;
   color: #3a86ff;
   padding: 0.5rem;
   border-radius: 1rem;

@@ -21,9 +21,8 @@ const ConnectionRequestsModal = ({ isOpen, handleClose, updateFriendslist }: Con
       );
       setRequestConnections(requests);
     } catch (err: any) {
-      // todo: do some error handling
       console.log(err);
-    }
+    };
   };
 
   const removeRequestCard = (requestorId: number) => {
@@ -34,6 +33,7 @@ const ConnectionRequestsModal = ({ isOpen, handleClose, updateFriendslist }: Con
 
   useEffect(() => {
     fetchRequestedConnections();
+    // eslint-disable-next-line
   }, []);
 
   return (

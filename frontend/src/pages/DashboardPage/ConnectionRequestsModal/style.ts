@@ -18,13 +18,13 @@ export const ModalBody = styled('div')`
   > h2 {
     font-weight: normal;
     margin: 0;
-  }
+  };
 
   > p {
     color: ${Palette.thGray};
     margin: auto;
     font-size: 2rem;
-  }
+  };
 `;
 
 export const StyledDivider = styled(Divider)`
