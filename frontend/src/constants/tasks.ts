@@ -1,9 +1,9 @@
 import { ITask } from "../interfaces/api-response";
-import { ITasktDetails, TaskStatus } from "../interfaces/task";
+import { ITaskDetails, TaskStatus } from "../interfaces/task";
 import { EmptyProfile } from "./profiles";
 import { EmptyProjectView } from "./projects";
 
-export const EmptyTaskEdit: ITasktDetails = {
+export const EmptyTaskEdit: ITaskDetails = {
   title: "",
   description: "",
   points: 1,

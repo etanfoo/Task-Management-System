@@ -1,9 +1,9 @@
 import axios from "axios";
 import { ITask } from "../interfaces/api-response";
-import { ITasktDetails } from "../interfaces/task";
+import { ITaskDetails } from "../interfaces/task";
 
 export const postTask = async (
-  task: ITasktDetails,
+  task: ITaskDetails,
   projectId: number,
   profileId: number,
   profileAssignee: number | null
@@ -33,7 +33,7 @@ export const postTask = async (
 export const putTask = async (
   projectId: number,
   taskId: number,
-  task: ITasktDetails,
+  task: ITaskDetails,
   profileAssignee: number,
   profileId: number
 ): Promise<ITask> => {

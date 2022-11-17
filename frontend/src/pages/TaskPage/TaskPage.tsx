@@ -17,8 +17,7 @@ import {
   getInitials,
 } from "../../helpers";
 import { IProfile, ITask } from "../../interfaces/api-response";
-// import { ITask } from "../../interfaces/api-response";
-import { ITasktDetails, TaskStatus } from "../../interfaces/task";
+import { ITaskDetails, TaskStatus } from "../../interfaces/task";
 import {
   BodyContainer,
   CancelButton,
@@ -56,7 +55,7 @@ const TaskPage = () => {
   const { projectId, taskId } = useParams();
   const [taskDetails, setTaskDetails] = useState<ITask>(EmptyTaskView);
   const [updatedTaskDetails, setUpdatedTaskDetails] =
-    useState<ITasktDetails>(EmptyTaskEdit);
+    useState<ITaskDetails>(EmptyTaskEdit);
   const [isMember, setIsMember] = useState<boolean>(false);
   const [pageState, setPageState] = useState<"edit" | "view">("view");
   const [isLoading, setIsLoading] = useState<boolean>(true);
