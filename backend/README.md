@@ -1,6 +1,5 @@
 # Backend
 
-
 ## Running application with docker-compose
 
 ### Dependencies
@@ -22,28 +21,6 @@ Start:
 `sudo docker-compose up -d`  
 Stop:  
 `sudo docker-compose down`
-
-## Running database with Docker run
-Run the following to setup the database:
-```
-sudo docker run -p 5432:5432 -d \
--e POSTGRES_USER=postgres \
--e POSTGRES_PASSWORD=postgres \
--e POSTGRES_DB=taskhub \
-postgres
-```
-Or the following if you want persistent data:
-```
-sudo docker run -p 5432:5432 -d \
--e POSTGRES_USER=postgres \
--e POSTGRES_PASSWORD=postgres \
--e POSTGRES_DB=taskhub \
--v pgdata:/var/lib/postgresql/data \
-postgres
-```
-
-How to connect to database:  
-`psql taskhub -h localhost -U postgres`
 
 ## File Structure
 * The structure of the backend has:
