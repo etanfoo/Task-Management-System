@@ -1,6 +1,6 @@
 // import { IProfile } from "./api-response";
 
-export interface ITasktDetails {
+export interface ITaskDetails {
   title: string;
   description: string;
   deadline: string;

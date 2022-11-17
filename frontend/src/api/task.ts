@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ITask } from "../interfaces/api-response";
-import { ITasktDetails } from "../interfaces/task";
+import { ITaskDetails } from "../interfaces/task";
 
-export const postTask = async (task: ITasktDetails, projectId: number, profileId: number, profileAssignee: number | null): Promise<ITask> => {
+export const postTask = async (task: ITaskDetails, projectId: number, profileId: number, profileAssignee: number | null): Promise<ITask> => {
   try {
     const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/task`, {
       profileAssignee,
@@ -19,7 +19,7 @@ export const postTask = async (task: ITasktDetails, projectId: number, profileId
   };
 };
 
-export const putTask = async (projectId: number, taskId: number, task: ITasktDetails, profileAssignee: number, profileId: number): Promise<ITask> => {
+export const putTask = async (projectId: number, taskId: number, task: ITaskDetails, profileAssignee: number, profileId: number): Promise<ITask> => {
   try {
     const { data } = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/task/${taskId}`, {
       profileAssignee,

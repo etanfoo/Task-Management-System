@@ -9,7 +9,7 @@ import { EmptyTaskEdit, EmptyTaskView, taskStatus } from "../../constants/tasks"
 import { fetchStatusColor, findSelectedMember, formatDate, getInitials } from "../../helpers";
 import { IProfile, ITask } from "../../interfaces/api-response";
 // import { ITask } from "../../interfaces/api-response";
-import { ITasktDetails, TaskStatus } from "../../interfaces/task";
+import { ITaskDetails, TaskStatus } from "../../interfaces/task";
 import { BodyContainer, CancelButton, DeadlineContainer, DescriptionContainer, IconContainerEdit, IconContainerView, MainContainer, ProjectLink, StyledAvatar, StyledSlider, TaskContainer, TaskMembers, TaskPageContainer, TitleContainerEdit, TitleContainerView, TopContainer, UpdateButton, UserAvatar, UserAvatarEdit, UserCard } from "./style"
 import EditIcon from "../../assets/edit.png";
 import DeleteIcon from "../../assets/delete.png";
@@ -25,7 +25,7 @@ const TaskPage = () => {
 
   const { projectId, taskId } = useParams();
   const [taskDetails, setTaskDetails] = useState<ITask>(EmptyTaskView);
-  const [updatedTaskDetails, setUpdatedTaskDetails] = useState<ITasktDetails>(EmptyTaskEdit);
+  const [updatedTaskDetails, setUpdatedTaskDetails] = useState<ITaskDetails>(EmptyTaskEdit);
   const [isMember, setIsMember] = useState<boolean>(false);
   const [pageState, setPageState] = useState<'edit' | 'view'>('view');
   const [isLoading, setIsLoading] = useState<boolean>(true);

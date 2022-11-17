@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { postTask } from "../../api/task";
 import { EmptyTaskEdit } from "../../constants/tasks";
 import { findSelectedMember, getInitials } from "../../helpers";
-import { ITasktDetails } from "../../interfaces/task";
+import { ITaskDetails } from "../../interfaces/task";
 import { BottomContainer, ButtonsContainer, CancelButton, CreateButton, EmptyModal, ModalBody, ModalContainer, StyledAvatar, UserCard } from "./style";
 import Slider from '@mui/material/Slider';
 import { getProjects } from "../../api/project";
@@ -25,7 +25,7 @@ type CreateTaskModalProps = {
 const CreateTaskModal = ({ isOpen, handleClose, projectId }: CreateTaskModalProps) => {
   const navigate = useNavigate();
 
-  const [taskDetails, setTaskDetails] = useState<ITasktDetails>(EmptyTaskEdit);
+  const [taskDetails, setTaskDetails] = useState<ITaskDetails>(EmptyTaskEdit);
   const [userProjects, setUserProjects] = useState<IProject[]>([]); 
   const [selectedProject, setSelectedProject] = useState<IProject>(EmptyProjectView);
   const [selectedMember, setSelectedMember] = useState<IProfile>(EmptyProfile);
