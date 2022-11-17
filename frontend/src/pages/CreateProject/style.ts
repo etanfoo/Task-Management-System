@@ -2,7 +2,7 @@ import { Button, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../../components/Palette";
 
-export const CreateProjectPageContainer = styled('div')`
+export const CreateProjectPageContainer = styled("div")`
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -14,42 +14,42 @@ export const CreateProjectPageContainer = styled('div')`
   padding-bottom: 3rem;
 `;
 
-export const TopContainer = styled('div')`
+export const TopContainer = styled("div")`
   width: 80%;
-  
+
   > h1 {
     font-weight: normal;
     border-bottom: 2px solid ${Palette.thGray};
-  };
-  
+  }
+
   > h2 {
     font-weight: normal;
     margin-bottom: 10px;
-  };
+  }
 `;
 
-export const BottomContainer = styled('div')`
+export const BottomContainer = styled("div")`
   display: flex;
   flex-direction: row;
   align-items: space-between;
   width: 80%;
 `;
 
-export const SummaryContainer = styled('div')`
+export const SummaryContainer = styled("div")`
   width: 100%;
-  
+
   > h2 {
     margin-top: 1rem;
     font-weight: normal;
-  };
+  }
 
   > TextField {
     background-color: ${Palette.mainTeal};
     color: white;
-  };
+  }
 `;
 
-export const OverflowContainer = styled('div')`
+export const OverflowContainer = styled("div")`
   overflow-y: auto;
   padding: 0 1rem;
 `;
@@ -61,20 +61,20 @@ export const MembersSearchbar = styled(TextField)`
   margin-right: 2rem;
 `;
 
-export const MembersContainer = styled('div')`
-  width: 100%;  
-  
+export const MembersContainer = styled("div")`
+  width: 100%;
+
   > h2 {
     margin-top: 1rem;
     font-weight: normal;
-  };
+  }
 `;
 
-export const FriendsContainer = styled('div')`
+export const FriendsContainer = styled("div")`
   display: flex;
   flex-direction: column;
   text-align: left;
-  padding: 1rem;;
+  padding: 1rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: 100%;
   border-radius: 0.5rem;
@@ -86,10 +86,10 @@ export const FriendsContainer = styled('div')`
     text-align: center;
     margin-top: 8rem;
     color: ${Palette.thGray};
-  };
+  }
 `;
 
-export const ControlContainer = styled('div')`
+export const ControlContainer = styled("div")`
   display: flex;
   flex-direction: row;
   margin: 0 10vw 1rem auto;
@@ -97,7 +97,7 @@ export const ControlContainer = styled('div')`
 
   > :first-of-type {
     margin-right: 1rem;
-  };
+  }
 `;
 
 export const CancelButton = styled(Button)`
@@ -108,7 +108,7 @@ export const CancelButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.lightGray};
-  };
+  }
 `;
 
 export const CreateButton = styled(Button)`
@@ -118,5 +118,5 @@ export const CreateButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.darkTeal};
-  };
+  }
 `;

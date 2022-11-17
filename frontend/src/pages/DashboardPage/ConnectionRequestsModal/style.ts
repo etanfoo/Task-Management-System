@@ -2,7 +2,7 @@ import { Divider } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../../../components/Palette";
 
-export const ModalBody = styled('div')`
+export const ModalBody = styled("div")`
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -18,13 +18,13 @@ export const ModalBody = styled('div')`
   > h2 {
     font-weight: normal;
     margin: 0;
-  };
+  }
 
   > p {
     color: ${Palette.thGray};
     margin: auto;
     font-size: 2rem;
-  };
+  }
 `;
 
 export const StyledDivider = styled(Divider)`
@@ -33,7 +33,7 @@ export const StyledDivider = styled(Divider)`
   margin: 1rem 0;
 `;
 
-export const OverflowContainer = styled('div')`
+export const OverflowContainer = styled("div")`
   overflow-y: auto;
   height: 90%;
 `;

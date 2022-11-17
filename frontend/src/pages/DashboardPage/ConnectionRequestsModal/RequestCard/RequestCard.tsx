@@ -1,4 +1,10 @@
-import { AcceptButton, ButtonContainer, IgnoreButton, RequestCardContainer, TextContainer } from "./style";
+import {
+  AcceptButton,
+  ButtonContainer,
+  IgnoreButton,
+  RequestCardContainer,
+  TextContainer,
+} from "./style";
 import Icon from "../../../../assets/logo.png";
 import { acceptConnection, rejectConnection } from "../../../../api/connect";
 
@@ -7,9 +13,14 @@ type RequestCardProps = {
   name: string;
   email: string;
   removeRequestCallback: () => void;
-}
+};
 
-const RequestCard = ({ id, name, email, removeRequestCallback }: RequestCardProps) => {
+const RequestCard = ({
+  id,
+  name,
+  email,
+  removeRequestCallback,
+}: RequestCardProps) => {
   const handleReject = async () => {
     try {
       await rejectConnection(
@@ -19,7 +30,7 @@ const RequestCard = ({ id, name, email, removeRequestCallback }: RequestCardProp
       removeRequestCallback();
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   const handleAccept = async () => {
@@ -31,26 +42,26 @@ const RequestCard = ({ id, name, email, removeRequestCallback }: RequestCardProp
       removeRequestCallback();
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   return (
     <RequestCardContainer>
-      <img alt='avatar' height={50} width={50} src={Icon} />      
+      <img alt="avatar" height={50} width={50} src={Icon} />
       <TextContainer>
         <h3>{name}</h3>
         <p>{email}</p>
       </TextContainer>
       <ButtonContainer>
-        <IgnoreButton variant='contained' onClick={handleReject}>
+        <IgnoreButton variant="contained" onClick={handleReject}>
           Ignore
         </IgnoreButton>
-        <AcceptButton variant='contained' onClick={handleAccept}>
+        <AcceptButton variant="contained" onClick={handleAccept}>
           Accept
         </AcceptButton>
       </ButtonContainer>
     </RequestCardContainer>
-  )
+  );
 };
 
 export default RequestCard;

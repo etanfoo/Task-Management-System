@@ -1,4 +1,14 @@
-import { HeaderContainer, LoginLink, SignUpButton, Logo, StyledAvatar, ProfilePicture, StyledIconButton, CreateButton, StyledBadge } from "./style";
+import {
+  HeaderContainer,
+  LoginLink,
+  SignUpButton,
+  Logo,
+  StyledAvatar,
+  ProfilePicture,
+  StyledIconButton,
+  CreateButton,
+  StyledBadge,
+} from "./style";
 import LogoIcon from "../../assets/logo.png";
 import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +24,10 @@ type HeaderProps = {
   triggerCreateTaskModal?: () => void;
 };
 
-const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: HeaderProps) => {
+const Header = ({
+  triggerConnectionRequestsModal,
+  triggerCreateTaskModal,
+}: HeaderProps) => {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -35,27 +48,27 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
 
   const handleLogout = () => {
     sessionStorage.clear();
-    navigate('/');
+    navigate("/");
   };
 
   const handleLogoClick = () => {
     if (sessionStorage.getItem(process.env.REACT_APP_TOKEN!)) {
-      navigate('/dashboard', {state:{initialPageState:"tasks"}});
+      navigate("/dashboard", { state: { initialPageState: "tasks" } });
     } else {
-      navigate('/');
-    };
+      navigate("/");
+    }
   };
-  
+
   const fetchUserDetails = async () => {
     try {
-      const data = await getProfile(parseInt(
-        sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
-      ));
+      const data = await getProfile(
+        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
+      );
       setName(data.name);
       setProfilePicture(data.profilePicture);
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   const fetchRequestedConnections = async () => {
@@ -66,7 +79,7 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
       setRequestConnections(requests);
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   useEffect(() => {
@@ -80,69 +93,82 @@ const Header = ({ triggerConnectionRequestsModal, triggerCreateTaskModal }: Head
 
   return (
     <HeaderContainer>
-      <Logo src={LogoIcon} alt='logo' onClick={handleLogoClick}/>
-      {sessionStorage.getItem(process.env.REACT_APP_TOKEN!)
-        ? 
-          (
+      <Logo src={LogoIcon} alt="logo" onClick={handleLogoClick} />
+      {sessionStorage.getItem(process.env.REACT_APP_TOKEN!) ? (
+        <>
+          {window.location.pathname === "/dashboard" ? (
             <>
-              {window.location.pathname === "/dashboard"
-                ? (
-                  <>
-                    <StyledBadge badgeContent={requestConnections.length} color="secondary">
-                      <StyledIconButton onClick={triggerConnectionRequestsModal}>
-                        <img src={FriendsIcon} alt="friends" width='40' height='40' />
-                      </StyledIconButton>
-                    </StyledBadge>
-                    <CreateButton variant='contained' onClick={triggerCreateTaskModal}>Create Task</CreateButton>
-                    <CreateButton variant='contained' onClick={() => navigate('/project/create')}>Create Project</CreateButton>
-                  </>
-                ): null
+              <StyledBadge
+                badgeContent={requestConnections.length}
+                color="secondary"
+              >
+                <StyledIconButton onClick={triggerConnectionRequestsModal}>
+                  <img src={FriendsIcon} alt="friends" width="40" height="40" />
+                </StyledIconButton>
+              </StyledBadge>
+              <CreateButton
+                variant="contained"
+                onClick={triggerCreateTaskModal}
+              >
+                Create Task
+              </CreateButton>
+              <CreateButton
+                variant="contained"
+                onClick={() => navigate("/project/create")}
+              >
+                Create Project
+              </CreateButton>
+            </>
+          ) : null}
+          {!!profilePicture ? (
+            <ProfilePicture
+              src={profilePicture}
+              onClick={handleMenuOpen}
+              alt="profile"
+              style={
+                window.location.pathname !== "/dashboard"
+                  ? { marginLeft: "auto" }
+                  : undefined
               }
-              {!!profilePicture
-                ? <ProfilePicture
-                    src={profilePicture}
-                    onClick={handleMenuOpen}
-                    alt='profile'
-                    style={window.location.pathname !== "/dashboard" ? { marginLeft: 'auto' } : undefined}
-                  />
-                : (
-                  <StyledAvatar
-                    onClick={handleMenuOpen}
-                    style={window.location.pathname !== "/dashboard" ? { marginLeft: 'auto' } : undefined}
-                  >
-                    {getInitials(name)}
-                  </StyledAvatar>
+            />
+          ) : (
+            <StyledAvatar
+              onClick={handleMenuOpen}
+              style={
+                window.location.pathname !== "/dashboard"
+                  ? { marginLeft: "auto" }
+                  : undefined
+              }
+            >
+              {getInitials(name)}
+            </StyledAvatar>
+          )}
+          <Menu open={menuOpen} anchorEl={anchorEl} onClose={handleMenuClose}>
+            <MenuItem
+              onClick={() =>
+                navigate(
+                  `/profile/${sessionStorage.getItem(
+                    process.env.REACT_APP_PROFILE_ID!
+                  )}`
                 )
               }
-              <Menu
-                open={menuOpen}
-                anchorEl={anchorEl}
-                onClose={handleMenuClose}
-              >
-                <MenuItem onClick={() => navigate(`/profile/${sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)}`)}>
-                  Profile 
-                </MenuItem>
-                <MenuItem onClick={() => navigate('/friends')}>
-                  Look for a friend 
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  Logout 
-                </MenuItem>
-              </Menu>
-            </>
-          )
-        : (
-          <>
-            <LoginLink to='/login'>
-              Login
-            </LoginLink>
-            <SignUpButton variant='contained' onClick={() => navigate('/signup')}>
-              Sign up
-            </SignUpButton>
-          </>
-        )
-      }
-
+            >
+              Profile
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/friends")}>
+              Look for a friend
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
+        </>
+      ) : (
+        <>
+          <LoginLink to="/login">Login</LoginLink>
+          <SignUpButton variant="contained" onClick={() => navigate("/signup")}>
+            Sign up
+          </SignUpButton>
+        </>
+      )}
     </HeaderContainer>
   );
 };

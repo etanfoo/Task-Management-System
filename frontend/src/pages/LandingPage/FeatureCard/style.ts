@@ -1,7 +1,7 @@
 import { styled } from "@mui/system";
 import { Palette } from "../../../components/Palette";
 
-export const FeatureCardContainer = styled('div')`
+export const FeatureCardContainer = styled("div")`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -12,16 +12,16 @@ export const FeatureCardContainer = styled('div')`
 
   > p {
     color: ${Palette.thGray};
-  };
+  }
 
-  transition: transform .2s;
-  
+  transition: transform 0.2s;
+
   &:hover {
     transform: scale(1.05);
-  };
+  }
 `;
 
-export const ImageTitleContainer = styled('div')`
+export const ImageTitleContainer = styled("div")`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -29,11 +29,11 @@ export const ImageTitleContainer = styled('div')`
   > img {
     height: 3.125rem;
     margin-right: 0.5rem;
-  };
+  }
 
   > h3 {
     margin: 0;
     font-weight: normal;
     font-size: 2rem;
-  };
+  }
 `;

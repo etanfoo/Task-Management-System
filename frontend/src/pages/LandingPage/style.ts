@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../../components/Palette";
 
-export const LandingPageContainer = styled('div')`
+export const LandingPageContainer = styled("div")`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,14 +21,14 @@ export const LandingPageContainer = styled('div')`
 
     > span {
       color: ${Palette.mainTeal};
-    };
-  };
+    }
+  }
 
   > h3 {
     font-weight: normal;
     color: ${Palette.thGray};
     font-size: 1.5rem;
-  };
+  }
 `;
 
 export const GetStartedButton = styled(Button)`
@@ -40,14 +40,14 @@ export const GetStartedButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.darkTeal};
-  };
+  }
 
   > span {
     font-size: 2rem;
-  };
+  }
 `;
 
-export const FeaturesContainer = styled('div')`
+export const FeaturesContainer = styled("div")`
   margin-top: 2rem;
   background-color: ${Palette.lightGray};
   width: 100%;
@@ -59,17 +59,17 @@ export const FeaturesContainer = styled('div')`
 
     > span {
       color: ${Palette.mainTeal};
-    };
+    }
   }
 `;
 
-export const GridContainer = styled('div')`
+export const GridContainer = styled("div")`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
 `;
 
-export const StatsContainer = styled('div')`
+export const StatsContainer = styled("div")`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,20 +82,20 @@ export const StatsContainer = styled('div')`
     font-weight: normal;
     font-size: 3rem;
     margin: 0;
-  };
+  }
 
   > p {
     font-size: 1.25rem;
-  };
+  }
 `;
 
-export const StatsGridContainer = styled('div')`
+export const StatsGridContainer = styled("div")`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
 `;
 
-export const InstructionsContainer = styled('div')`
+export const InstructionsContainer = styled("div")`
   display: flex;
   flex-direction: column;
   background-color: ${Palette.lightGray};
@@ -105,5 +105,5 @@ export const InstructionsContainer = styled('div')`
   > h2 {
     font-weight: normal;
     font-size: 3rem;
-  };
+  }
 `;

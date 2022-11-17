@@ -34,12 +34,12 @@ const HappinessTracker = () => {
     const currentLoggedInProfileId = parseInt(
       sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!
     );
-    
+
     try {
       await putProfileHappiness(currentLoggedInProfileId, happinessValue);
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   return (

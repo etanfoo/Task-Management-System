@@ -5,10 +5,10 @@ export interface IProjectDetails {
   description: string;
   id: number;
   profiles: IProfile[];
-};
+}
 
 export interface IProjectStats {
   happiness: Object;
   busyness: Object;
   tasks: Object;
-};
+}

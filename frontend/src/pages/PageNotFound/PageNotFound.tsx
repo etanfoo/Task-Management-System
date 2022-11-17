@@ -8,12 +8,15 @@ const PageNotFound = () => {
   return (
     <>
       <PageNotFoundContainer>
-        <img src={Logo} alt='logo' />
+        <img src={Logo} alt="logo" />
         <h1>looks like something went wrong</h1>
         <h1>
           click&nbsp;
-          <RedirectLink to={ isAuthorised ? '/dashboard' : '/' } state={{ initialPageState: "tasks" }}>
-            here       
+          <RedirectLink
+            to={isAuthorised ? "/dashboard" : "/"}
+            state={{ initialPageState: "tasks" }}
+          >
+            here
           </RedirectLink>
           &nbsp;to return to our home page
         </h1>

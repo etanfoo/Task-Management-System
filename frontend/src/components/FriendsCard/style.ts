@@ -2,7 +2,7 @@ import { Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../Palette";
 
-export const FriendsCardContainer = styled('div')`
+export const FriendsCardContainer = styled("div")`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -11,21 +11,21 @@ export const FriendsCardContainer = styled('div')`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 1rem;
   margin-bottom: 1rem;
-  transition: transform .2s;
+  transition: transform 0.2s;
 
   &:hover {
     transform: scale(1.05);
-  };
+  }
 
   > img {
-    width: 3.125rem; 
+    width: 3.125rem;
     height: 3.125rem;
     margin-right: 1rem;
     border-radius: 5rem;
-  };
+  }
 `;
 
-export const FriendsCardEditContainer = styled('div')`
+export const FriendsCardEditContainer = styled("div")`
   display: flex;
   cursor: pointer;
   border-radius: 0.5rem;
@@ -34,34 +34,33 @@ export const FriendsCardEditContainer = styled('div')`
   margin-bottom: 1rem;
 `;
 
-export const ProfileContainer = styled('div')`
+export const ProfileContainer = styled("div")`
   display: flex;
   flex-direction: row;
   align-items: center;
-  transition: transform .2s;
+  transition: transform 0.2s;
 
   &:hover {
     transform: scale(1.05);
-  };
+  }
 `;
 
-
-export const UserAvatar = styled('img')`
-  width: 3.125rem;  
+export const UserAvatar = styled("img")`
+  width: 3.125rem;
   height: 3.125rem;
   margin-right: 1rem;
   border-radius: 5rem;
 `;
 
-export const DeleteButton = styled('img')`
+export const DeleteButton = styled("img")`
   height: 1rem;
-  margin-left: auto; 
+  margin-left: auto;
   margin-right: 0;
   margin-top: 1rem;
-  
+
   &:hover {
     transform: scale(1.25);
-  };
+  }
 `;
 
 export const StyledAvatar = styled(Avatar)`
@@ -69,7 +68,7 @@ export const StyledAvatar = styled(Avatar)`
   background-color: ${Palette.mainTeal};
 `;
 
-export const DetailsContainer = styled('div')`
+export const DetailsContainer = styled("div")`
   display: flex;
   flex-direction: column;
   text-align: left;

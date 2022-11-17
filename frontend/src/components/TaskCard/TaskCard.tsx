@@ -12,19 +12,34 @@ type TaskCardProps = {
   status: number;
 };
 
-const TaskCard = ({ projectId, taskId, title, deadline, status}: TaskCardProps) => {
+const TaskCard = ({
+  projectId,
+  taskId,
+  title,
+  deadline,
+  status,
+}: TaskCardProps) => {
   const navigate = useNavigate();
-  
+
   if (deadline !== null) deadline = formatDate(deadline);
 
   return (
-    <TaskCardContainer onClick={() => navigate(`/project/${projectId}/task/${taskId}`)}>
+    <TaskCardContainer
+      onClick={() => navigate(`/project/${projectId}/task/${taskId}`)}
+    >
       <p>{taskId}</p>
       <p>{title}</p>
       <p>{deadline}</p>
       <p
-        style={{ backgroundColor: fetchStatusColor(status), color: "white", borderRadius: "1rem", textAlign: "center"}}
-      >{taskStatus[status as keyof TaskStatus]}</p>
+        style={{
+          backgroundColor: fetchStatusColor(status),
+          color: "white",
+          borderRadius: "1rem",
+          textAlign: "center",
+        }}
+      >
+        {taskStatus[status as keyof TaskStatus]}
+      </p>
     </TaskCardContainer>
   );
 };

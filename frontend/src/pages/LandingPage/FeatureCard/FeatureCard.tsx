@@ -10,12 +10,12 @@ const FeatureCard = ({ imageUrl, title, description }: FeatureCardProps) => {
   return (
     <FeatureCardContainer>
       <ImageTitleContainer>
-        <img src={imageUrl} alt='card logo' />
+        <img src={imageUrl} alt="card logo" />
         <h3>{title}</h3>
       </ImageTitleContainer>
       <p>{description}</p>
     </FeatureCardContainer>
-  )
+  );
 };
 
 export default FeatureCard;

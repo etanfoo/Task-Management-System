@@ -11,45 +11,45 @@ const FriendsList = () => {
 
   const fetchFriends = async () => {
     try {
-      const friends = await getConnections(parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!));
+      const friends = await getConnections(
+        parseInt(sessionStorage.getItem(process.env.REACT_APP_PROFILE_ID!)!)
+      );
       setConnections(friends);
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   useEffect(() => {
     fetchFriends();
     // eslint-disable-next-line
-  },[]);
+  }, []);
 
-  return(
+  return (
     <FriendsListContainer>
-      {connections.length !== 0
-        ? (
-          <>
-            <h2>Your friends</h2>
-            <FriendsContainer>
-              {connections.map((connection) => (
-                <FriendsCard
-                  key={connection.id}
-                  profileId={connection.id}
-                  name={connection.name}
-                  email={connection.email}
-                  imageURL={connection.profilePicture}
-                  functionality="profile"
-                  projectId={null!}
-                  alreadyAdded={false}
-                />
-              ))}
-            </FriendsContainer>
-            <Divider sx={{ margin: '1rem 0' }} />
-          </>
-        ) : null
-      }
-      <HappinessTracker />  
+      {connections.length !== 0 ? (
+        <>
+          <h2>Your friends</h2>
+          <FriendsContainer>
+            {connections.map((connection) => (
+              <FriendsCard
+                key={connection.id}
+                profileId={connection.id}
+                name={connection.name}
+                email={connection.email}
+                imageURL={connection.profilePicture}
+                functionality="profile"
+                projectId={null!}
+                alreadyAdded={false}
+              />
+            ))}
+          </FriendsContainer>
+          <Divider sx={{ margin: "1rem 0" }} />
+        </>
+      ) : null}
+      <HappinessTracker />
     </FriendsListContainer>
   );
-}
+};
 
 export default FriendsList;

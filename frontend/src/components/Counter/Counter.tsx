@@ -10,7 +10,7 @@ type CounterProps = {
 
 const Counter = ({ stat, finalValue, inView, innerRef }: CounterProps) => {
   const [count, setCount] = useState<number>(0);
-  
+
   const INTERVAL = 750;
   const duration = Math.floor(INTERVAL / finalValue);
 
@@ -23,9 +23,8 @@ const Counter = ({ stat, finalValue, inView, innerRef }: CounterProps) => {
       setCount(start);
       if (start === finalValue) clearInterval(timer);
     }, duration);
+  }, [duration, finalValue, inView]);
 
-  }, [duration, finalValue, inView])
-  
   return (
     <CounterContainer ref={innerRef}>
       <h3>{count}</h3>

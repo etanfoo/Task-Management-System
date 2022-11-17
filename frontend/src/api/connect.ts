@@ -24,57 +24,79 @@ export const requestConnection = async (
     return data;
   } catch (err: any) {
     throw err;
-  };
+  }
 };
 
 export const acceptConnection = async (userId: number, requestorId: number) => {
   try {
-    await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/profile/accept/${userId}/${requestorId}`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+    await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/v1/profile/accept/${userId}/${requestorId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
       }
-    });
+    );
   } catch (err: any) {
     throw err;
-  };
+  }
 };
 
 export const rejectConnection = async (userId: number, requestorId: number) => {
   try {
-    await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/profile/reject/${userId}/${requestorId}`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+    await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/v1/profile/reject/${userId}/${requestorId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
       }
-    });
+    );
   } catch (err: any) {
     throw err;
-  };
+  }
 };
 
-export const getRequestedConnections = async (userId: number): Promise<IProfile[]> => {
+export const getRequestedConnections = async (
+  userId: number
+): Promise<IProfile[]> => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile/${userId}/requestedConnections`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/v1/profile/${userId}/requestedConnections`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
       }
-    });
+    );
 
     return data;
   } catch (err: any) {
     throw err;
-  };
+  }
 };
 
 export const getConnections = async (userId: number): Promise<IProfile[]> => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/profile/${userId}/acceptedConnections`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/v1/profile/${userId}/acceptedConnections`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
       }
-    });
+    );
 
     return data;
   } catch (err: any) {
     throw err;
-  };
+  }
 };

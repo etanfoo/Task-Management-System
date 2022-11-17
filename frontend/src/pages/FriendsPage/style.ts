@@ -26,15 +26,15 @@ export const BodyContainer = styled("div")`
     margin-bottom: 0;
     font-weight: normal;
     color: ${Palette.mainTeal};
-  };
+  }
 
   > p {
     color: ${Palette.thGray};
-  };
+  }
 
   > div {
     width: 50%;
-  };
+  }
 
   .connectButton {
     margin-top: 1rem;
@@ -43,6 +43,6 @@ export const BodyContainer = styled("div")`
 
     &:hover {
       background-color: ${Palette.darkTeal};
-    };
-  };
+    }
+  }
 `;
