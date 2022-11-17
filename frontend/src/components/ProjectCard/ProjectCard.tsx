@@ -9,18 +9,27 @@ type ProjectCardProps = {
   isEven: boolean;
 };
 
-const ProjectCard = ({ name, description, projectId, isEven }: ProjectCardProps) => {
+const ProjectCard = ({
+  name,
+  description,
+  projectId,
+  isEven,
+}: ProjectCardProps) => {
   const navigate = useNavigate();
-  
+
   return (
-    <ProjectCardContainer 
+    <ProjectCardContainer
       onClick={() => navigate(`/project/${projectId}`)}
-      style={isEven ? { backgroundColor: Palette.mainTeal, color: 'white' }: undefined}
+      style={
+        isEven
+          ? { backgroundColor: Palette.mainTeal, color: "white" }
+          : undefined
+      }
     >
       <p>{name}</p>
       <p>{description}</p>
     </ProjectCardContainer>
-  )
+  );
 };
 
 export default ProjectCard;

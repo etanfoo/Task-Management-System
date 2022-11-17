@@ -1,7 +1,7 @@
 import { styled } from "@mui/system";
 import { Palette } from "../Palette";
 
-export const FooterContainer = styled('div')`
+export const FooterContainer = styled("div")`
   display: flex;
   flex-direction: row;
   background-color: ${Palette.mainTeal};

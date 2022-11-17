@@ -9,9 +9,13 @@ type ConnectionRequestsModalProps = {
   isOpen: boolean;
   handleClose: () => void;
   updateFriendslist: () => void;
-}
+};
 
-const ConnectionRequestsModal = ({ isOpen, handleClose, updateFriendslist }: ConnectionRequestsModalProps) => {
+const ConnectionRequestsModal = ({
+  isOpen,
+  handleClose,
+  updateFriendslist,
+}: ConnectionRequestsModalProps) => {
   const [requestConnections, setRequestConnections] = useState<IProfile[]>([]);
 
   const fetchRequestedConnections = async () => {
@@ -22,11 +26,11 @@ const ConnectionRequestsModal = ({ isOpen, handleClose, updateFriendslist }: Con
       setRequestConnections(requests);
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   const removeRequestCard = (requestorId: number) => {
-    setRequestConnections((requestConnections) => 
+    setRequestConnections((requestConnections) =>
       requestConnections.filter((requestor) => requestor.id !== requestorId)
     );
   };
@@ -39,32 +43,28 @@ const ConnectionRequestsModal = ({ isOpen, handleClose, updateFriendslist }: Con
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <ModalBody>
-        {requestConnections.length === 0
-          ? (
-            <p>Nothing to see here...</p>
-          ): (
-            <>
-              <h2>Invitations</h2>
-              <StyledDivider />
-              <OverflowContainer>
-                {requestConnections.map((request, index) => (
-                  <RequestCard
-                    key={request.id}
-                    id={request.id}
-                    name={request.name}
-                    email={request.email}
-                    removeRequestCallback={() => {
-                      removeRequestCard(request.id);
-                      updateFriendslist();
-                      }
-                    }
-                  />
-                ))
-                }
-              </OverflowContainer>
-            </>
-          )
-        }
+        {requestConnections.length === 0 ? (
+          <p>Nothing to see here...</p>
+        ) : (
+          <>
+            <h2>Invitations</h2>
+            <StyledDivider />
+            <OverflowContainer>
+              {requestConnections.map((request, index) => (
+                <RequestCard
+                  key={request.id}
+                  id={request.id}
+                  name={request.name}
+                  email={request.email}
+                  removeRequestCallback={() => {
+                    removeRequestCard(request.id);
+                    updateFriendslist();
+                  }}
+                />
+              ))}
+            </OverflowContainer>
+          </>
+        )}
       </ModalBody>
     </Modal>
   );

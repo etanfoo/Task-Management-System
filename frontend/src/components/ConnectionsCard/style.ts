@@ -14,13 +14,13 @@ export const ConnectionCardContainer = styled("div")`
 
   &:hover {
     transform: scale(1.05);
-  };
+  }
 
   > img {
     height: 3.125rem;
     margin-right: 1rem;
     border-radius: 5rem;
-  };
+  }
 `;
 
 export const StyledAvatar = styled(Avatar)`
@@ -36,10 +36,10 @@ export const DetailsContainer = styled("div")`
   > h3 {
     margin: 0;
     font-weight: normal;
-  };
+  }
 
   > p {
     margin: 0;
     color: ${Palette.thGray};
-  };
+  }
 `;

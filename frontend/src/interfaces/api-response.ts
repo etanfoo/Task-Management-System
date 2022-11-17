@@ -3,7 +3,7 @@ import { HappinessValue } from "../components/HappinessTracker/HappinessTracker"
 export interface IAuthResponse {
   access_token: string;
   profile_id: number;
-};
+}
 
 export interface IProfile {
   id: number;
@@ -16,7 +16,7 @@ export interface IProfile {
   aboutMe: string;
   assignedTasks: ITask[];
   authoredTasks: ITask[];
-};
+}
 
 export interface IProject {
   description: string;
@@ -24,7 +24,7 @@ export interface IProject {
   profiles: IProfile[];
   tasks: ITask[];
   title: string;
-};
+}
 
 export interface ITask {
   id: number;
@@ -36,4 +36,4 @@ export interface ITask {
   status: number;
   profileAssignee: IProfile;
   profileAuthor: IProfile;
-};
+}

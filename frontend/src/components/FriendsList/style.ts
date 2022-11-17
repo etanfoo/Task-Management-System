@@ -1,7 +1,7 @@
 import { styled } from "@mui/material";
 import { Palette } from "../../components/Palette";
 
-export const FriendsListContainer = styled('div')`
+export const FriendsListContainer = styled("div")`
   border-right: 1px solid ${Palette.gray};
   border-top: 1px solid ${Palette.gray};
   height: 100vh;
@@ -12,10 +12,10 @@ export const FriendsListContainer = styled('div')`
   > h2 {
     font-weight: normal;
     text-align: center;
-  };
+  }
 `;
 
-export const FriendsContainer = styled('div')`
+export const FriendsContainer = styled("div")`
   overflow-y: auto;
   padding: 0 1rem;
   height: 65%;

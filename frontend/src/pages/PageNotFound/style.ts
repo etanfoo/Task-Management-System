@@ -2,7 +2,7 @@ import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { Palette } from "../../components/Palette";
 
-export const PageNotFoundContainer = styled('div')`
+export const PageNotFoundContainer = styled("div")`
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -16,12 +16,12 @@ export const PageNotFoundContainer = styled('div')`
     height: 12.5rem;
     width: 12.5rem;
     margin-bottom: 2rem;
-  };
+  }
 
   > h1 {
     font-weight: normal;
     width: 100%;
-  };
+  }
 `;
 
 export const RedirectLink = styled(Link)`

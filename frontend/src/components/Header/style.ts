@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { Palette } from "../Palette";
 
-export const HeaderContainer = styled('div')`
+export const HeaderContainer = styled("div")`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -14,7 +14,7 @@ export const HeaderContainer = styled('div')`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
-export const Logo = styled('img')`
+export const Logo = styled("img")`
   height: 4rem;
   cursor: pointer;
 `;
@@ -22,7 +22,7 @@ export const Logo = styled('img')`
 export const SignUpButton = styled(Button)`
   text-transform: capitalize;
   background-color: ${Palette.mainTeal};
-  
+
   &:hover {
     background-color: ${Palette.darkTeal};
   }
@@ -34,13 +34,13 @@ export const LoginLink = styled(Link)`
   color: black;
   font-size: 1rem;
   transition: all 0.3s ease 0s;
-  
+
   &:hover {
     color: ${Palette.mainTeal};
   }
 `;
 
-export const ProfilePicture = styled('img')`
+export const ProfilePicture = styled("img")`
   height: 3rem;
   width: 3rem;
   border-radius: 5rem;
@@ -51,13 +51,13 @@ export const StyledAvatar = styled(Avatar)`
   height: 3rem;
   width: 3rem;
   background-color: ${Palette.mainTeal};
-  cursor: pointer
+  cursor: pointer;
 `;
 
 export const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   marginLeft: "auto",
-  
-  '& .MuiBadge-badge': {
+
+  "& .MuiBadge-badge": {
     right: 25,
     top: 13,
   },

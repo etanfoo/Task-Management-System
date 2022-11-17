@@ -2,7 +2,7 @@ import { Divider } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../../components/Palette";
 
-export const InfoPageContainer = styled('div')`
+export const InfoPageContainer = styled("div")`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -12,24 +12,24 @@ export const InfoPageContainer = styled('div')`
   padding-bottom: 3rem;
 `;
 
-export const BodyContainer = styled('div')`
+export const BodyContainer = styled("div")`
   padding: 2rem 3rem 0 3rem;
 
   > h1 {
     font-weight: normal;
     font-size: 4rem;
     margin: 0;
-  };
+  }
 
   > p {
     margin: 0;
     color: ${Palette.thGray};
     margin-bottom: 2rem;
     width: 50%;
-  };
+  }
 `;
 
-export const TierContainer = styled('div')`
+export const TierContainer = styled("div")`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -39,13 +39,13 @@ export const TierContainer = styled('div')`
     font-weight: normal;
     font-size: 3rem;
     margin: 0;
-  };
+  }
 
   > img {
     height: 3rem;
     width: 3rem;
     margin-right: 1rem;
-  };
+  }
 `;
 
 export const StyledDivider = styled(Divider)`

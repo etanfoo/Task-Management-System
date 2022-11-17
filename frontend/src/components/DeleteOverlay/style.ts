@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../Palette";
 
-export const DeleteOverlayContainer = styled('div')`
+export const DeleteOverlayContainer = styled("div")`
   width: 50%;
   height: 40%;
   position: absolute;
@@ -12,15 +12,15 @@ export const DeleteOverlayContainer = styled('div')`
   background-color: white;
   padding: 1rem;
   border-radius: 10px;
-  
+
   > h1 {
     margin-top: 5rem;
     text-align: center;
     font-weight: normal;
-  };
+  }
 `;
 
-export const ButtonsContainer = styled('div')`
+export const ButtonsContainer = styled("div")`
   display: flex;
   width: 10%;
   position: relative;
@@ -30,7 +30,7 @@ export const ButtonsContainer = styled('div')`
 
   > :first-of-type {
     margin-right: 2rem;
-  };
+  }
 `;
 
 export const NoButton = styled(Button)`
@@ -40,7 +40,7 @@ export const NoButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.lightGray};
-  };
+  }
 `;
 
 export const YesButton = styled(Button)`
@@ -48,5 +48,5 @@ export const YesButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.darkTeal};
-  };
+  }
 `;

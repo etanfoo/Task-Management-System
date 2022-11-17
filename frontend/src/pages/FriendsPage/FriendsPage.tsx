@@ -103,7 +103,7 @@ const FriendsPage = () => {
       setCurrentLoggedInProfile(data);
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   const fetchProfiles = async () => {
@@ -112,7 +112,7 @@ const FriendsPage = () => {
       setProfiles(data);
     } catch (err: any) {
       console.log(err);
-    };
+    }
   };
 
   useEffect(() => {

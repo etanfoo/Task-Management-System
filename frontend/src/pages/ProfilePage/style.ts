@@ -2,7 +2,7 @@ import { Avatar, Box, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../../components/Palette";
 
-export const ProfilePageContainer = styled('div')`
+export const ProfilePageContainer = styled("div")`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,7 +14,7 @@ export const ProfilePageContainer = styled('div')`
   text-align: center;
 `;
 
-export const TopTopContainer = styled('div')`
+export const TopTopContainer = styled("div")`
   display: flex;
   flex-direction: row;
   width: 80%;
@@ -25,7 +25,7 @@ type TopContainerProps = {
   borderColor?: string;
 };
 
-export const TopContainer = styled('div')<TopContainerProps>`
+export const TopContainer = styled("div")<TopContainerProps>`
   display: flex;
   flex-direction: row;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -39,7 +39,9 @@ export const TopContainer = styled('div')<TopContainerProps>`
   position: relative;
 
   // if borderColor is provided show border animation
-  ${(props: TopContainerProps) => (props.borderColor) && `
+  ${(props: TopContainerProps) =>
+    props.borderColor &&
+    `
     &:before {
       content: "";
       background-image: conic-gradient(
@@ -80,10 +82,10 @@ export const TopContainer = styled('div')<TopContainerProps>`
     height: 6.25rem;
     margin-right: 1rem;
     border-radius: 5rem;
-  };
+  } ;
 `;
 
-export const StatsContainer = styled('div')`
+export const StatsContainer = styled("div")`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -99,7 +101,7 @@ export const StatsContainer = styled('div')`
     padding: 0.5rem;
     background-color: ${Palette.diamond};
     color: white;
-    border-radius: 0.5rem
+    border-radius: 0.5rem;
   }
 `;
 
@@ -121,8 +123,8 @@ export const StyledAvatar = styled(Avatar)`
   width: 6.25rem;
   font-size: 2.5rem;
 `;
-  
-  export const EmptyAvatar = styled(Avatar)`
+
+export const EmptyAvatar = styled(Avatar)`
   margin-left: 1rem;
   height: 6.25rem;
   width: 6.25rem;
@@ -135,48 +137,48 @@ export const StyledAvatar = styled(Avatar)`
   }
 `;
 
-export const StyledLabel = styled('label')`
+export const StyledLabel = styled("label")`
   > img {
     height: 6.25rem;
     width: 6.25rem;
     margin-right: 1rem;
     cursor: pointer;
     border-radius: 5rem;
-  };
+  }
 
   > input {
     display: none;
-  };
+  }
 `;
 
-export const DetailsContainer = styled('div')`
+export const DetailsContainer = styled("div")`
   display: flex;
   flex-direction: column;
   text-align: left;
-  
+
   > p {
     margin-top: 0.5rem;
     color: ${Palette.thGray};
-  };
+  }
 `;
-  
-export const BadgeContainer = styled('div')`
+
+export const BadgeContainer = styled("div")`
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   align-items: center;
 
   > h1 {
     font-weight: normal;
-  };
+  }
 
   > img {
     width: 3rem;
     height: 3rem;
     margin-left: 0.5rem;
-  };
+  }
 `;
 
-export const IconContainer = styled('div')`
+export const IconContainer = styled("div")`
   display: flex;
   flex-direction: row;
   margin-left: auto;
@@ -184,13 +186,13 @@ export const IconContainer = styled('div')`
 
   > :first-of-type {
     margin-right: 1rem;
-  };
+  }
 
   > img {
     height: 1.5rem;
     width: 1.5rem;
     cursor: pointer;
-  };
+  }
 `;
 
 export const CancelButton = styled(Button)`
@@ -212,22 +214,21 @@ export const UpdateButton = styled(Button)`
   &:hover {
     background-color: ${Palette.darkTeal};
   }
-
 `;
 
-export const BodyContainer = styled('div')`
+export const BodyContainer = styled("div")`
   display: flex;
   flex-direction: row;
   width: 80%;
 `;
 
-export const RightContainer = styled('div')`
+export const RightContainer = styled("div")`
   display: flex;
   flex-direction: column;
   margin-left: 2rem;
 `;
 
-export const AboutMeContainer = styled('div')`
+export const AboutMeContainer = styled("div")`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
   width: 390px;
@@ -240,7 +241,7 @@ export const AboutMeContainer = styled('div')`
   color: white;
 `;
 
-export const TasksContainer = styled('div')`
+export const TasksContainer = styled("div")`
   display: flex;
   flex-direction: column;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -254,37 +255,37 @@ export const TasksContainer = styled('div')`
     margin-top: 0;
     margin-left: 1rem;
     font-weight: normal;
-  };
+  }
 
   > p {
     text-align: center;
     color: ${Palette.thGray};
-  };
+  }
 `;
 
-export const LabelContainer = styled('div')`
+export const LabelContainer = styled("div")`
   display: flex;
   flex-direction: row;
   padding: 0 2rem;
 
   > :first-of-type {
     width: 10%;
-  };
+  }
 
   > :nth-of-type(2) {
     width: 50%;
-  };
+  }
 
   > :nth-of-type(3) {
     width: 20%;
-  };
+  }
 
   > :nth-of-type(4) {
     width: 20%;
-  };
+  }
 `;
 
-export const OverflowContainer = styled('div')`
+export const OverflowContainer = styled("div")`
   overflow-y: auto;
   padding: 0 1rem;
 
@@ -292,16 +293,16 @@ export const OverflowContainer = styled('div')`
     text-align: center;
     margin-top: 4rem;
     color: ${Palette.thGray};
-  };
+  }
 `;
 
-export const FriendsContainer = styled('div')`
+export const FriendsContainer = styled("div")`
   display: flex;
   flex-direction: column;
   text-align: left;
-  padding: 1rem;;
+  padding: 1rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 390px;  
+  width: 390px;
   border-radius: 0.5rem;
   margin-bottom: 3rem;
   height: 17rem;
@@ -310,20 +311,20 @@ export const FriendsContainer = styled('div')`
     margin-top: 0;
     margin-left: 1rem;
     font-weight: normal;
-  };
+  }
 `;
 
 export const TextFieldStyle = {
   width: "100%",
   "& .MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: "white"
+      borderColor: "white",
     },
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: `${Palette.lightGray}`
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: `${Palette.lightGray}`,
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: `${Palette.offGray}`
+      borderColor: `${Palette.offGray}`,
     },
-  }
-}
+  },
+};

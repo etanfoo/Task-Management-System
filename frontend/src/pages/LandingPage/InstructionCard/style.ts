@@ -1,7 +1,7 @@
 import { styled } from "@mui/system";
 import { Palette } from "../../../components/Palette";
 
-export const InstructionCardContainer = styled('div')`
+export const InstructionCardContainer = styled("div")`
   display: flex;
   flex-direction: row;
   border-radius: 1rem;
@@ -14,15 +14,15 @@ export const InstructionCardContainer = styled('div')`
   > img {
     height: 6.25rem;
     margin-right: 1rem;
-  };
+  }
 
-  transition: transform .2s;
+  transition: transform 0.2s;
   &:hover {
     transform: scale(1.05);
   }
 `;
 
-export const TextContainer = styled('div')`
+export const TextContainer = styled("div")`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -32,7 +32,7 @@ export const TextContainer = styled('div')`
     font-weight: normal;
     font-size: 1.75rem;
     margin-bottom: 0;
-  };
+  }
 
   > p {
     color: ${Palette.thGray};

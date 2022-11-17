@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../../../../components/Palette";
 
-export const RequestCardContainer = styled('div')`
+export const RequestCardContainer = styled("div")`
   width: 100%;
   border-radius: 0.5rem;
   padding: 1rem;
@@ -17,7 +17,7 @@ export const RequestCardContainer = styled('div')`
   }
 `;
 
-export const TextContainer = styled('div')`
+export const TextContainer = styled("div")`
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -33,7 +33,7 @@ export const TextContainer = styled('div')`
   }
 `;
 
-export const ButtonContainer = styled('div')`
+export const ButtonContainer = styled("div")`
   margin-left: auto;
 `;
 
@@ -53,4 +53,4 @@ export const AcceptButton = styled(Button)`
   &:hover {
     background-color: ${Palette.darkTeal};
   }
-`;  
+`;

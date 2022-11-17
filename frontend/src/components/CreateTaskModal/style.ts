@@ -1,7 +1,7 @@
 import { Avatar, Button, styled } from "@mui/material";
 import { Palette } from "../Palette";
 
-export const ModalContainer = styled('div')`
+export const ModalContainer = styled("div")`
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -14,42 +14,41 @@ export const ModalContainer = styled('div')`
   // > TextField {
   //   align-items: center;
   // };
-  
-  
 `;
 
-export const EmptyModal = styled('div')`
+export const EmptyModal = styled("div")`
   margin: auto;
   > h1 {
     font-weight: normal;
-  };
+  }
 `;
 
-export const ModalBody = styled('div')`
+export const ModalBody = styled("div")`
   width: 90%;
   margin-inline: auto;
 
-  > h1, h2 {
+  > h1,
+  h2 {
     // align-text: none;
     font-weight: normal;
     margin-bottom: 0.5rem;
-  };
+  }
 `;
 
-export const BottomContainer = styled('div')`
+export const BottomContainer = styled("div")`
   display: flex;
   flex-direction: row;
   > :first-of-type {
     width: 30%;
-    margin-right: 5%
-  };
+    margin-right: 5%;
+  }
   > :nth-of-type(2) {
     width: 30%;
     margin-right: 5%;
-  };
+  }
   > :nth-of-type(3) {
-    width: 30%
-  };
+    width: 30%;
+  }
 `;
 
 // export const SelectProjectContainer = styled('div')`
@@ -66,16 +65,16 @@ export const BottomContainer = styled('div')`
 //   margin-left: 5%;
 // `;
 
-export const ButtonsContainer = styled('div')`
+export const ButtonsContainer = styled("div")`
   display: flex;
   flex-direction: row;
-  position:absolute;
+  position: absolute;
   bottom: 2rem;
   right: 2rem;
 
   > :first-of-type {
     margin-right: 1.5rem;
-  };
+  }
 `;
 
 export const CancelButton = styled(Button)`
@@ -86,7 +85,7 @@ export const CancelButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.lightGray};
-  };
+  }
 `;
 
 export const CreateButton = styled(Button)`
@@ -96,17 +95,17 @@ export const CreateButton = styled(Button)`
 
   &:hover {
     background-color: ${Palette.darkTeal};
-  };
+  }
 `;
 
 export const StyledAvatar = styled(Avatar)`
   height: 3rem;
   width: 3rem;
   background-color: ${Palette.mainTeal};
-  cursor: pointer
+  cursor: pointer;
 `;
 
-export const UserCard = styled('div')`
+export const UserCard = styled("div")`
   display: flex;
   // text-align: center;
   // align-items: center;
@@ -118,5 +117,5 @@ export const UserCard = styled('div')`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  };
+  }
 `;

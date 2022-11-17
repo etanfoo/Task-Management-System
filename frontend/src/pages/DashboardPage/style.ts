@@ -2,7 +2,7 @@ import { FormControl, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import { Palette } from "../../components/Palette";
 
-export const DashboardPageContainer = styled('div')`
+export const DashboardPageContainer = styled("div")`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -13,7 +13,7 @@ export const DashboardPageContainer = styled('div')`
   text-align: center;
 `;
 
-export const LeftContainer = styled('div')`
+export const LeftContainer = styled("div")`
   border-right: 1px solid ${Palette.gray};
   border-top: 1px solid ${Palette.gray};
   height: 100vh;
@@ -23,16 +23,16 @@ export const LeftContainer = styled('div')`
 
   > h2 {
     font-weight: normal;
-  };
+  }
 `;
 
-export const FriendsContainer = styled('div')`
+export const FriendsContainer = styled("div")`
   overflow-y: auto;
   padding: 0 1rem;
   height: 65%;
 `;
 
-export const ImageContainer = styled('div')`
+export const ImageContainer = styled("div")`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -41,20 +41,20 @@ export const ImageContainer = styled('div')`
     width: 3.125rem;
     height: 3.125rem;
     cursor: pointer;
-    transition: transform .2s;
+    transition: transform 0.2s;
     &:hover {
-      transform: scale(1.10);
-    };  
-  };
+      transform: scale(1.1);
+    }
+  }
 `;
 
-export const BodyContainer = styled('div')`
+export const BodyContainer = styled("div")`
   display: flex;
   flex-direction: row;
   padding-top: 1rem;
 `;
 
-export const RightContainer = styled('div')`
+export const RightContainer = styled("div")`
   height: 100%;
   width: 77.5%;
   padding: 0 4rem;
@@ -64,7 +64,7 @@ export const StyledTextField = styled(TextField)`
   margin-bottom: 2rem;
 `;
 
-export const SelectContainer = styled('div')`
+export const SelectContainer = styled("div")`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -76,7 +76,7 @@ export const StyledForm = styled(FormControl)`
   text-align: left;
 `;
 
-export const TasksContainer = styled('div')`
+export const TasksContainer = styled("div")`
   display: flex;
   flex-direction: column;
   height: 65vh;
@@ -85,36 +85,36 @@ export const TasksContainer = styled('div')`
   padding: 1rem;
   margin-bottom: 2rem;
   text-align: left;
-  
+
   > p {
     margin: auto auto;
     color: ${Palette.thGray};
-  };
+  }
 `;
 
-export const TasksLabelContainer = styled('div')`
+export const TasksLabelContainer = styled("div")`
   display: flex;
   flex-direction: row;
   padding: 0 3rem;
 
   > :first-of-type {
     width: 10%;
-  };
+  }
 
   > :nth-of-type(2) {
     width: 50%;
-  };
+  }
 
   > :nth-of-type(3) {
-    width: 20%
-  };
+    width: 20%;
+  }
 
   > :nth-of-type(4) {
     width: 20%;
-  };
+  }
 `;
 
-export const ProjectsLabelContainer = styled('div')`
+export const ProjectsLabelContainer = styled("div")`
   display: flex;
   flex-direction: row;
   padding: 0 3rem;
@@ -122,14 +122,14 @@ export const ProjectsLabelContainer = styled('div')`
 
   > :first-of-type {
     width: 20%;
-  };
-  
+  }
+
   > :nth-of-type(2) {
     width: 75%;
-  };
+  }
 `;
 
-export const OverflowContainer = styled('div')`
+export const OverflowContainer = styled("div")`
   overflow-y: auto;
   padding: 0 2rem;
 `;

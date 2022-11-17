@@ -1,6 +1,6 @@
 import { styled } from "@mui/system";
 
-export const ProjectCardContainer = styled('div')`
+export const ProjectCardContainer = styled("div")`
   display: flex;
   flex-direction: row;
   border-radius: 1rem;
@@ -10,23 +10,23 @@ export const ProjectCardContainer = styled('div')`
   padding: 0.5rem 1rem;
   margin-bottom: 0.5rem;
   cursor: pointer;
-  transition: transform .2s;
-  
+  transition: transform 0.2s;
+
   &:hover {
     transform: scale(1.05);
-  };
+  }
 
   > :first-of-type {
     width: 20%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  };
+  }
 
   > :nth-of-type(2) {
     width: 75%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  };
+  }
 `;

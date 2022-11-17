@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { Palette } from "../../components/Palette";
 
-export const SignUpPageContainer = styled('div')`
+export const SignUpPageContainer = styled("div")`
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -17,12 +17,12 @@ export const SignUpPageContainer = styled('div')`
     height: 12.5rem;
     width: 12.5rem;
     cursor: pointer;
-  };
+  }
 
   > h1 {
     font-weight: normal;
     width: 100%;
-  };
+  }
 `;
 
 export const InputField = styled(TextField)`
@@ -48,4 +48,3 @@ export const StyledButton = styled(Button)`
     background-color: ${Palette.darkTeal};
   }
 `;
-

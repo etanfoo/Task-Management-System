@@ -47,15 +47,15 @@ export const search = (profiles: IProfile[], searchMember: string) => {
  * Formats the date from YYYY-MM-DD to DD-MM-YYYY
  */
 export const formatDate = (date: string) => {
-  return date.split("-").reverse().join("/"); 
-}
+  return date.split("-").reverse().join("/");
+};
 
 /*
  * Receives array of profiles and filters depending on given profileId
  */
 export const findSelectedMember = (profileId: number, profiles: IProfile[]) => {
   return profiles.filter((user: IProfile) => user.id === profileId)[0];
-}
+};
 
 /*
  * Returns corresponding task status colour
@@ -70,6 +70,6 @@ export const fetchStatusColor = (status: number) => {
   } else if (status === 3) {
     return Palette.errorRed;
   } else {
-    return 'black';
+    return "black";
   }
 };

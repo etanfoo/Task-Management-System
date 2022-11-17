@@ -1,6 +1,6 @@
 import { styled } from "@mui/system";
 
-export const CounterContainer = styled('div')`
+export const CounterContainer = styled("div")`
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -10,10 +10,10 @@ export const CounterContainer = styled('div')`
   > h3 {
     font-size: 5rem;
     margin: 0;
-  };
+  }
 
   > p {
     font-size: 1.25rem;
     margin-bottom: 0;
-  };
+  }
 `;

@@ -11,11 +11,11 @@ export const EmptyProfile: IProfile = {
   busyness: -1,
   aboutMe: "",
   assignedTasks: [],
-  authoredTasks: []
+  authoredTasks: [],
 };
 
 export const EmptyUpdatedProfileDetails: IUpdatedProfileDetails = {
   name: "",
   aboutMe: "",
-  profilePicture: ""
+  profilePicture: "",
 };

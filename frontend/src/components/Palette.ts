@@ -11,5 +11,5 @@ export const Palette = {
   offGray: "#dee2e6",
   diamond: "#009C89",
   gold: "#FFD700",
-  bronze: "#CD7F32"
+  bronze: "#CD7F32",
 };

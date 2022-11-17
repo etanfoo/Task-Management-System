@@ -10,7 +10,7 @@ export const StatisticsPageContainer = styled("div")`
   padding-bottom: 3rem;
 `;
 
-export const SectionContainer = styled('div')`
+export const SectionContainer = styled("div")`
   display: flex;
   flex-direction: column;
   padding: 0 3rem;
@@ -19,9 +19,9 @@ export const SectionContainer = styled('div')`
     font-weight: normal;
     font-size: 2rem;
   }
-`; 
+`;
 
-export const GraphWrapper = styled('div')`
+export const GraphWrapper = styled("div")`
   margin-top: 1.5rem;
   align-self: center;
   position: relative;

@@ -4,106 +4,160 @@ import { IProjectDetails, IProjectStats } from "../interfaces/project";
 
 export const getProjects = async (profileId: number): Promise<IProject[]> => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/project?profileId=${profileId}`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/v1/project?profileId=${profileId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
       }
-    });
+    );
     return data;
   } catch (err: any) {
     throw err;
-  };
+  }
 };
 
-export const postProject = async (profileId: number, project: IProjectDetails, profileIdsToAdd: number[]): Promise<IProject> => {
+export const postProject = async (
+  profileId: number,
+  project: IProjectDetails,
+  profileIdsToAdd: number[]
+): Promise<IProject> => {
   try {
-    const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/project`, {
-      profileId,
-      project, 
-      profileIdsToAdd
-    }, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/v1/project`,
+      {
+        profileId,
+        project,
+        profileIdsToAdd,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
       }
-    });
+    );
     return data;
   } catch (err: any) {
     throw err;
-  };
+  }
 };
 
 export const getProject = async (profileId: string): Promise<IProject> => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/project/${profileId}`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/v1/project/${profileId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
       }
-    });
+    );
     return data;
   } catch (err: any) {
     throw err;
-  };
+  }
 };
 
-export const putProject = async (profileId: number, project: IProjectDetails,  profileIdsToAdd: number[]): Promise<IProject> => {
+export const putProject = async (
+  profileId: number,
+  project: IProjectDetails,
+  profileIdsToAdd: number[]
+): Promise<IProject> => {
   try {
-    const { data } = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/project/${project.id}`, {
-      profileId,
-      project, 
-      profileIdsToAdd
-    }, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
-      }
-    });
-    return data;
-  } catch (err: any) {
-    throw err;
-  };
-};
-
-export const deleteProject = async (projectId: string, profileId: string): Promise<string> => {
-  try {
-    const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
-      }, 
-      data: {
-        profileId
-      }
-    });
-    return data;
-  } catch (err: any) {
-    throw err;
-  };
-};
-
-export const deleteMember = async (projectId: string, profileId: string, deleteMemberId: number): Promise<string> => {
-  try {
-    const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/removeProfile`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
-      }, 
-      data: {
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_API_URL}/api/v1/project/${project.id}`,
+      {
         profileId,
-        "profileIdToRemove": deleteMemberId
+        project,
+        profileIdsToAdd,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
       }
-    });
+    );
     return data;
   } catch (err: any) {
     throw err;
-  };
+  }
 };
 
-export const getProjectStatistics = async (projectId: string): Promise<IProjectStats> => {
+export const deleteProject = async (
+  projectId: string,
+  profileId: string
+): Promise<string> => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/statistics`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem(process.env.REACT_APP_TOKEN!)}`
-      }, 
-    });
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
+        data: {
+          profileId,
+        },
+      }
+    );
     return data;
   } catch (err: any) {
     throw err;
-  };
+  }
+};
+
+export const deleteMember = async (
+  projectId: string,
+  profileId: string,
+  deleteMemberId: number
+): Promise<string> => {
+  try {
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/removeProfile`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
+        data: {
+          profileId,
+          profileIdToRemove: deleteMemberId,
+        },
+      }
+    );
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const getProjectStatistics = async (
+  projectId: string
+): Promise<IProjectStats> => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/v1/project/${projectId}/statistics`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem(
+            process.env.REACT_APP_TOKEN!
+          )}`,
+        },
+      }
+    );
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
 };
